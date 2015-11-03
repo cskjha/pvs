@@ -1,0 +1,33 @@
+body {
+	background: #f0f0f0;
+	font: 14px/20px Arial, Sans-Serif;
+	color: #555;
+	margin: 0;
+}
+
+nav {
+	float: right;
+	margin-right: 200px;
+}
+
+td {
+	width: 150px;
+}
+
+img {
+	border: 1px solid gray;
+}
+
+.register {
+	text-align: center;
+}
+
+.button {
+	margin-top: 10px;
+	height: 30px;
+	width: 100px;
+}
+
+.clear {
+	clear: both;
+}
