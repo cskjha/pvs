@@ -1,6 +1,6 @@
 package com.pvs.web;
 
-import com.pvs.web.freemarker.processors.ChoosePlanProcessor;
+import com.pvs.web.freemarker.processors.MyPlanProcessor;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
@@ -66,24 +66,24 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return DisplayPlanProcessor.getHTML(request);
+   				return DisplayPlanProcessor.getHTML(request, response);
    			}
           });
         spark.Spark.get("/displayplan", new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return DisplayPlanProcessor.getHTML(request);
+   				return DisplayPlanProcessor.postHTML(request, response);
    			}
           });
         
         
         
-        spark.Spark.post("/chooseplan", new Route() {
+        spark.Spark.post("/myplan", new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return ChoosePlanProcessor.getHTML(request);
+   				return MyPlanProcessor.getHTML(request, response);
    			}
           });
         
