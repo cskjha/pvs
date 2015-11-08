@@ -2,7 +2,9 @@ package com.pvs.service.write;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -17,6 +19,8 @@ import com.pvs.service.update.ProductValidationSystemUpdateService;
 import com.pvs.service.utils.CommonUtils;
 
 public class ProductValidationSystemWriteService {
+	
+	static final Logger log = Logger.getLogger(ProductValidationSystemWriteService.class);
 	public static boolean registerCompany(Document companyModel) {
 		MongoClient mongoClient = null;
 		
@@ -46,6 +50,34 @@ public class ProductValidationSystemWriteService {
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).insertOne(productModel);
 			ProductValidationSystemUpdateService.updateRemainingRecordCount(companyEmail);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
+	}
+	
+	public static boolean registerProductTemplate(Document productTemplateModel, String productType, String companyEmail) {
+		if(productTemplateModel ==null || productType == null || companyEmail == null) {
+			return false;
+		}
+		MongoClient mongoClient = null;		
+		try {
+			String templateCollectionName = CommonUtils.getProductTemplateCollectionName(productType);
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, templateCollectionName);
+			mongoCollection.insertOne(productTemplateModel);
+			ObjectId productTemplateId = productTemplateModel.getObjectId("_id");
+			log.debug("productTemplateId : "+productTemplateId);
+			mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);
+			Document companyTemplateDocument = new Document().append(DatabaseConstants.PRODUCT_TEMPLATE_ID, productTemplateId.toHexString())
+					.append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail).append(DatabaseConstants.PRODUCT_TYPE, productType);
+			mongoCollection.insertOne(companyTemplateDocument);
+			log.debug("Product Template Updated Successfully.");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

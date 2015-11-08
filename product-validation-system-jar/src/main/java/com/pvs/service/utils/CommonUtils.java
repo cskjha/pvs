@@ -14,5 +14,15 @@ public class CommonUtils {
 		}
 		return collectionName;
 	}
+	public static String getProductTemplateCollectionName(String productType) {
+		String collectionName=null;
+		if(ProductTypes.FOOD_PRODUCTS.getProductType().equals(productType)) {
+			collectionName = DatabaseConstants.FOOD_PRODUCT_TEMPLATE_COLLECTION_NAME;
+		}
+		else {
+			collectionName = DatabaseConstants.NON_FOOD_PRODUCT_TEMPLATE_COLLECTION_NAME;
+		}
+		return collectionName;
+	}
 
 }

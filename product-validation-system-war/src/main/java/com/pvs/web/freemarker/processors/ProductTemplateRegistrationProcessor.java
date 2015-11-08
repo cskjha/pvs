@@ -18,7 +18,7 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 
-public class ProductRegistrationProcessor {
+public class ProductTemplateRegistrationProcessor {
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 		Session session = request.session();
@@ -44,7 +44,7 @@ public class ProductRegistrationProcessor {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			dynamicValues.put("companyName", userName);
 			try {
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_GET,
 						dynamicValues, ProductRegistrationProcessor.class);
 			} catch (TemplateException e) {
 				e.printStackTrace();
@@ -79,19 +79,18 @@ public class ProductRegistrationProcessor {
 				}
 		}
 		Set<String> queryParams = request.queryParams();
-		Document productDocument = new Document();
+		Document productTemplateDocument = new Document();
 		for(String param: queryParams) {
 			if(param.equals("productName") || param.startsWith("field")) {
-				productDocument.append(param, request.queryParams(param));
+				productTemplateDocument.append(param, request.queryParams(param));
 			}
 		}
 		String productType = request.queryParams("productType");
-		productDocument.append("productType", productType);
-		ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyEmail);	
+		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyEmail);	
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			dynamicValues.put("companyName", userName);
-			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
+			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_POST,
 					dynamicValues, ProductRegistrationProcessor.class);
 			
 		} catch (IOException e) {

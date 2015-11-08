@@ -37,6 +37,11 @@ public class CompanyLoginProcessor {
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
 		try {
+			Session session = request.session(false);
+			if(session != null) {
+				response.redirect(RedirectPaths.DISPLAY_PLAN);
+				return null;
+			}
 			boolean validateLogin = LoginValidator.validateLogin(request);
 			if(validateLogin) {
 				response.redirect(RedirectPaths.DISPLAY_PLAN);

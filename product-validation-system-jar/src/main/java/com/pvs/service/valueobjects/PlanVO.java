@@ -3,8 +3,8 @@ package com.pvs.service.valueobjects;
 public class PlanVO {
 	String planId;
 	String planName;
-	String   allowedRecordCount;
-	String   allowedScanCount;
+	String allowedRecordCount;
+	String allowedScanCount;
 	String planState;
 	String planPrice;
 	String currencyCode;

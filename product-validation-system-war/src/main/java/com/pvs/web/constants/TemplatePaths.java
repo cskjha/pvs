@@ -11,7 +11,9 @@ public class TemplatePaths {
 		public static final String PLAN_REGISTRATION_POST = "com/pvs/freemarker/templates/planregistration/planRegistrationPOST.ftl";
 		public static final String PRODUCT_REGISTRATION_GET = "com/pvs/freemarker/templates/productregistration/productRegistrationGET.ftl";
 		public static final String PRODUCT_REGISTRATION_POST = "com/pvs/freemarker/templates/productregistration/productRegistrationPOST.ftl";
+		public static final String PRODUCT_TEMPLATE_REGISTRATION_GET = "com/pvs/freemarker/templates/productregistration/productTemplateRegistrationGET.ftl";
+		public static final String PRODUCT_TEMPLATE_REGISTRATION_POST = "com/pvs/freemarker/templates/productregistration/productTemplateRegistrationPOST.ftl";
+		public static final String VIEW_PRODUCT_TEMPLATE = "com/pvs/freemarker/templates/producttemplate/viewProductTemplate.ftl";
 		public static final String RECORD_BALANCE_UNAVAILABLE= "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
-		
 		
 }

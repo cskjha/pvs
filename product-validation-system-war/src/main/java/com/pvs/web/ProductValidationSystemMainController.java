@@ -8,7 +8,9 @@ import com.pvs.web.freemarker.processors.LogoutProcessor;
 import com.pvs.web.freemarker.processors.MyPlanProcessor;
 import com.pvs.web.freemarker.processors.PlanRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
+import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
+import com.pvs.web.freemarker.processors.ViewProductTemplateProcessor;
 
 import spark.Request;
 import spark.Response;
@@ -110,6 +112,30 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			}
           });
         
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT_TEMPLATE, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return ProductTemplateRegistrationProcessor.getHTML(request, response);
+   			}
+          });
+        
+        
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT_TEMPLATE, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return ProductTemplateRegistrationProcessor.postHTML(request, response);
+   			}
+          });
+        
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.VIEW_PRODUCT_TEMPLATES, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return ViewProductTemplateProcessor.getHTML(request, response);
+   			}
+          });
         
         spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT, new Route() {
 			
@@ -127,6 +153,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
    				return ProductRegistrationProcessor.postHTML(request, response);
    			}
           });
+        
         
 		spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.VALIDATE_PRODUCT, new Route() {
 					

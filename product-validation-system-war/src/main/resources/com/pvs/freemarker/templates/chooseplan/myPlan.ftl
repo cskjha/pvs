@@ -10,7 +10,7 @@
     	 	<#include "../base/header.ftl"><br>
     	 	<#if companyPlanName??>
 	 			You have selected ${companyPlanName} plan.<br>
-    			You can register your products <a href="registerproduct">Here </a>  
+    			You can register your products <a href="registerproducttemplate">Here </a>  
 			<#else>
 		 		You have not selected a plan.
 		 		<br>Please select your plan <a href="displayplan">Here</a>&nbsp;|&nbsp;

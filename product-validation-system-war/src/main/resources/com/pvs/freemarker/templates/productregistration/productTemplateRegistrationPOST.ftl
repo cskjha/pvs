@@ -9,9 +9,10 @@
     
     <body>
     	<center>
-    	 <#include "../../header.ftl"><br>
-    		<h4>You cannot register anymore product becasue your existing plan has exhausted</h4>
-    		<h5> You can choose your plan <a href="displayplan"> Here </a></h5>
+    	 <#include "../base/header.ftl"><br>
+    		<h4>Product Template Registration Successful</h4>
+    		<h5> Register another product template <a href="registerproducttemplate"> Here </a></h5>
+    		<h5> Register products  <a href="viewproducttemplates"> Here </a></h5>
     	</center>
     </body>
     </html>

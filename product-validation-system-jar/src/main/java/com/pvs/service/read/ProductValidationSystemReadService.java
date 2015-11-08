@@ -1,5 +1,6 @@
 package com.pvs.service.read;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.bson.types.ObjectId;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.pvs.db.connection.ConnectionManagerFactory;
 import com.pvs.db.connection.DBCollectionManagerFactory;
@@ -18,6 +20,7 @@ import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.enums.PlanStates;
 import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.valueobjects.PlanVO;
+import com.pvs.service.valueobjects.ProductTemplateVO;
 
 public class ProductValidationSystemReadService {
 	final static Logger log = Logger.getLogger(ProductValidationSystemReadService.class);
@@ -125,6 +128,39 @@ public class ProductValidationSystemReadService {
 		return null;
 	}
 	
+	public static List<Document> getCompanyTemplateRecords(String companyEmail) {
+		MongoClient mongoClient = null;
+		List<Document> companyTemplates = new ArrayList<Document>();
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);		
+			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			MongoCursor<Document> documentsIterator = documents.iterator();
+			while(documents != null && documentsIterator.hasNext()) {
+				Document companyTemplate =  documentsIterator.next();
+				String productTemplateId = companyTemplate.getString(DatabaseConstants.PRODUCT_TEMPLATE_ID);
+				String productType = companyTemplate.getString(DatabaseConstants.PRODUCT_TYPE);
+				MongoCollection<Document> productTemplateCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, CommonUtils.getProductTemplateCollectionName(productType));		
+				searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productTemplateId));
+				FindIterable<Document> productTemplateDocuments = productTemplateCollection.find(searchCriteria);
+				MongoCursor<Document> productTemplateDocumentIterator = productTemplateDocuments.iterator();
+				while(productTemplateDocumentIterator != null && productTemplateDocumentIterator.hasNext()) {
+					Document companyTemplateDocument = productTemplateDocumentIterator.next();
+					companyTemplates.add(companyTemplateDocument);
+				}				
+			}
+			return companyTemplates;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			mongoClient.close();
+		}
+		return companyTemplates;
+	}
+	
 	
 	public static String getCompanyPlanName(String companyPlanId) {
 		String companyPlanName = null;
@@ -133,6 +169,17 @@ public class ProductValidationSystemReadService {
 			return null;
 		companyPlanName = planRecord.getString("planName");
 		return companyPlanName;
+	}
+	
+	public static String getCompanyId(String companyEmail) {
+		String companyId = null;
+		Document companyRecord = getCompanyRecord(companyEmail);
+		if(companyRecord == null)
+			return null;
+		ObjectId companyObjectId = companyRecord.getObjectId(DatabaseConstants._ID);
+		companyId = companyObjectId.toHexString();
+		log.debug("getCompanyId() : input : companyEmail "+companyEmail+" : Output : companyId :"+companyId);
+		return companyId;
 	}
 	
 	public static List<PlanVO> getAllPlans() {
@@ -176,7 +223,7 @@ public class ProductValidationSystemReadService {
 		return planList;
 	}
 	
-	public static synchronized Long getRemainingScanCount(String companyEmail) {
+	public static Long getRemainingScanCount(String companyEmail) {
 		Long remainingScanCount = null;
 		try {
 			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
@@ -192,7 +239,7 @@ public class ProductValidationSystemReadService {
 		return remainingScanCount;
 	}
 	
-	public static synchronized Long getRemainingRecordCount(String companyEmail) {
+	public static Long getRemainingRecordCount(String companyEmail) {
 		Long remainingRecordCount = null;
 		try {
 			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
@@ -207,5 +254,11 @@ public class ProductValidationSystemReadService {
 		}
 		return remainingRecordCount;
 	}
+	
+	public static List<ProductTemplateVO> getProductTemplates(String companyEmail) {
+		return null;
+	}
+	
+	
  
 }

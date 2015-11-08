@@ -7,7 +7,7 @@
     
     <body>
     	<center>
-    	 	<#include "../base/header.ftl"><br>
+    	 	<#include "../../header.ftl"><br>
     	 	Due to System error we are not able to process your request.
     	 	Try again <a href="companylogin"> Here </a>
     	</center>
