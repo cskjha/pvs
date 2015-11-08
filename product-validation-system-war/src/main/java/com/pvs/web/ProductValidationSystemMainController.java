@@ -1,17 +1,18 @@
 package com.pvs.web;
 
-import com.pvs.web.freemarker.processors.MyPlanProcessor;
+import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
 import com.pvs.web.freemarker.processors.LogoutProcessor;
+import com.pvs.web.freemarker.processors.MyPlanProcessor;
+import com.pvs.web.freemarker.processors.PlanRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
 
 import spark.Request;
 import spark.Response;
 import spark.Route;
-import spark.Session;
 import spark.servlet.SparkApplication;
 
 public class ProductValidationSystemMainController implements SparkApplication {
@@ -20,7 +21,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
     @Override
     public void init() {
 
-        spark.Spark.get("/", new Route() {
+        spark.Spark.get(RedirectPaths.HOME_PAGE, new Route() {
 			
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
@@ -29,14 +30,14 @@ public class ProductValidationSystemMainController implements SparkApplication {
 		});
         
         
-        spark.Spark.get("/companyregister", new Route() {
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_REGISTER, new Route() {
 			
      			@Override
      			public Object handle(Request request, Response response) throws Exception {
      				return CompanyRegistrationProcessor.getHTML(request);
      			}
      	}); 
-        spark.Spark.post("/companyregister", new Route() {
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_REGISTER, new Route() {
 			
  			@Override
  			public Object handle(Request request, Response response) throws Exception {
@@ -44,15 +45,30 @@ public class ProductValidationSystemMainController implements SparkApplication {
  			}
         });
         
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.PLAN_REGISTER, new Route() {
+			
+ 			@Override
+ 			public Object handle(Request request, Response response) throws Exception {
+ 				return PlanRegistrationProcessor.getHTML(request);
+ 			}
+	 	}); 
+	    spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.PLAN_REGISTER, new Route() {
+		
+			@Override
+			public Object handle(Request request, Response response) throws Exception {
+				return PlanRegistrationProcessor.postHTML(request, response);
+			}
+    });
         
-        spark.Spark.get("/companylogin", new Route() {
+        
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_LOGIN, new Route() {
 			
  			@Override
  			public Object handle(Request request, Response response) throws Exception {
  					return CompanyLoginProcessor.getHTML(request);
  			}
         });
-        spark.Spark.post("/companylogin", new Route() {
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_LOGIN, new Route() {
 			
  			@Override
  			public Object handle(Request request, Response response) throws Exception {
@@ -62,24 +78,31 @@ public class ProductValidationSystemMainController implements SparkApplication {
         
         
         
-        spark.Spark.post("/displayplan", new Route() {
-			
-   			@Override
-   			public Object handle(Request request, Response response) throws Exception {
-   				return DisplayPlanProcessor.getHTML(request, response);
-   			}
-          });
-        spark.Spark.get("/displayplan", new Route() {
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_PLAN, new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
    				return DisplayPlanProcessor.postHTML(request, response);
    			}
           });
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_PLAN, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return DisplayPlanProcessor.getHTML(request, response);
+   			}
+          });
         
         
         
-        spark.Spark.post("/myplan", new Route() {
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.MY_PLAN, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return MyPlanProcessor.postHTML(request, response);
+   			}
+          });
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.MY_PLAN, new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
@@ -88,7 +111,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
           });
         
         
-        spark.Spark.get("/registerproduct", new Route() {
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT, new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
@@ -97,7 +120,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
           });
         
         
-        spark.Spark.post("/registerproduct", new Route() {
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT, new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
@@ -105,7 +128,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			}
           });
         
-		spark.Spark.get("/validateproduct", new Route() {
+		spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.VALIDATE_PRODUCT, new Route() {
 					
 		   			@Override
 		   			public Object handle(Request request, Response response) throws Exception {
@@ -113,7 +136,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 		   			}
 		          });
 
-		spark.Spark.post("/validateproduct", new Route() {
+		spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.VALIDATE_PRODUCT, new Route() {
 			
 				@Override
 				public Object handle(Request request, Response response) throws Exception {
@@ -123,11 +146,11 @@ public class ProductValidationSystemMainController implements SparkApplication {
         
         
         
-        spark.Spark.get("/logout", new Route() {
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.LOGOUT, new Route() {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return LogoutProcessor.getHTML(request);
+   				return LogoutProcessor.getHTML(request, response);
    			}
           });
         

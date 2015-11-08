@@ -6,7 +6,11 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class DBCollectionManagerFactory {
-	public static MongoCollection<Document> getCollection(MongoDatabase mongoDb, String companyEmail) {
-		return mongoDb.getCollection(companyEmail);
+	public static MongoCollection<Document> getOrCreateCollection(MongoDatabase mongoDb, String collectionName) {
+		MongoCollection<Document> mongoCollection =  mongoDb.getCollection(collectionName);
+		if(mongoCollection == null) {
+			mongoDb.createCollection(collectionName);
+		}		
+		return mongoDb.getCollection(collectionName);
 	}
 }

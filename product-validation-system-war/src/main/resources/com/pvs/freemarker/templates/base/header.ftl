@@ -1,7 +1,7 @@
 <h2>Product Validation System</h2>
 <nav>
-	<#if user??>
-	  Welcome ${user!"Guest"} &nbsp;|&nbsp;
+	<#if companyName??>
+	  Welcome ${companyName!"Guest"} &nbsp;|&nbsp;
 	  <a href="logout">Logout</a>
 	<#else>
 		 Welcome Guest &nbsp;|&nbsp;

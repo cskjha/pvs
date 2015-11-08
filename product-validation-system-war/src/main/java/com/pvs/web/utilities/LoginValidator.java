@@ -1,6 +1,6 @@
 package com.pvs.web.utilities;
 
-import org.slf4j.Logger;
+import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
 
@@ -14,11 +14,12 @@ public class LoginValidator {
 			return true;
 		}
 		else {
-			String userName = request.queryParams("email");
+			String userEmail = request.queryParams("email");
 			String password = request.queryParams("password");
-			if(ProductValidationSystemReadService.validateUser(userName, password)){
+			if(ProductValidationSystemReadService.validateUser(userEmail, password)){
 				session = request.session(true);
-				session.attribute("user",userName);
+				LoginValidator loginValidator = new LoginValidator();
+				loginValidator.initializeSessionData(session, userEmail);
 				return true;
 			}
 		}
@@ -28,7 +29,7 @@ public class LoginValidator {
 		Session session = request.session(false);
 		String userName = null;
 		if(session != null) {
-			userName = session.attribute("user");
+			userName = session.attribute("companyName");
 		}
 		return userName;
 	}
@@ -38,5 +39,19 @@ public class LoginValidator {
 		if(session != null) {
 			session.invalidate();
 		}	
+	}
+	public void initializeSessionData(Session session, String userEmail) {
+		Document companyRecord = ProductValidationSystemReadService.getCompanyRecord(userEmail);
+		String companyName = companyRecord.getString("companyName");
+		String companyEmail = companyRecord.getString("companyEmail");
+//		Document planRecord =  ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+//		String companyPlanId = null;
+//		if(planRecord != null) {
+//			companyPlanId = planRecord.getString("companyPlanId");
+//		}
+//		String companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
+		session.attribute("companyName", companyName);
+		session.attribute("companyEmail", companyEmail);
+		
 	}
 }

@@ -16,18 +16,17 @@
 			<div class="clear">
 			</div>
         	<section>
-            	<div class="my-form">
-                
+            	<div class="my-form"> 
                 
                 	<form method="post" role="form" action="registerproduct">
 					
 						<h3>ADD A PRODUCT</h3>
-                		Product Name</td><td> <input type="text" name="productName" placeholder="Product Name" />
+                		Product Name</td><td> <input type="text" name="productName" placeholder="Product Name" /><br>
+                		Product Type </td><td> <input type="radio" name="productType" value="FP"/>Food <input type="radio" name="productType" value="NFP"/>Non Food<br>
                         <h3>Enter the fields</h3>
 						<p class="text-box">
 							<label for="box1">Field <span class="box-number">1</span></label>
-							<input type="text" id="box1" name="field1Name" placeholder="Field Name" />
-							<input type="text" id="box1" name="field1Value" placeholder="Field Value" />
+							<input type="text" id="box1" name="field1" placeholder="Field Name" />
 							<input type="button" class="add-box" value="Add More" />
 						</p>
 						

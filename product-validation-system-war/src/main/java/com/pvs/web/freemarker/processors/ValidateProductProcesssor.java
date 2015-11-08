@@ -11,7 +11,7 @@ public class ValidateProductProcesssor {
 		String JSONResponse = "error:product not found";
 		String QRCode = request.queryParams("QRCode");
 		if(QRCode != null) {
-			Document result = ProductValidationSystemReadService.getProductDetails(QRCode);
+			Document result = ProductValidationSystemReadService.getProductDetails(QRCode,"instanceId","ProductType");
 			if(result != null) {
 				JSONResponse = result.toJson();
 			}

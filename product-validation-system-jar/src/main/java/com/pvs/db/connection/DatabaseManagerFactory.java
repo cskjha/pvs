@@ -9,10 +9,7 @@ public class DatabaseManagerFactory {
 			return null;
 		}
 		else {
-			return getDatabase(mongoClient);
+			return mongoClient.getDatabase(dbName);
 		}
-	}
-	private static MongoDatabase getDatabase(MongoClient mongoClient) {
-		return mongoClient.getDatabase("test");
 	}
 }

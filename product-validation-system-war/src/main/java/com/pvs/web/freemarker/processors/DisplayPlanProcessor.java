@@ -1,49 +1,62 @@
 package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import com.pvs.service.read.ProductValidationSystemReadService;
+import org.bson.Document;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
+import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.valueobjects.PlanVO;
+import com.pvs.web.constants.RedirectPaths;
+import com.pvs.web.constants.TemplatePaths;
+import com.pvs.web.utilities.ProcessorUtil;
+
 import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
 import spark.Session;
 
 public class DisplayPlanProcessor {
+	
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
-		
-		Configuration configuration = new Configuration();
-		configuration.setClassForTemplateLoading(CompanyRegistrationProcessor.class, "/");
 		try {			
-				Template template = configuration.getTemplate("com/pvs/freemarker/templates/displayplan/displayPlan.ftl");
-				StringWriter stringWriter = new StringWriter();
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				Session session = request.session(false);
 				if(session != null) {
-					String companyEmail = session.attribute("user");
-					String companyPlan = ProductValidationSystemReadService.getCompanyPlan(companyEmail);
-					dynamicValues.put("user", companyEmail);
-					if(companyPlan != null) {
-						session.attribute("companyPlan", companyPlan);
-						response.redirect("myPlan");
+					String companyName = session.attribute("companyName");
+					String companyEmail = session.attribute("companyEmail");
+					Long remainingRecordCount = null;
+					Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+					String companyPlanName = null;
+					if(companyPlanRecord != null) {
+						String companyPlanId = companyPlanRecord.getString("companyPlanId");
+						companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
+						remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));						
+					}
+					dynamicValues.put("companyName", companyName);
+					request.session().attribute("companyPlanName",companyPlanName);
+					if(companyPlanName != null && remainingRecordCount > 0) {
+						response.redirect(RedirectPaths.MY_PLAN);
 						return null;
 					}
 					else {
-						response.redirect("displayplan");
+						List<PlanVO> planList = ProductValidationSystemReadService.getAllPlans();
+						if(planList != null && planList.size() != 0) {
+							dynamicValues.put("planList", planList);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);
+						}
+						else {
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);;
+						}
 					}
 				}
 				else {
 					response.redirect("companylogin");
 					return null;
-				}
-				template.process(dynamicValues, stringWriter);
-				htmlOutput = stringWriter.toString();			
+				}		
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -55,25 +68,23 @@ public class DisplayPlanProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
-		
-		Configuration configuration = new Configuration();
-		configuration.setClassForTemplateLoading(CompanyRegistrationProcessor.class, "/");
-		try {			
-				Template template = configuration.getTemplate("com/pvs/freemarker/templates/displayplan/displayPlan.ftl");
-				StringWriter stringWriter = new StringWriter();
+		try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				Session session = request.session(false);
 				if(session != null) {
-					String companyEmail = session.attribute("user");
-					String companyPlan = ProductValidationSystemReadService.getCompanyPlan(companyEmail);
-					dynamicValues.put("user", companyEmail);
-					if(companyPlan != null) {
-						session.attribute("companyPlan", companyPlan);
-						response.redirect("myPlan");
+					String companyName = session.attribute("companyName");
+					String companyPlanName = session.attribute("companyPlanName");
+					dynamicValues.put("companyName", companyName);
+					if(companyPlanName != null) {
+						response.redirect(RedirectPaths.MY_PLAN);
+						return null;
 					}
 				}
-				template.process(dynamicValues, stringWriter);
-				htmlOutput = stringWriter.toString();			
+				else {
+					response.redirect(RedirectPaths.COMPANY_LOGIN);
+					return null;
+				}
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);		
 			
 		} catch (IOException e) {
 			e.printStackTrace();
