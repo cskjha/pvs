@@ -13,10 +13,10 @@
         <h2>Register a Product</h2>
         <#if productTemplateList??>
         <table>
-        <th>
+        <tr>
         	<td>Product Template Name</td>
         	<td>Registration Link </td>
-        </th>
+        </tr>
         <#list productTemplateList as productTemplate>
         	<tr>
         		<td>${productTemplate.productTemplateName}</td>

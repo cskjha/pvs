@@ -11,7 +11,7 @@ import spark.Session;
 
 public class ValidateProductProcesssor {
 	public static String getJSON(Request request, Response response) {
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
@@ -27,7 +27,7 @@ public class ValidateProductProcesssor {
 		return JSONResponse;
 	}
 	public static String postJSON(Request request, Response response) {
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;

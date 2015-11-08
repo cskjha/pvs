@@ -21,7 +21,7 @@ import spark.Session;
 public class ProductRegistrationProcessor {
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
@@ -59,7 +59,7 @@ public class ProductRegistrationProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;

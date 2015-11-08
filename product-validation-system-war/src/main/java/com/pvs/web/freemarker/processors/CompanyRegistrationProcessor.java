@@ -20,7 +20,7 @@ import spark.Session;
 public class CompanyRegistrationProcessor {
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session != null) {
 			response.redirect(RedirectPaths.DISPLAY_PLAN);
 			return null;

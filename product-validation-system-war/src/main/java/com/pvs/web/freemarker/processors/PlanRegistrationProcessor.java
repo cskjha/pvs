@@ -20,7 +20,7 @@ import spark.Session;
 public class PlanRegistrationProcessor {
 
 	public static String getHTML(Request request, Response response) {
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
@@ -28,7 +28,9 @@ public class PlanRegistrationProcessor {
 		
 		String htmlOutput = null;
 		try {
+			String companyName = session.attribute("companyName");
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			dynamicValues.put("companyName", companyName);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_GET, dynamicValues,
 					PlanRegistrationProcessor.class	);
 			
@@ -43,7 +45,7 @@ public class PlanRegistrationProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
-		Session session = request.session();
+		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
@@ -69,7 +71,9 @@ public class PlanRegistrationProcessor {
 		planDocument.append("currencyCode", currencyCode);
 		if(ProductValidationSystemWriteService.registerPlan(planDocument)) {
 			try {
+				String companyName = session.attribute("companyName");
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				dynamicValues.put("companyName", companyName);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class);
 			} catch (IOException e) {
 				e.printStackTrace();
