@@ -8,16 +8,23 @@ import org.bson.Document;
 
 import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.service.write.ProductValidationSystemWriteService;
+import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
 
 import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
+import spark.Session;
 
 public class CompanyRegistrationProcessor {
-	public static String getHTML(Request request) {
+	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
+		Session session = request.session();
+		if(session != null) {
+			response.redirect(RedirectPaths.DISPLAY_PLAN);
+			return null;
+		}
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_GET,

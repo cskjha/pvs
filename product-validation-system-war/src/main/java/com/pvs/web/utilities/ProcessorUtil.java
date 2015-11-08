@@ -5,10 +5,13 @@ import java.io.StringWriter;
 import java.util.Map;
 
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
+import com.pvs.web.constants.RedirectPaths;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import spark.Response;
+import spark.Session;
 
 public class ProcessorUtil {
 	public static String populateTemplate(String templatePath, Map<String, Object> dynamicValues, Class<?> className) throws TemplateException, IOException {		
@@ -22,5 +25,9 @@ public class ProcessorUtil {
 		return htmlOutput;
 		
 	}
-
+	public static void performSecurityCheck(Session session, Response response) {
+		if(session == null) {
+			response.redirect(RedirectPaths.COMPANY_LOGIN);
+		}
+	}
 }

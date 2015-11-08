@@ -25,7 +25,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
-				return CompanyLoginProcessor.getHTML(request);
+				return CompanyLoginProcessor.getHTML(request, response);
 			}
 		});
         
@@ -34,7 +34,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
      			@Override
      			public Object handle(Request request, Response response) throws Exception {
-     				return CompanyRegistrationProcessor.getHTML(request);
+     				return CompanyRegistrationProcessor.getHTML(request, response);
      			}
      	}); 
         spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_REGISTER, new Route() {
@@ -49,7 +49,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
  			@Override
  			public Object handle(Request request, Response response) throws Exception {
- 				return PlanRegistrationProcessor.getHTML(request);
+ 				return PlanRegistrationProcessor.getHTML(request, response);
  			}
 	 	}); 
 	    spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.PLAN_REGISTER, new Route() {
@@ -65,7 +65,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
  			@Override
  			public Object handle(Request request, Response response) throws Exception {
- 					return CompanyLoginProcessor.getHTML(request);
+ 					return CompanyLoginProcessor.getHTML(request, response);
  			}
         });
         spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.COMPANY_LOGIN, new Route() {
@@ -115,7 +115,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return ProductRegistrationProcessor.getHTML(request);
+   				return ProductRegistrationProcessor.getHTML(request, response);
    			}
           });
         
@@ -124,7 +124,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
-   				return ProductRegistrationProcessor.postHTML(request);
+   				return ProductRegistrationProcessor.postHTML(request, response);
    			}
           });
         
@@ -132,7 +132,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 					
 		   			@Override
 		   			public Object handle(Request request, Response response) throws Exception {
-		   				return ValidateProductProcesssor.getJSON(request);
+		   				return ValidateProductProcesssor.getJSON(request, response);
 		   			}
 		          });
 
@@ -140,7 +140,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
 				@Override
 				public Object handle(Request request, Response response) throws Exception {
-					return ValidateProductProcesssor.getJSON(request);
+					return ValidateProductProcesssor.postJSON(request, response);
 				}
 		  });
         

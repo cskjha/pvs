@@ -13,11 +13,17 @@ import com.pvs.web.utilities.ProcessorUtil;
 import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
+import spark.Session;
 
 public class CompanyLoginProcessor {
-	public static String getHTML(Request request) {
+	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 		try {
+			Session session = request.session(false);
+			if(session != null) {
+				response.redirect(RedirectPaths.DISPLAY_PLAN);
+				return null;
+			}
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class);	
 		} catch (IOException e) {
@@ -34,6 +40,7 @@ public class CompanyLoginProcessor {
 			boolean validateLogin = LoginValidator.validateLogin(request);
 			if(validateLogin) {
 				response.redirect(RedirectPaths.DISPLAY_PLAN);
+				return null;
 			}			
 			else {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();

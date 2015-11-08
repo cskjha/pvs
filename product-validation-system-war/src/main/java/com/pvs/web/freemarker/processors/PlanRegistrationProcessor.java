@@ -8,16 +8,24 @@ import org.bson.Document;
 
 import com.pvs.enums.PlanStates;
 import com.pvs.service.write.ProductValidationSystemWriteService;
+import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
 
 import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
+import spark.Session;
 
 public class PlanRegistrationProcessor {
 
-	public static String getHTML(Request request) {
+	public static String getHTML(Request request, Response response) {
+		Session session = request.session();
+		if(session == null) {
+			response.redirect(RedirectPaths.COMPANY_LOGIN);
+			return null;
+		}
+		
 		String htmlOutput = null;
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
@@ -35,6 +43,11 @@ public class PlanRegistrationProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
+		Session session = request.session();
+		if(session == null) {
+			response.redirect(RedirectPaths.COMPANY_LOGIN);
+			return null;
+		}
 		String planName = request.queryParams("planName");
 		String allowedRecordCount = request.queryParams("allowedRecordCount");
 		String allowedScanCount = request.queryParams("allowedScanCount");
