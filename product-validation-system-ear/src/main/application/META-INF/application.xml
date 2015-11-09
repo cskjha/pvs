@@ -7,7 +7,7 @@
   <module>
     <web>
       <web-uri>product-validation-system-war-1.0-SNAPSHOT.war</web-uri>
-      <context-root>/pvs</context-root>
+      <context-root>pvs</context-root>
     </web>
   </module>
 </application>
