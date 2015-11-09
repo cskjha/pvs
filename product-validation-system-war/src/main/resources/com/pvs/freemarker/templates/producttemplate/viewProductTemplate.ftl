@@ -20,7 +20,7 @@
         <#list productTemplateList as productTemplate>
         	<tr>
         		<td>${productTemplate.productTemplateName}</td>
-        		<td><a href="registerproduct">Register Product</a></td>
+        		<td><a href="registerproduct?productTemplateId=${productTemplate.productTemplateId}">Register Product</a></td>
         	</tr>
         </#list>
         <#else>

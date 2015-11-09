@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
@@ -19,6 +20,7 @@ import spark.Response;
 import spark.Session;
 
 public class ProductRegistrationProcessor {
+	final static Logger log = Logger.getLogger(ProductRegistrationProcessor.class);
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 		Session session = request.session(false);
@@ -26,6 +28,8 @@ public class ProductRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		String productTemplateId = request.queryParams("productTemplateId");
+		log.debug("productTemplateId : "+productTemplateId);
 		String userName = request.session().attribute("companyName");
 		String companyEmail = request.session().attribute("companyEmail");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyEmail);
