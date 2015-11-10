@@ -40,10 +40,11 @@ public class ProductValidationSystemWriteService {
 	}
 	
 	
-	public static boolean registerProduct(Document productModel, String productType, String companyId) {
+	public static String registerProduct(Document productModel, String productType, String companyId) {
+		String productId = null;
 		if(productModel ==null || productType == null || companyId == null) {
 			log.debug("Any parameter is null : productType : "+productType+" : companyId : "+companyId+" : productModel :"+productModel);
-			return false;
+			return productId;
 		}
 		MongoClient mongoClient = null;		
 		try {
@@ -51,10 +52,12 @@ public class ProductValidationSystemWriteService {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).insertOne(productModel);
+			ObjectId productTemplateId = productModel.getObjectId(DatabaseConstants._ID);
+			productId = productTemplateId.toHexString();
 			log.debug("Record Inserted Successfully. Collection Name : "+collectionName);
 			ProductValidationSystemUpdateService.updateRemainingRecordCount(companyId);
 			log.debug("Remaining record count updated successfully");
-			return true;
+			return productId;
 		} catch (Exception e) {
 			log.error("PVS Exception occured : Message :  "+e.getMessage());
 			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
@@ -62,7 +65,7 @@ public class ProductValidationSystemWriteService {
 		finally {
 			mongoClient.close();
 		}
-		return false;
+		return productId;
 	}
 	
 	public static boolean registerProductTemplate(Document productTemplateModel, String productType, String companyId) {

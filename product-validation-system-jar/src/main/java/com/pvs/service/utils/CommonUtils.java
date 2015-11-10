@@ -1,9 +1,12 @@
 package com.pvs.service.utils;
 
+import org.apache.log4j.Logger;
+
 import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.enums.ProductTypes;
 
 public class CommonUtils {
+	static final Logger log = Logger.getLogger(CommonUtils.class);
 	public static String getProductCollectionName(String productType) {
 		String collectionName=null;
 		if(ProductTypes.FOOD_PRODUCTS.getProductType().equals(productType)) {
@@ -24,5 +27,4 @@ public class CommonUtils {
 		}
 		return collectionName;
 	}
-
 }

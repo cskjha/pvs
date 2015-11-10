@@ -1,9 +1,13 @@
 package com.pvs.web.freemarker.processors;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
@@ -13,6 +17,7 @@ import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
+import com.pvs.web.utilities.ProductRegistrationUtil;
 
 import freemarker.template.TemplateException;
 import spark.Request;
@@ -90,6 +95,8 @@ public class ProductRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		log.debug("request.contextPath() : "+request.contextPath());
+		log.debug("request.servletPath() : "+request.servletPath());
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		String userName = request.session().attribute("companyName");
@@ -118,10 +125,13 @@ public class ProductRegistrationProcessor {
 			productDocument.append("productTemplateId", productTemplateId);
 			productDocument.append("companyId", companyId);
 			
-			ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);	
-			try {
+			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
+			String hostName = request.host();
+			String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName, productId, productType);
+			try {		
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
+				dynamicValues.put("qrCodeImagefilePath",qrCodeImagefilePath+".png");
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
 						dynamicValues, ProductRegistrationProcessor.class);
 				

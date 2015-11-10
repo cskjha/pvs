@@ -1,5 +1,6 @@
 package com.pvs.web;
 
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
@@ -16,6 +17,7 @@ import com.pvs.web.freemarker.processors.ViewProductTemplateProcessor;
 import spark.Request;
 import spark.Response;
 import spark.Route;
+import spark.Spark;
 import spark.servlet.SparkApplication;
 
 public class ProductValidationSystemMainController implements SparkApplication {
@@ -23,6 +25,8 @@ public class ProductValidationSystemMainController implements SparkApplication {
 
     @Override
     public void init() {
+    	
+    	Spark.externalStaticFileLocation(ProductValidationSystemWebConstants.QR_CODE_ROOT_PATH);
 
         spark.Spark.get(RedirectPaths.HOME_PAGE, new Route() {
 			
