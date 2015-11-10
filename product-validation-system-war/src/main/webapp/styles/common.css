@@ -9,6 +9,9 @@ nav {
 	float: right;
 	margin-right: 200px;
 }
+.header-style {
+		font-size:8px;
+}
 
 td {
 	width: 150px;

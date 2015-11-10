@@ -21,7 +21,7 @@
 							<tr><td>Allowed Record Count</td><td> <input type="text" name="allowedRecordCount" placeholder="Allowed Record Count" /></td></tr>
 							<tr><td>Allowed Scan Count</td><td> <input type="text" name="allowedScanCount" placeholder="Allowed Scan Count" /></td></tr>
 							<tr><td>Plan Price</td><td> <input type="text" name="planPrice" placeholder="Plan price" /></td></tr>
-							<tr><td>Plan Price</td><td> <input type="text" name="currencyCode" placeholder="Currency Code ex. USD" /></td></tr>
+							<tr><td>Currency Code</td><td> <input type="text" name="currencyCode" placeholder="Currency Code ex. USD" /></td></tr>
 							<tr><td>Activate</td><td> <input type="checkbox" name="planState"/></td></tr>
 						</table>
 						<br>

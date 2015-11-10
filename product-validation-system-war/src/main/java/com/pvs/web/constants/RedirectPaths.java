@@ -12,6 +12,7 @@ public class RedirectPaths {
 	public static final String VALIDATE_PRODUCT = "validateproduct";
 	public static final String VIEW_PRODUCT_TEMPLATES = "viewproducttemplates";
 	public static final String LOGOUT = "logout";
+	public static final String GENERIC_ERROR_PAGE = "genericerrorpage";
 	
 
 }

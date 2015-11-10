@@ -27,9 +27,9 @@ public class ProductTemplateRegistrationProcessor {
 			return null;
 		}
 		String userName = request.session().attribute("companyName");
-		String companyEmail = request.session().attribute("companyEmail");
-		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyEmail);
-		if((long)remainingRecordCount <= 0L ) {
+		String companyId = request.session().attribute("companyId");
+		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
+		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
 				try {
@@ -64,10 +64,10 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		String companyEmail = request.session().attribute("companyEmail");
-		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyEmail);
+		String companyId = request.session().attribute("companyId");
+		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		String userName = request.session().attribute("companyName");
-		if((long)remainingRecordCount <= 0L ) {
+		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
 				try {
@@ -86,7 +86,7 @@ public class ProductTemplateRegistrationProcessor {
 			}
 		}
 		String productType = request.queryParams("productType");
-		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyEmail);	
+		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyId);	
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			dynamicValues.put("companyName", userName);

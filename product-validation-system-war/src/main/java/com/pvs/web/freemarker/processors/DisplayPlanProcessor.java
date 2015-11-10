@@ -27,9 +27,9 @@ public class DisplayPlanProcessor {
 				Session session = request.session(false);
 				if(session != null) {
 					String companyName = session.attribute("companyName");
-					String companyEmail = session.attribute("companyEmail");
+					String companyId = session.attribute("companyId");
 					Long remainingRecordCount = null;
-					Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+					Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
 					String companyPlanName = null;
 					if(companyPlanRecord != null) {
 						String companyPlanId = companyPlanRecord.getString("companyPlanId");

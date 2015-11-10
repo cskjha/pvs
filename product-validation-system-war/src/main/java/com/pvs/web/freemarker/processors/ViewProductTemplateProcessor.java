@@ -32,18 +32,20 @@ public class ViewProductTemplateProcessor {
 					return null;
 				}
 				else {
-					String companyEmail = session.attribute("companyEmail");
+					String companyId = session.attribute("companyId");
 					String companyName = session.attribute("companyName");
 					List<ProductTemplateVO> productTemplateVOList = new ArrayList<ProductTemplateVO>();
-					List<Document> productTemplates = ProductValidationSystemReadService.getCompanyTemplateRecords(companyEmail);
+					List<Document> productTemplates = ProductValidationSystemReadService.getCompanyTemplateRecords(companyId);
 					Iterator<Document> productTemplateIterator = productTemplates.iterator();
 					while(productTemplateIterator.hasNext()) {
 						Document productTemplate = productTemplateIterator.next();
 						String productTemplateId = productTemplate.getObjectId("_id").toHexString();
 						String productTemplateName = productTemplate.getString("productName");
+						String productType = productTemplate.getString("productType");
 						ProductTemplateVO productTemplateVO = new ProductTemplateVO();
 						productTemplateVO.setProductTemplateId(productTemplateId);
 						productTemplateVO.setProductTemplateName(productTemplateName);
+						productTemplateVO.setProductType(productType);
 						productTemplateVOList.add(productTemplateVO);
 					}					
 					dynamicValues.put("companyName", companyName);

@@ -60,8 +60,8 @@ public class ProductValidationSystemWriteService {
 		return false;
 	}
 	
-	public static boolean registerProductTemplate(Document productTemplateModel, String productType, String companyEmail) {
-		if(productTemplateModel ==null || productType == null || companyEmail == null) {
+	public static boolean registerProductTemplate(Document productTemplateModel, String productType, String companyId) {
+		if(productTemplateModel ==null || productType == null || companyId == null) {
 			return false;
 		}
 		MongoClient mongoClient = null;		
@@ -71,11 +71,11 @@ public class ProductValidationSystemWriteService {
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, templateCollectionName);
 			mongoCollection.insertOne(productTemplateModel);
-			ObjectId productTemplateId = productTemplateModel.getObjectId("_id");
+			ObjectId productTemplateId = productTemplateModel.getObjectId(DatabaseConstants._ID);
 			log.debug("productTemplateId : "+productTemplateId);
 			mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);
 			Document companyTemplateDocument = new Document().append(DatabaseConstants.PRODUCT_TEMPLATE_ID, productTemplateId.toHexString())
-					.append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail).append(DatabaseConstants.PRODUCT_TYPE, productType);
+					.append(DatabaseConstants.COMPANY_ID, companyId).append(DatabaseConstants.PRODUCT_TYPE, productType);
 			mongoCollection.insertOne(companyTemplateDocument);
 			log.debug("Product Template Updated Successfully.");
 			return true;
@@ -134,8 +134,8 @@ public class ProductValidationSystemWriteService {
 		return false;
 	}
 	
-	public static boolean registerCompanyPlan(String companyEmail, String companyPlanId) {
-		if(companyEmail ==null || companyPlanId == null) {
+	public static boolean registerCompanyPlan(String companyId, String companyPlanId) {
+		if(companyId ==null || companyPlanId == null) {
 			return false;
 		}
 		MongoClient mongoClient = null;		
@@ -146,7 +146,7 @@ public class ProductValidationSystemWriteService {
 			String remainingScanCount = planDocument.getString("allowedScanCount");
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			Document planModel = new Document();
-			planModel.append("companyEmail", companyEmail);
+			planModel.append("companyId", companyId);
 			planModel.append("companyPlanId", companyPlanId);
 			planModel.append("remainingRecordCount", remainingRecordCount);
 			planModel.append("remainingScanCount", remainingScanCount);

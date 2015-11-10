@@ -20,7 +20,6 @@ import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.enums.PlanStates;
 import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.valueobjects.PlanVO;
-import com.pvs.service.valueobjects.ProductTemplateVO;
 
 public class ProductValidationSystemReadService {
 	final static Logger log = Logger.getLogger(ProductValidationSystemReadService.class);
@@ -108,13 +107,13 @@ public class ProductValidationSystemReadService {
 		return null;
 	}
 	
-	public static Document getCompanyPlanRecord(String companyEmail) {
+	public static Document getCompanyPlanRecord(String companyId) {
 		MongoClient mongoClient = null;
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);		
-			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
+			Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			if(documents != null) {
 				return documents.first();
@@ -128,14 +127,14 @@ public class ProductValidationSystemReadService {
 		return null;
 	}
 	
-	public static List<Document> getCompanyTemplateRecords(String companyEmail) {
+	public static List<Document> getCompanyTemplateRecords(String companyId) {
 		MongoClient mongoClient = null;
 		List<Document> companyTemplates = new ArrayList<Document>();
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);		
-			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
+			Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			MongoCursor<Document> documentsIterator = documents.iterator();
 			while(documents != null && documentsIterator.hasNext()) {
@@ -148,6 +147,7 @@ public class ProductValidationSystemReadService {
 				MongoCursor<Document> productTemplateDocumentIterator = productTemplateDocuments.iterator();
 				while(productTemplateDocumentIterator != null && productTemplateDocumentIterator.hasNext()) {
 					Document companyTemplateDocument = productTemplateDocumentIterator.next();
+					companyTemplateDocument.append("productType", productType);
 					companyTemplates.add(companyTemplateDocument);
 				}				
 			}
@@ -239,10 +239,10 @@ public class ProductValidationSystemReadService {
 		return remainingScanCount;
 	}
 	
-	public static Long getRemainingRecordCount(String companyEmail) {
+	public static Long getRemainingRecordCount(String companyId) {
 		Long remainingRecordCount = null;
 		try {
-			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
 			log.debug("companyPlanRecord : "+companyPlanRecord);
 			if(companyPlanRecord != null) {
 				remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
@@ -255,9 +255,27 @@ public class ProductValidationSystemReadService {
 		return remainingRecordCount;
 	}
 	
-	public static List<ProductTemplateVO> getProductTemplates(String companyEmail) {
+	public static Document getProductTemplateRecord(String productTemplateId, String productType) {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			String collectionName = CommonUtils.getProductTemplateCollectionName(productType);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
+			Document searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productTemplateId));
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			if(documents != null) {
+				return documents.first();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			mongoClient.close();
+		}
 		return null;
 	}
+	
 	
 	
  

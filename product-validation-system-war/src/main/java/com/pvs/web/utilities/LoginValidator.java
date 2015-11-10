@@ -2,6 +2,7 @@ package com.pvs.web.utilities;
 
 import org.bson.Document;
 
+import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.service.read.ProductValidationSystemReadService;
 
 import spark.Request;
@@ -44,6 +45,7 @@ public class LoginValidator {
 		Document companyRecord = ProductValidationSystemReadService.getCompanyRecord(userEmail);
 		String companyName = companyRecord.getString("companyName");
 		String companyEmail = companyRecord.getString("companyEmail");
+		String companyId = companyRecord.getObjectId(DatabaseConstants._ID).toHexString();
 //		Document planRecord =  ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
 //		String companyPlanId = null;
 //		if(planRecord != null) {
@@ -52,6 +54,7 @@ public class LoginValidator {
 //		String companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
 		session.attribute("companyName", companyName);
 		session.attribute("companyEmail", companyEmail);
+		session.attribute("companyId", companyId);
 		
 	}
 }

@@ -16,4 +16,5 @@ public class TemplatePaths {
 		public static final String VIEW_PRODUCT_TEMPLATE = "com/pvs/freemarker/templates/producttemplate/viewProductTemplate.ftl";
 		public static final String RECORD_BALANCE_UNAVAILABLE= "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
 		
+		
 }

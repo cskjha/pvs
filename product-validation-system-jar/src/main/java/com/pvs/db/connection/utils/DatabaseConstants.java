@@ -19,5 +19,6 @@ public class DatabaseConstants {
 	public static final String _ID = "_id";
 	public static final String COMPANY_TEMPLATE_COLLECTION = "companytemplatecollection";		// Stores companyEmail, productTemplateId (key from f/nf product template collection)
 	public static final String PRODUCT_TYPE = "productType";
+	public static final String COMPANY_ID = "companyId";
 	
 }

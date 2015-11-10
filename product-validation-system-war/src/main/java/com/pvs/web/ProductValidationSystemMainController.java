@@ -4,6 +4,7 @@ import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
+import com.pvs.web.freemarker.processors.GenericErrorProcessor;
 import com.pvs.web.freemarker.processors.LogoutProcessor;
 import com.pvs.web.freemarker.processors.MyPlanProcessor;
 import com.pvs.web.freemarker.processors.PlanRegistrationProcessor;
@@ -178,6 +179,14 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
    				return LogoutProcessor.getHTML(request, response);
+   			}
+          });
+        
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.GENERIC_ERROR_PAGE, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return GenericErrorProcessor.getHTML(request, response);
    			}
           });
         

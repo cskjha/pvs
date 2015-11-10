@@ -29,11 +29,12 @@ public class ProductRegistrationProcessor {
 			return null;
 		}
 		String productTemplateId = request.queryParams("productTemplateId");
+		String productType = request.queryParams("productType");
 		log.debug("productTemplateId : "+productTemplateId);
 		String userName = request.session().attribute("companyName");
-		String companyEmail = request.session().attribute("companyEmail");
-		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyEmail);
-		if((long)remainingRecordCount <= 0L ) {
+		String companyId = request.session().attribute("companyId");
+		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
+		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
 				try {
@@ -44,19 +45,40 @@ public class ProductRegistrationProcessor {
 					e.printStackTrace();
 				}
 		}
-	
+		else {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			dynamicValues.put("companyName", userName);
-			try {
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
-						dynamicValues, ProductRegistrationProcessor.class);
-			} catch (TemplateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
+			log.debug("productTemplateDocument : "+productTemplateDocument);
+			if(productTemplateDocument != null) {
+				String productName = productTemplateDocument.getString("productName");
+				int fieldCount = 1;
+				String fieldName = productTemplateDocument.getString("field1");
+				Map<String, String> fieldMap = new HashMap<String, String>();
+				while(fieldName != null) {
+					fieldMap.put("field"+fieldCount, fieldName);
+					fieldCount++;
+					fieldName = productTemplateDocument.getString("field"+fieldCount);
+				}
+				dynamicValues.put("productName", productName);
+				dynamicValues.put("productType", productType);
+				dynamicValues.put("productTemplateId", productTemplateId);
+				dynamicValues.put("companyId", companyId);
+				dynamicValues.put("fieldMap", fieldMap);			
+				try {
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
+							dynamicValues, ProductRegistrationProcessor.class);
+				} catch (TemplateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
-			
-			
+			else {
+				response.redirect(RedirectPaths.GENERIC_ERROR_PAGE);
+				return null;
+			}
+		}			
 		return htmlOutput;
 	}
 	

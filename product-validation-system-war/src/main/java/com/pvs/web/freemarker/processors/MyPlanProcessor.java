@@ -31,14 +31,17 @@ public class MyPlanProcessor {
 				return null;
 			}
 			else {
-				String companyEmail = request.session().attribute("companyEmail");
 				String companyName = request.session().attribute("companyName");
-				Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+				String companyId = request.session().attribute("companyId");
+				Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
 				String companyPlanId = null;
 				String companyPlanName = null;
 				if (companyPlanRecord != null) {
 					companyPlanId = companyPlanRecord.getString("companyPlanId");
 					companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
+				}
+				else {
+					response.redirect(RedirectPaths.DISPLAY_PLAN);
 				}
 				if(companyPlanName != null) {
 					Map<String, Object> dynamicValues = new HashMap<String, Object>();
@@ -49,7 +52,7 @@ public class MyPlanProcessor {
 				else {
 					companyPlanId = request.queryParams("companyPlanId");
 					if(companyPlanId != null) {
-						boolean updateStatus = ProductValidationSystemWriteService.registerCompanyPlan(companyEmail, companyPlanId );
+						boolean updateStatus = ProductValidationSystemWriteService.registerCompanyPlan(companyId, companyPlanId );
 						if(updateStatus == true) {
 							companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
 							Map<String, Object> dynamicValues = new HashMap<String, Object>();
