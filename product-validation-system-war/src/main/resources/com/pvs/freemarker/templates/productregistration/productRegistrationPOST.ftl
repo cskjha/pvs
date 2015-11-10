@@ -11,7 +11,7 @@
     	<center>
     	 <#include "../base/header.ftl"><br>
     		<h4>Product Registration Successful</h4>
-    		<h5> Register another product <a href="registerproduct"> Here </a></h5>
+    		<h5> Register another product <a href="viewproducttemplates"> Here </a></h5>
     	</center>
     </body>
     </html>

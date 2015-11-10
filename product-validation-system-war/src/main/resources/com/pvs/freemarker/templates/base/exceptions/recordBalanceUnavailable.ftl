@@ -9,7 +9,7 @@
     
     <body>
     	<center>
-    	 <#include "../../header.ftl"><br>
+    	 <#include "../header.ftl"><br>
     		<h4>You cannot register anymore product becasue your existing plan has exhausted</h4>
     		<h5> You can choose your plan <a href="displayplan"> Here </a></h5>
     	</center>

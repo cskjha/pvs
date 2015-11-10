@@ -7,6 +7,7 @@ import java.util.Map;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.update.ProductValidationSystemUpdateService;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -44,6 +45,21 @@ public class MyPlanProcessor {
 					response.redirect(RedirectPaths.DISPLAY_PLAN);
 				}
 				if(companyPlanName != null) {
+					Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
+					if(remainingRecordCount== null || remainingRecordCount <= 0L) {
+						boolean updateStatus = ProductValidationSystemUpdateService.rechargeCompanyPlan(companyId, companyPlanId );
+						if(updateStatus == true) {
+							companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
+							Map<String, Object> dynamicValues = new HashMap<String, Object>();
+							dynamicValues.put("companyPlanName", companyPlanName);
+							dynamicValues.put("companyName", companyName);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
+						}
+						else {
+							Map<String, Object> dynamicValues = new HashMap<String, Object>();
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class);
+						}
+					}
 					Map<String, Object> dynamicValues = new HashMap<String, Object>();
 					dynamicValues.put("companyPlanName", companyPlanName);
 					dynamicValues.put("companyName", companyName);

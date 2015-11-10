@@ -5,8 +5,7 @@
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
 		<script src="scripts/jquery/jquery.js" type="text/javascript"></script>
 		<script src="scripts/product-registration.js" type="text/javascript"></script>
-    </head>
-    
+    </head>    
     <body>
     	<center>
     	 <#include "../base/header.ftl">
@@ -22,6 +21,8 @@
 					<table>
 					<input type="hidden" name="productTemplateId" value="${productTemplateId}" />
 					<input type="hidden" name="companyId" value="${companyId}" />
+					<input type="hidden" name="productName" value="${productName}" />
+					<input type="hidden" name="productType" value="${productType}" />
 					<#list fieldMap?keys as field>
 						<tr>
 							<td>${fieldMap[field]} <input type="hidden" name="${field}Name" value="${fieldMap[field]}" /></td>

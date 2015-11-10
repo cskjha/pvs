@@ -10,7 +10,7 @@
     	 <#include "../base/header.ftl">
         <div class="clear"></div>
         <br><br>
-        <h2>Register a Product</h2>
+        <h2>Select a Product Template</h2>
         <#if productTemplateList??>
         <table>
         <tr>

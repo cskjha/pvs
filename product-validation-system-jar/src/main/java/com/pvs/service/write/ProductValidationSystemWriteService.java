@@ -30,7 +30,8 @@ public class ProductValidationSystemWriteService {
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME).insertOne(companyModel);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -39,8 +40,9 @@ public class ProductValidationSystemWriteService {
 	}
 	
 	
-	public static boolean registerProduct(Document productModel, String productType, String companyEmail) {
-		if(productModel ==null || productType == null || companyEmail == null) {
+	public static boolean registerProduct(Document productModel, String productType, String companyId) {
+		if(productModel ==null || productType == null || companyId == null) {
+			log.debug("Any parameter is null : productType : "+productType+" : companyId : "+companyId+" : productModel :"+productModel);
 			return false;
 		}
 		MongoClient mongoClient = null;		
@@ -49,10 +51,13 @@ public class ProductValidationSystemWriteService {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).insertOne(productModel);
-			ProductValidationSystemUpdateService.updateRemainingRecordCount(companyEmail);
+			log.debug("Record Inserted Successfully. Collection Name : "+collectionName);
+			ProductValidationSystemUpdateService.updateRemainingRecordCount(companyId);
+			log.debug("Remaining record count updated successfully");
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -80,7 +85,8 @@ public class ProductValidationSystemWriteService {
 			log.debug("Product Template Updated Successfully.");
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -106,7 +112,8 @@ public class ProductValidationSystemWriteService {
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -126,7 +133,8 @@ public class ProductValidationSystemWriteService {
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).insertOne(planModel);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -154,7 +162,8 @@ public class ProductValidationSystemWriteService {
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).insertOne(planModel);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();

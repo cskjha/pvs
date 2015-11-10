@@ -35,7 +35,8 @@ public class ProductValidationSystemReadService {
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -58,7 +59,8 @@ public class ProductValidationSystemReadService {
 				return documents.first();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -78,7 +80,8 @@ public class ProductValidationSystemReadService {
 				return documents.first();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -99,7 +102,8 @@ public class ProductValidationSystemReadService {
 				return documents.first();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -119,7 +123,8 @@ public class ProductValidationSystemReadService {
 				return documents.first();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -153,7 +158,8 @@ public class ProductValidationSystemReadService {
 			}
 			return companyTemplates;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -215,7 +221,8 @@ public class ProductValidationSystemReadService {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();
@@ -234,7 +241,8 @@ public class ProductValidationSystemReadService {
 			}
 			return remainingScanCount;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		return remainingScanCount;
 	}
@@ -250,7 +258,8 @@ public class ProductValidationSystemReadService {
 			}
 			return remainingRecordCount;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		return remainingRecordCount;
 	}
@@ -268,7 +277,8 @@ public class ProductValidationSystemReadService {
 				return documents.first();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
 		finally {
 			mongoClient.close();

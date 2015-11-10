@@ -90,10 +90,10 @@ public class ProductRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		String companyEmail = request.session().attribute("companyEmail");
-		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyEmail);
+		String companyId = request.session().attribute("companyId");
+		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		String userName = request.session().attribute("companyName");
-		if((long)remainingRecordCount <= 0L ) {
+		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
 				try {
@@ -104,27 +104,33 @@ public class ProductRegistrationProcessor {
 					e.printStackTrace();
 				}
 		}
-		Set<String> queryParams = request.queryParams();
-		Document productDocument = new Document();
-		for(String param: queryParams) {
-			if(param.equals("productName") || param.startsWith("field")) {
-				productDocument.append(param, request.queryParams(param));
+		else {
+			Set<String> queryParams = request.queryParams();
+			Document productDocument = new Document();
+			for(String param: queryParams) {
+				if(param.equals("productName") || param.startsWith("field")) {
+					productDocument.append(param, request.queryParams(param));
+				}
 			}
-		}
-		String productType = request.queryParams("productType");
-		productDocument.append("productType", productType);
-		ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyEmail);	
-		try {
-			Map<String, Object> dynamicValues = new HashMap<String, Object>();
-			dynamicValues.put("companyName", userName);
-			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
-					dynamicValues, ProductRegistrationProcessor.class);
+			String productType = request.queryParams("productType");
+			String productTemplateId = request.queryParams("productTemplateId");
+			companyId = request.queryParams("companyId");
+			productDocument.append("productTemplateId", productTemplateId);
+			productDocument.append("companyId", companyId);
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TemplateException e) {
-			e.printStackTrace();
-		}		
+			ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);	
+			try {
+				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				dynamicValues.put("companyName", userName);
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
+						dynamicValues, ProductRegistrationProcessor.class);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (TemplateException e) {
+				e.printStackTrace();
+			}		
+		}
 		return htmlOutput;
 	}
 }
