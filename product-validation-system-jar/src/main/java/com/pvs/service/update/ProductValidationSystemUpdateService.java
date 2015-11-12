@@ -71,14 +71,14 @@ public static synchronized boolean updateRemainingRecordCount(String companyId) 
 	}
 
 
-public static synchronized boolean updateRemainingScanCount(String companyEmail) {
+public static synchronized boolean updateRemainingScanCount(String companyId) {
 	MongoClient mongoClient = null;
 	try {
 		mongoClient = ConnectionManagerFactory.getMongoClient();
 		MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 		MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
-		Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
-		Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyEmail);
+		Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
+		Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
 		log.debug("companyPlanRecord : "+companyPlanRecord);
 		if(companyPlanRecord != null) {
 			Long remainingScanCount = Long.parseLong(companyPlanRecord.getString("remainingScanCount"));

@@ -45,7 +45,7 @@ public class ProductValidationSystemReadService {
 	}
 	
 	
-	public static Document getProductDetails(String productId, String instanceId, String productType) {
+	public static Document getProductDetails(String productId, String productType) {
 		
 		MongoClient mongoClient = null;
 		try {
@@ -53,7 +53,7 @@ public class ProductValidationSystemReadService {
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			String collectionName = CommonUtils.getProductCollectionName(productType);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
-			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, productId).append("instanceId", instanceId);
+			Document searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productId));
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			if(documents != null) {
 				return documents.first();

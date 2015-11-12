@@ -127,7 +127,8 @@ public class ProductRegistrationProcessor {
 			
 			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
 			String hostName = request.host();
-			String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName, productId, productType);
+			String contextRoot = request.contextPath();
+			String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
 			try {		
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);

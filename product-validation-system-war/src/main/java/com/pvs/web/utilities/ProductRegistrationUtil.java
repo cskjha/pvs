@@ -47,13 +47,13 @@ public class ProductRegistrationUtil {
 		if(productScanId != null) {
 			int index = productScanId.indexOf(ProductTypes.FOOD_PRODUCTS.getProductType());
 			if(index >= 0) {
-				productId = productScanId.substring(index+ProductTypes.FOOD_PRODUCTS.getProductType().length()-1);
+				productId = productScanId.substring(index+ProductTypes.FOOD_PRODUCTS.getProductType().length());
 				log.debug("productScanId : "+productScanId+" productId : "+productId);
 				return productId;
 			}
 			index = productScanId.indexOf(ProductTypes.NON_FOOD_PRODUCTS.getProductType());
 			if(index >= 0) {
-				productId = productScanId.substring(index+ProductTypes.NON_FOOD_PRODUCTS.getProductType().length()-1);
+				productId = productScanId.substring(index+ProductTypes.NON_FOOD_PRODUCTS.getProductType().length());
 				log.debug("productScanId : "+productScanId+" productId : "+productId);
 				return productId;
 			}
