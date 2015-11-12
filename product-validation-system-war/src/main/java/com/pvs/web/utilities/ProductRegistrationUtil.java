@@ -65,14 +65,13 @@ public class ProductRegistrationUtil {
 	}
 	public static String getProductTypeFromProductScanCode(String productScanId) {
 		String productType = null;
-		int index = productScanId.indexOf(ProductTypes.FOOD_PRODUCTS.getProductType());
-		if(index >= 0) {
-			return ProductTypes.FOOD_PRODUCTS.getProductType();
+		if(productScanId.startsWith(ProductTypes.FOOD_PRODUCTS.getProductType())) {
+				return ProductTypes.FOOD_PRODUCTS.getProductType();
 		}
-		index = productScanId.indexOf(ProductTypes.NON_FOOD_PRODUCTS.getProductType());
-		if(index >= 0) {
+		if(productScanId.startsWith(ProductTypes.NON_FOOD_PRODUCTS.getProductType())) {
 			return ProductTypes.NON_FOOD_PRODUCTS.getProductType();
 		}
+		
 		return productType;
 	}
 	
