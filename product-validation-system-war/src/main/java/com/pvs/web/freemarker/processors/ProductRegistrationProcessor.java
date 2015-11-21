@@ -1,13 +1,9 @@
 package com.pvs.web.freemarker.processors;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;

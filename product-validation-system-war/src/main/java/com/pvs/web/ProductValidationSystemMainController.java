@@ -5,6 +5,7 @@ import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
+import com.pvs.web.freemarker.processors.GenerateQRCodeProcessor;
 import com.pvs.web.freemarker.processors.GenericErrorProcessor;
 import com.pvs.web.freemarker.processors.LogoutProcessor;
 import com.pvs.web.freemarker.processors.MyPlanProcessor;
@@ -191,6 +192,22 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			@Override
    			public Object handle(Request request, Response response) throws Exception {
    				return GenericErrorProcessor.getHTML(request, response);
+   			}
+          });
+        
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.GENERATE_QR_CODE, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return GenerateQRCodeProcessor.getHTML(request, response);
+   			}
+          });
+        
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.GENERATE_QR_CODE, new Route() {
+			
+   			@Override
+   			public Object handle(Request request, Response response) throws Exception {
+   				return GenerateQRCodeProcessor.getHTML(request, response);
    			}
           });
         

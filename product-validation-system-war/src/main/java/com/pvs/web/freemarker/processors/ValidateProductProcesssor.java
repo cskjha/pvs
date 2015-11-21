@@ -12,6 +12,7 @@ import spark.Response;
 import spark.Session;
 
 public class ValidateProductProcesssor {
+	
 	public static String getJSON(Request request, Response response) {
 		Session session = request.session(false);
 		if(session == null) {
@@ -28,9 +29,17 @@ public class ValidateProductProcesssor {
 				String companyId = result.getString("companyId");
 				ProductValidationSystemUpdateService.updateRemainingScanCount(companyId);
 				Document productDetails = new Document();
+				productDetails.append("productName", result.getString("productName"));
 				for(String property : result.keySet()) {
-					if("productName".equals(property) || property.startsWith("field")) {
-						productDetails.append(property, result.getString(property));
+					if(property.startsWith("field")) {
+						int indexOfField = property.indexOf("Name");
+						if(indexOfField > 0) {
+							String prefix = property.substring(0, indexOfField);					
+							String fieldName = result.getString(prefix+"Name");
+							String fieldValue = result.getString(prefix+"Value");
+							productDetails.append(fieldName, fieldValue);
+							
+						}
 					}
 				}
 				JSONResponse = productDetails.toJson();

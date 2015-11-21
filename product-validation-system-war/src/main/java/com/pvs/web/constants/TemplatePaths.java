@@ -15,6 +15,8 @@ public class TemplatePaths {
 		public static final String PRODUCT_TEMPLATE_REGISTRATION_POST = "com/pvs/freemarker/templates/productregistration/productTemplateRegistrationPOST.ftl";
 		public static final String VIEW_PRODUCT_TEMPLATE = "com/pvs/freemarker/templates/producttemplate/viewProductTemplate.ftl";
 		public static final String RECORD_BALANCE_UNAVAILABLE= "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
+		public static final String GENERATE_QR_CODE_GET= "com/pvs/freemarker/templates/generateqrcode/generateQRCodeGET.ftl";
+		public static final String GENERATE_QR_CODE_POST= "com/pvs/freemarker/templates/generateqrcode/generateQRCodePOST.ftl";
 		
 		
 }
