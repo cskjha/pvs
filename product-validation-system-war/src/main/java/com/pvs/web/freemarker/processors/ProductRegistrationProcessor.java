@@ -13,7 +13,6 @@ import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
-import com.pvs.web.utilities.ProductRegistrationUtil;
 
 import freemarker.template.TemplateException;
 import spark.Request;
@@ -124,11 +123,11 @@ public class ProductRegistrationProcessor {
 			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
 			String hostName = request.host();
 			String contextRoot = request.contextPath();
-			String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
+			//String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
 			try {		
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("companyName", userName);
-				dynamicValues.put("qrCodeImagefilePath",qrCodeImagefilePath+".png");
+				//dynamicValues.put("qrCodeImagefilePath",qrCodeImagefilePath+".png");
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
 						dynamicValues, ProductRegistrationProcessor.class);
 				

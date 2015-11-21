@@ -6,12 +6,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
-import com.pvs.web.constants.TemplatePaths;
-import com.pvs.web.utilities.ProcessorUtil;
 import com.pvs.web.utilities.ProductRegistrationUtil;
 
-import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
 import spark.Session;
@@ -36,13 +36,18 @@ public class GenerateQRCodeProcessor {
 			String contextRoot = request.contextPath();
 			String productId = ProductRegistrationUtil.getProductIdFromProductScanCode(productScanCode);
 			String productType = ProductRegistrationUtil.getProductTypeFromProductScanCode(productScanCode);
-			String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
-			dynamicValues.put("qrCodeImagefilePath", qrCodeImagefilePath+".png");
-			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERATE_QR_CODE_GET, dynamicValues,
-					ProductRegistrationProcessor.class);
-		} catch (TemplateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+			response.header("Content-Disposition", ("attachment;filename="+productScanCode+"."+ProductValidationSystemWebConstants.QR_CODE_FILE_EXTENSION));
+			BitMatrix qrCodeBitMatrix = (BitMatrix)ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
+			MatrixToImageWriter.writeToStream(qrCodeBitMatrix, ProductValidationSystemWebConstants.QR_CODE_FILE_EXTENSION, response.raw().getOutputStream());
+//			dynamicValues.put("qrCodeImagefilePath", qrCodeImagefilePath+".png");
+//			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERATE_QR_CODE_GET, dynamicValues,
+//					ProductRegistrationProcessor.class);
+		} 
+//		catch (TemplateException e) {
+//			e.printStackTrace();
+//		}
+		
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return htmlOutput;

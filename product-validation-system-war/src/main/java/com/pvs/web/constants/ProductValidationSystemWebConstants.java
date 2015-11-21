@@ -9,6 +9,7 @@ public class ProductValidationSystemWebConstants {
 	public static final String QR_CODE_ROOT_PATH = "/generated/content/qrcodes/";
 	public static final int QR_CODE_HEIGHT = 200;
 	public static final int QR_CODE_WIDTH = 200;
+	public static final String QR_CODE_FILE_EXTENSION = "png";
 	
 
 }

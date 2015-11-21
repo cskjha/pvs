@@ -76,7 +76,7 @@ public class ProductRegistrationUtil {
 	}
 	
 	
-	public static String generateQRCode(String websiteURL, String productId, String productType) {
+	public static Object generateQRCode(String websiteURL, String productId, String productType) {
 		String productScanCode = null;
 		String filePath = null;
 		try {
@@ -92,10 +92,10 @@ public class ProductRegistrationUtil {
 			String charset = "UTF-8"; // or "ISO-8859-1"
 			Map hintMap = new HashMap();
 			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);			
-			createQRCode(qrCodeData, filePath, charset, hintMap, ProductValidationSystemWebConstants.QR_CODE_HEIGHT,
+			return createQRCode(qrCodeData, filePath, charset, hintMap, ProductValidationSystemWebConstants.QR_CODE_HEIGHT,
 						ProductValidationSystemWebConstants.QR_CODE_WIDTH);
-			log.debug("QR Code image created successfully!");
-			log.debug("Data read from QR Code: "+ readQRCode(filePath, charset, hintMap));	
+//			log.debug("QR Code image created successfully!");
+//			log.debug("Data read from QR Code: "+ readQRCode(filePath, charset, hintMap));	
 		}
 		else {
 			log.debug("One or More parameters are null : productId : "+productId+" :productType: "+productType);
@@ -104,21 +104,23 @@ public class ProductRegistrationUtil {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return productScanCode;
+		} 
+//		catch (NotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		return null;
 	}
 	
-	private static void createQRCode(String qrCodeData, String filePath,
+	private static Object createQRCode(String qrCodeData, String filePath,
 			String charset, Map hintMap, int qrCodeheight, int qrCodewidth)
 			throws WriterException, IOException {
 		BitMatrix matrix = new MultiFormatWriter().encode(
 				new String(qrCodeData.getBytes(charset), charset),
 				BarcodeFormat.QR_CODE, qrCodewidth, qrCodeheight, hintMap);
-		MatrixToImageWriter.writeToFile(matrix, filePath.substring(filePath
-				.lastIndexOf('.') + 1), new File(filePath));
+//		MatrixToImageWriter.writeToFile(matrix, filePath.substring(filePath
+//				.lastIndexOf('.') + 1), new File(filePath));
+		return matrix;
 	}
 	
 	private static String readQRCode(String filePath, String charset, Map hintMap)
