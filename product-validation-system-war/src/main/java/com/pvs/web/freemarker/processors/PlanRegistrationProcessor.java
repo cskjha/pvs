@@ -30,6 +30,7 @@ public class PlanRegistrationProcessor {
 		try {
 			String companyName = session.attribute("companyName");
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", companyName);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_GET, dynamicValues,
 					PlanRegistrationProcessor.class	);
@@ -73,6 +74,7 @@ public class PlanRegistrationProcessor {
 			try {
 				String companyName = session.attribute("companyName");
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", companyName);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class);
 			} catch (IOException e) {

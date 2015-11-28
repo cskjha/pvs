@@ -17,6 +17,7 @@ public class TemplatePaths {
 		public static final String RECORD_BALANCE_UNAVAILABLE= "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
 		public static final String GENERATE_QR_CODE_GET= "com/pvs/freemarker/templates/generateqrcode/generateQRCodeGET.ftl";
 		public static final String GENERATE_QR_CODE_POST= "com/pvs/freemarker/templates/generateqrcode/generateQRCodePOST.ftl";
+		public static final String LOCALE_TEST= "com/pvs/freemarker/templates/base/sample.ftl";
 		
 		
 }

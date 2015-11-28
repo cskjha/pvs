@@ -15,6 +15,7 @@ public class GenericErrorProcessor {
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			try {
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, GenericErrorProcessor.class);
 			} catch (TemplateException e) {

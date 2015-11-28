@@ -27,9 +27,11 @@ public class ProductValidationSystemMainController implements SparkApplication {
     @Override
     public void init() {
     	
+    	
+    	
     	Spark.externalStaticFileLocation(ProductValidationSystemWebConstants.QR_CODE_ROOT_PATH);
-
-        spark.Spark.get(RedirectPaths.HOME_PAGE, new Route() {
+    	
+    	spark.Spark.get(RedirectPaths.HOME_PAGE, new Route() {
 			
 			@Override
 			public Object handle(Request request, Response response) throws Exception {

@@ -26,6 +26,8 @@ public class MyPlanProcessor {
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
 		try {
+			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			Session session = request.session(false);
 			if(session == null) {
 				response.redirect(RedirectPaths.COMPANY_LOGIN);
@@ -50,17 +52,14 @@ public class MyPlanProcessor {
 						boolean updateStatus = ProductValidationSystemUpdateService.rechargeCompanyPlan(companyId, companyPlanId );
 						if(updateStatus == true) {
 							companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
-							Map<String, Object> dynamicValues = new HashMap<String, Object>();
 							dynamicValues.put("companyPlanName", companyPlanName);
 							dynamicValues.put("companyName", companyName);
 							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
 						}
 						else {
-							Map<String, Object> dynamicValues = new HashMap<String, Object>();
 							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class);
 						}
 					}
-					Map<String, Object> dynamicValues = new HashMap<String, Object>();
 					dynamicValues.put("companyPlanName", companyPlanName);
 					dynamicValues.put("companyName", companyName);
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
@@ -71,13 +70,13 @@ public class MyPlanProcessor {
 						boolean updateStatus = ProductValidationSystemWriteService.registerCompanyPlan(companyId, companyPlanId );
 						if(updateStatus == true) {
 							companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
-							Map<String, Object> dynamicValues = new HashMap<String, Object>();
+							//Map<String, Object> dynamicValues = new HashMap<String, Object>();
 							dynamicValues.put("companyPlanName", companyPlanName);
 							dynamicValues.put("companyName", companyName);
 							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
 						}
 						else {
-							Map<String, Object> dynamicValues = new HashMap<String, Object>();
+							//Map<String, Object> dynamicValues = new HashMap<String, Object>();
 							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class);
 						}
 					}

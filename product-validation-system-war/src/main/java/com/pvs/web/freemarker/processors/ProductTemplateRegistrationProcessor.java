@@ -31,6 +31,7 @@ public class ProductTemplateRegistrationProcessor {
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
 					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
@@ -42,6 +43,7 @@ public class ProductTemplateRegistrationProcessor {
 		}
 	
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
 			try {
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_GET,
@@ -69,6 +71,7 @@ public class ProductTemplateRegistrationProcessor {
 		String userName = request.session().attribute("companyName");
 		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
 					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
@@ -89,6 +92,7 @@ public class ProductTemplateRegistrationProcessor {
 		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyId);	
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_POST,
 					dynamicValues, ProductRegistrationProcessor.class);

@@ -24,6 +24,7 @@ public class DisplayPlanProcessor {
 		String htmlOutput = null;
 		try {			
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
 				if(session != null) {
 					String companyName = session.attribute("companyName");
@@ -70,6 +71,7 @@ public class DisplayPlanProcessor {
 		String htmlOutput = null;
 		try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
 				if(session != null) {
 					String companyName = session.attribute("companyName");

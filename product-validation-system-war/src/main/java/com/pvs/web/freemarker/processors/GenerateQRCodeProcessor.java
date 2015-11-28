@@ -10,6 +10,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
+import com.pvs.web.utilities.ProcessorUtil;
 import com.pvs.web.utilities.ProductRegistrationUtil;
 
 import spark.Request;
@@ -30,6 +31,7 @@ public class GenerateQRCodeProcessor {
 		log.debug("productScanCode : " + productScanCode);
 		String userName = request.session().attribute("companyName");
 		Map<String, Object> dynamicValues = new HashMap<String, Object>();
+		ProcessorUtil.populateDynamicValues(dynamicValues);
 		dynamicValues.put("companyName", userName);
 		try {
 			String hostName = request.host();

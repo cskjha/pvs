@@ -1,16 +1,26 @@
-<h2>Product Validation System</h2>
+<h2>${PRODUCT} ${VALIDATION} ${SYSTEM}</h2>
 <link type="text/css" rel="stylesheet" href="styles/common.css">
 <nav class="header-style">
 	<#if companyName??>
-	  Welcome ${companyName!"Guest"} &nbsp;|&nbsp;
-	  <a href="planregister">Register Plan</a>&nbsp;|&nbsp;
-	  <a href="myplan">My Plan</a>&nbsp;|&nbsp;
-	  <a href="registerproducttemplate">Register Product Template</a>&nbsp;|&nbsp;
-	  <a href="viewproducttemplates">View Product Templates</a>&nbsp;|&nbsp;
-	  <a href="logout">Logout</a>
+	  ${WELCOME} ${companyName!GUEST} &nbsp;|&nbsp;
+	  <#if REGISTER_PLAN??>
+	  <a href="planregister">${REGISTER_PLAN}</a>&nbsp;|&nbsp;
+	  </#if>
+	 <#if MY_PLAN??>
+	 <a href="myplan">${MY_PLAN}</a>&nbsp;|&nbsp;
+	  </#if>
+	<#if REGISTER_PRODUCT_TEMPLATE??>
+	  <a href="registerproducttemplate">${REGISTER_PRODUCT_TEMPLATE}</a>&nbsp;|&nbsp;
+	  </#if>
+	<#if VIEW_PRODUCT_TEMPLATES??>
+	   <a href="viewproducttemplates">${VIEW_PRODUCT_TEMPLATES}</a>&nbsp;|&nbsp;
+	  </#if>
+	<#if LOGOUT??>
+	  <a href="logout">${LOGOUT}</a>
+	  </#if>	 
 	<#else>
-		 Welcome Guest &nbsp;|&nbsp;
-	  	<a href="companyregister">Register</a>&nbsp;|&nbsp;
-		<a href="companylogin">Login</a>
+		${WELCOME} ${GUEST} &nbsp;|&nbsp;
+	  	<a href="companyregister">${REGISTER}</a>&nbsp;|&nbsp;
+		<a href="companylogin">${LOGIN}</a>
 	</#if>
 </nav>

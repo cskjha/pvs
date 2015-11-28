@@ -27,6 +27,7 @@ public class CompanyRegistrationProcessor {
 		}
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_GET,
 					dynamicValues, CompanyRegistrationProcessor.class);	
 		} catch (IOException e) {
@@ -50,6 +51,7 @@ public class CompanyRegistrationProcessor {
 		if(ProductValidationSystemWriteService.registerCompany(companyDocument)) {
 			try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_POST, dynamicValues, CompanyRegistrationProcessor.class);
 			} catch (IOException e) {
 				e.printStackTrace();

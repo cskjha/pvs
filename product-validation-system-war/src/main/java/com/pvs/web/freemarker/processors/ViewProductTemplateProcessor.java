@@ -26,6 +26,7 @@ public class ViewProductTemplateProcessor {
 		String htmlOutput = null;
 		try {			
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
 				if(session == null) {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
