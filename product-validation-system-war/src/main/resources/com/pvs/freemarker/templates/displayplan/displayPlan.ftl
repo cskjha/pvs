@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>Select a Plan</title>
+		<title>${DISPLAY_PLAN_MESSAGE1}</title>
  		<link type="text/css" rel="stylesheet" href="styles/displayPlan.css">
     </head>
     
@@ -10,24 +10,24 @@
     	 <#include "../base/header.ftl">
         <div class="clear"></div>
         <br><br>
-        <h2>Select a Plan</h2>
+        <h2>${DISPLAY_PLAN_MESSAGE1}</h2>
         <#if planList??>
         <#list planList as plan>
         	<section>
-            	<p>${plan.allowedRecordCount} Records Free</p>
-                <p>${plan.allowedScanCount} Scans Free</p>
+            	<p>${plan.allowedRecordCount} ${DISPLAY_PLAN_MESSAGE2}</p>
+                <p>${plan.allowedScanCount} ${DISPLAY_PLAN_MESSAGE3}</p>
                 <p> ${plan.planName} </p>
                 <p> ${plan.planPrice} ${plan.currencyCode} </p>
                 <form method="post" action="myplan">
                 	<input class="text" type="hidden" name="companyPlanId" value="${plan.planId}">
-                	<input class="button" type="submit" name="free_plan" value="Choose">
+                	<input class="button" type="submit" name="free_plan" value="${CHOOSE}">
                 </form>
             </section>
             <div class="content"></div>
         </#list>
         <#else>
-        	There is no plan registered.<br>
-            Please register your plan <a href="planregister">Here</a>
+        	${MY_PLAN_MESSAGE3}.<br>
+            ${MY_PLAN_MESSAGE4} <a href="planregister">${HERE}</a>
         </#if>
        </center>
     </body>

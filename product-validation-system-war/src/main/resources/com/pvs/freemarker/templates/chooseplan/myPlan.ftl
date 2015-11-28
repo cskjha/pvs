@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>Product Validation System </title>
+		<title>${PRODUCT} ${VALIDATION} ${SYSTEM}m </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
     </head>
     
@@ -9,11 +9,11 @@
     	<center>
     	 	<#include "../base/header.ftl"><br>
     	 	<#if companyPlanName??>
-	 			You have selected ${companyPlanName} plan.<br>
-    			You can register your products <a href="registerproducttemplate">Here </a>  
+	 			${MY_PLAN_MESSAGE1} ${companyPlanName} ${PLAN}.<br>
+    			${MY_PLAN_MESSAGE2} <a href="registerproducttemplate">${HERE} </a>  
 			<#else>
-		 		You have not selected a plan.
-		 		<br>Please select your plan <a href="displayplan">Here</a>&nbsp;|&nbsp;
+		 		${MY_PLAN_MESSAGE3}.
+		 		<br>${MY_PLAN_MESSAGE4} <a href="displayplan">${HERE}</a>&nbsp;|&nbsp;
 	  		</#if>  	
     	</center>
     </body>

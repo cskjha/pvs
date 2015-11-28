@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.bson.Document;
@@ -28,6 +29,7 @@ public class ViewProductTemplateProcessor {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
+				Locale locale = request.raw().getLocale();
 				if(session == null) {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;
@@ -51,7 +53,7 @@ public class ViewProductTemplateProcessor {
 					}					
 					dynamicValues.put("companyName", companyName);
 					dynamicValues.put("productTemplateList", productTemplateVOList);
-					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.VIEW_PRODUCT_TEMPLATE, dynamicValues, ViewProductTemplateProcessor.class);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.VIEW_PRODUCT_TEMPLATE, dynamicValues, ViewProductTemplateProcessor.class, locale);
 					return htmlOutput;
 				}		
 			

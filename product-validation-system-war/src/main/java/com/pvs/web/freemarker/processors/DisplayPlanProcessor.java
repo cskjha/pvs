@@ -3,6 +3,7 @@ package com.pvs.web.freemarker.processors;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.bson.Document;
@@ -44,13 +45,14 @@ public class DisplayPlanProcessor {
 						return null;
 					}
 					else {
+						Locale locale = request.raw().getLocale();
 						List<PlanVO> planList = ProductValidationSystemReadService.getAllPlans();
 						if(planList != null && planList.size() != 0) {
 							dynamicValues.put("planList", planList);
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class, locale);
 						}
 						else {
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);;
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class, locale);
 						}
 					}
 				}
@@ -86,7 +88,8 @@ public class DisplayPlanProcessor {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;
 				}
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class);		
+				Locale locale = request.raw().getLocale();
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class, locale);		
 			
 		} catch (IOException e) {
 			e.printStackTrace();

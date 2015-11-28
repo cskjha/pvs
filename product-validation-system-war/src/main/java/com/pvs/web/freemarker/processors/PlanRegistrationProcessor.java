@@ -2,6 +2,7 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.bson.Document;
@@ -25,7 +26,7 @@ public class PlanRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		
+		Locale locale = request.raw().getLocale();
 		String htmlOutput = null;
 		try {
 			String companyName = session.attribute("companyName");
@@ -33,7 +34,7 @@ public class PlanRegistrationProcessor {
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", companyName);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_GET, dynamicValues,
-					PlanRegistrationProcessor.class	);
+					PlanRegistrationProcessor.class, locale	);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -76,7 +77,8 @@ public class PlanRegistrationProcessor {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", companyName);
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class);
+				Locale locale = request.raw().getLocale();
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class, locale);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

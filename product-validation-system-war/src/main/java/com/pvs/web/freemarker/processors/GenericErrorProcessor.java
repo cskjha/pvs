@@ -2,6 +2,7 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import com.pvs.web.constants.TemplatePaths;
@@ -17,7 +18,8 @@ public class GenericErrorProcessor {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			try {
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, GenericErrorProcessor.class);
+				Locale locale = request.raw().getLocale();
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, GenericErrorProcessor.class, locale);
 			} catch (TemplateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

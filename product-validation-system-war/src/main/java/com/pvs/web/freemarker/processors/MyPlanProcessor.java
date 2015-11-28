@@ -2,6 +2,7 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.bson.Document;
@@ -46,6 +47,7 @@ public class MyPlanProcessor {
 				else {
 					response.redirect(RedirectPaths.DISPLAY_PLAN);
 				}
+				Locale locale = request.raw().getLocale();
 				if(companyPlanName != null) {
 					Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
 					if(remainingRecordCount== null || remainingRecordCount <= 0L) {
@@ -54,15 +56,16 @@ public class MyPlanProcessor {
 							companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
 							dynamicValues.put("companyPlanName", companyPlanName);
 							dynamicValues.put("companyName", companyName);
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
+							
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class, locale);
 						}
 						else {
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class, locale);
 						}
 					}
 					dynamicValues.put("companyPlanName", companyPlanName);
 					dynamicValues.put("companyName", companyName);
-					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class, locale);
 				}
 				else {
 					companyPlanId = request.queryParams("companyPlanId");
@@ -73,11 +76,11 @@ public class MyPlanProcessor {
 							//Map<String, Object> dynamicValues = new HashMap<String, Object>();
 							dynamicValues.put("companyPlanName", companyPlanName);
 							dynamicValues.put("companyName", companyName);
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.MY_PLAN, dynamicValues, MyPlanProcessor.class, locale);
 						}
 						else {
 							//Map<String, Object> dynamicValues = new HashMap<String, Object>();
-							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class);
+							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, MyPlanProcessor.class, locale);
 						}
 					}
 				}

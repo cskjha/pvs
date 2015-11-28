@@ -2,19 +2,17 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.google.inject.spi.Message;
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
-import com.pvs.web.i18n.localization.Messages;
 import com.pvs.web.utilities.LoginValidator;
 import com.pvs.web.utilities.ProcessorUtil;
 
-import ch.qos.cal10n.MessageParameterObj;
 import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
@@ -32,7 +30,8 @@ public class CompanyLoginProcessor {
 			}
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
-			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class);	
+			Locale locale = request.raw().getLocale();
+			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);	
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TemplateException e) {
@@ -57,7 +56,8 @@ public class CompanyLoginProcessor {
 			else {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("errorMessage", ProductValidationSystemWebConstants.LOGIN_FAILURE_MESSAGE);
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class);
+				Locale locale = request.raw().getLocale();
+				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);
 			}
 			
 		} catch (IOException e) {

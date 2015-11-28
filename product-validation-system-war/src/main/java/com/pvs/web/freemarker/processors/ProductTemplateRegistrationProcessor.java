@@ -2,6 +2,7 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +27,7 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		Locale locale = request.raw().getLocale();
 		String userName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
@@ -34,7 +36,7 @@ public class ProductTemplateRegistrationProcessor {
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
-					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
+					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -47,7 +49,7 @@ public class ProductTemplateRegistrationProcessor {
 			dynamicValues.put("companyName", userName);
 			try {
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_GET,
-						dynamicValues, ProductRegistrationProcessor.class);
+						dynamicValues, ProductRegistrationProcessor.class, locale);
 			} catch (TemplateException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -66,6 +68,7 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		Locale locale = request.raw().getLocale();
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		String userName = request.session().attribute("companyName");
@@ -74,7 +77,7 @@ public class ProductTemplateRegistrationProcessor {
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
-					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
+					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -95,7 +98,7 @@ public class ProductTemplateRegistrationProcessor {
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_POST,
-					dynamicValues, ProductRegistrationProcessor.class);
+					dynamicValues, ProductRegistrationProcessor.class, locale);
 			
 		} catch (IOException e) {
 			e.printStackTrace();

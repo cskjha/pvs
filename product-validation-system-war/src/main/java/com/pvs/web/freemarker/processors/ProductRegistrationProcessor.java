@@ -2,6 +2,7 @@ package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,13 +34,14 @@ public class ProductRegistrationProcessor {
 		log.debug("productTemplateId : "+productTemplateId);
 		String userName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
+		Locale locale = request.raw().getLocale();
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
-					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
+					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -69,7 +71,7 @@ public class ProductRegistrationProcessor {
 				dynamicValues.put("fieldMap", fieldMap);			
 				try {
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
-							dynamicValues, ProductRegistrationProcessor.class);
+							dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -92,6 +94,7 @@ public class ProductRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		Locale locale = request.raw().getLocale();
 		log.debug("request.contextPath() : "+request.contextPath());
 		log.debug("request.servletPath() : "+request.servletPath());
 		String companyId = request.session().attribute("companyId");
@@ -102,7 +105,7 @@ public class ProductRegistrationProcessor {
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
-					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class);
+					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -133,7 +136,7 @@ public class ProductRegistrationProcessor {
 				dynamicValues.put("companyName", userName);
 				//dynamicValues.put("qrCodeImagefilePath",qrCodeImagefilePath+".png");
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
-						dynamicValues, ProductRegistrationProcessor.class);
+						dynamicValues, ProductRegistrationProcessor.class, locale);
 				
 			} catch (IOException e) {
 				e.printStackTrace();

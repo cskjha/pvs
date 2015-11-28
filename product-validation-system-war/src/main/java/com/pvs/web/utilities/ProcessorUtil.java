@@ -13,13 +13,11 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.YearMonth;
 
-import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.i18n.config.InternationalizationConfig;
 import com.pvs.web.i18n.localization.Messages;
 
 import ch.qos.cal10n.MessageParameterObj;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import spark.Response;
@@ -30,10 +28,11 @@ public class ProcessorUtil {
 	final static Logger log = Logger.getLogger(ProcessorUtil.class);
 	
 	private static InternationalizationConfig config;
+	private static Locale locale ;
 	
-	public static String populateTemplate(String templatePath, Map<String, Object> dynamicValues, Class<?> className) throws TemplateException, IOException {		
+	public static String populateTemplate(String templatePath, Map<String, Object> dynamicValues, Class<?> className, Locale locale) throws TemplateException, IOException {		
 		String htmlOutput = null;
-		initConfig();
+		initConfig(locale);
 		log.debug("Config Test : "+config);
 		log.debug("templatePath"+templatePath);
 		Template template = config.getTemplate(templatePath);
@@ -49,14 +48,14 @@ public class ProcessorUtil {
 		}
 	}
 	
-	public static void initConfig() {
-		config = new InternationalizationConfig(getLocaleProvider());
+	public static void initConfig(Locale locale) {
+		config = new InternationalizationConfig(getLocaleProvider(locale));
 	}
 
-	private static Provider<Locale> getLocaleProvider() {
+	private static Provider<Locale> getLocaleProvider(final Locale locale) {		
 		return new Provider<Locale>() {
 			public Locale get() {
-				return Locale.GERMAN;
+				return locale;
 			}
 		};
 	}
