@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>Welcome to Product Validation System </title>
+		<title>${PRODUCT} ${VALIDATION} ${SYSTEM} </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
 		<script src="scripts/jquery/jquery.js" type="text/javascript"></script>
 		<script src="scripts/product-registration.js" type="text/javascript"></script>
@@ -15,7 +15,7 @@
 			<div class="clear">
 			</div>
         	<section>
-        		<h3>ADD A ${productName}</h3>
+        		<h3>${PRODUCT_REG_MESSAGE1} ${productName}</h3>
             	<div class="my-form">                	           
                 	<form method="post" role="form" action="registerproduct">
 					<table>
@@ -30,7 +30,7 @@
 						</tr>
 					</#list> 
 					</table>
-					<p><input class="button" type="submit" name="submit" value="Save" /></p>
+					<p><input class="button" type="submit" name="submit" value="${SAVE}" /></p>
                     </form>
                 </div>
             </section>

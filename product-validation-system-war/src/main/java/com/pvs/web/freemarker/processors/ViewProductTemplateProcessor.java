@@ -29,7 +29,7 @@ public class ViewProductTemplateProcessor {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				if(session == null) {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;

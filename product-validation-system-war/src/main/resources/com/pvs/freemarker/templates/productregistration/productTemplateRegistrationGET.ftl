@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>Welcome to Product Validation System </title>
+		<title>${PRODUCT} ${VALIDATION} ${SYSTEM} </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
 		<script src="scripts/jquery/jquery.js" type="text/javascript"></script>
 		<script src="scripts/product-registration.js" type="text/javascript"></script>
@@ -20,18 +20,18 @@
                 
                 	<form method="post" role="form" action="registerproducttemplate">
 					
-						<h3>ADD A PRODUCT Template</h3>
-                		Product Name</td><td> <input type="text" name="productName" placeholder="Product Name" /><br>
-                		Product Type </td><td> <input type="radio" name="productType" value="FP"/>Food <input type="radio" name="productType" value="NFP"/>Non Food<br>
-                        <h3>Enter the fields</h3>
+						<h3>${PRODUCT_TEMPLATE_REG_MSG1} ${TEMPLATE}</h3>
+                		${PRODUCT} ${NAME}</td><td> <input type="text" name="productName" placeholder="${PRODUCT} ${NAME}" /><br>
+                		${PRODUCT} ${TYPE} </td><td> <input type="radio" name="productType" value="FP"/>${FOOD} <input type="radio" name="productType" value="NFP"/>${NON_FOOD}<br>
+                        <h3>${PRODUCT_TEMPLATE_REG_MSG2}</h3>
 						<p class="text-box">
-							<label for="box1">Field <span class="box-number">1</span></label>
-							<input type="text" id="box1" name="field1" placeholder="Field Name" />
-							<input type="button" class="add-box" value="Add More" />
+							<label for="box1">${FIELD} <span class="box-number">1</span></label>
+							<input type="text" id="box1" name="field1" placeholder="${FIELD} ${NAME}" />
+							<input type="button" class="add-box" value="${ADD_MORE}" />
 						</p>
 						
 							<p>
-								<input class="button" type="submit" name="submit" value="Save" />
+								<input class="button" type="submit" name="submit" value="${SAVE}" />
 							</p>
                     </form>
                 </div>

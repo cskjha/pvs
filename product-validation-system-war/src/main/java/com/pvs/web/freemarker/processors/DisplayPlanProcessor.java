@@ -45,7 +45,7 @@ public class DisplayPlanProcessor {
 						return null;
 					}
 					else {
-						Locale locale = request.raw().getLocale();
+						String locale = ProcessorUtil.getLanguage(request);
 						List<PlanVO> planList = ProductValidationSystemReadService.getAllPlans();
 						if(planList != null && planList.size() != 0) {
 							dynamicValues.put("planList", planList);
@@ -88,7 +88,7 @@ public class DisplayPlanProcessor {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;
 				}
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class, locale);		
 			
 		} catch (IOException e) {

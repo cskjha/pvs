@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>${PRODUCT} ${VALIDATION} ${SYSTEM}m </title>
+		<title>${PRODUCT} ${VALIDATION} ${SYSTEM} </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
     </head>
     

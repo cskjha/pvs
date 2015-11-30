@@ -29,7 +29,7 @@ public class CompanyRegistrationProcessor {
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
-			Locale locale = request.raw().getLocale();
+			String locale = ProcessorUtil.getLanguage(request);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_GET,
 					dynamicValues, CompanyRegistrationProcessor.class, locale);	
 		} catch (IOException e) {
@@ -54,7 +54,7 @@ public class CompanyRegistrationProcessor {
 			try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_POST, dynamicValues, CompanyRegistrationProcessor.class, locale);
 			} catch (IOException e) {
 				e.printStackTrace();

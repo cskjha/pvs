@@ -18,7 +18,7 @@ public class GenericErrorProcessor {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			try {
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.GENERIC_ERROR, dynamicValues, GenericErrorProcessor.class, locale);
 			} catch (TemplateException e) {
 				e.printStackTrace();

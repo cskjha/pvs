@@ -20,6 +20,7 @@ import com.pvs.web.i18n.localization.Messages;
 import ch.qos.cal10n.MessageParameterObj;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import spark.Request;
 import spark.Response;
 import spark.Session;
 
@@ -28,11 +29,10 @@ public class ProcessorUtil {
 	final static Logger log = Logger.getLogger(ProcessorUtil.class);
 	
 	private static InternationalizationConfig config;
-	private static Locale locale ;
 	
-	public static String populateTemplate(String templatePath, Map<String, Object> dynamicValues, Class<?> className, Locale locale) throws TemplateException, IOException {		
+	public static String populateTemplate(String templatePath, Map<String, Object> dynamicValues, Class<?> className, String language) throws TemplateException, IOException {		
 		String htmlOutput = null;
-		initConfig(locale);
+		initConfig(language);
 		log.debug("Config Test : "+config);
 		log.debug("templatePath"+templatePath);
 		Template template = config.getTemplate(templatePath);
@@ -48,33 +48,41 @@ public class ProcessorUtil {
 		}
 	}
 	
-	public static void initConfig(Locale locale) {
-		config = new InternationalizationConfig(getLocaleProvider(locale));
+	public static void initConfig(String language) {
+		config = new InternationalizationConfig(getLocaleProvider(language));
 	}
 
-	private static Provider<Locale> getLocaleProvider(final Locale locale) {		
+	private static Provider<Locale> getLocaleProvider(final String language) {		
 		return new Provider<Locale>() {
 			public Locale get() {
-				return locale;
+				return new Locale(language);
 			}
 		};
 	}
-
-	public static Map<String, Object> getDataModel() {
-		HashMap<String, Object> datamodel = new HashMap<String, Object>();
-		datamodel.put("date", new LocalDate());
-		datamodel.put("time", new LocalTime());
-		datamodel.put("month", new YearMonth());
-		datamodel.put("boolean", true);
-		datamodel.put("greeting", new MessageParameterObj(Messages.HELLO,
-				"Freemarker"));
-		return datamodel;
-	}
-	
 	public static void populateDynamicValues(Map<String, Object> dynamicValues) {		
 		for(Messages message : Messages.values()) {
 			log.debug("Message String "+message);
 			dynamicValues.put(message.toString(), new MessageParameterObj(message));
 		}
-	}	
+	}
+	public static String getLanguage(Request request) {
+		String language = null;
+		Session session = request.session(false);
+		if(session != null) {
+			language = session.attribute("language");
+			if(language == null || language.length() != 2) {
+				Locale locale = request.raw().getLocale();
+				language = locale.getLanguage();
+			}
+		}
+		else {
+			language = request.queryParams("language");
+			if(language == null || language.length() != 2) {
+				Locale locale = request.raw().getLocale();
+				language = locale.getLanguage();
+			}
+		}
+				
+		return language;
+	}
 }

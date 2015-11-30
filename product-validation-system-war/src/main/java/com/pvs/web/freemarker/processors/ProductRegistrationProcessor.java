@@ -34,7 +34,7 @@ public class ProductRegistrationProcessor {
 		log.debug("productTemplateId : "+productTemplateId);
 		String userName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
-		Locale locale = request.raw().getLocale();
+		String locale = ProcessorUtil.getLanguage(request);
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
@@ -94,7 +94,7 @@ public class ProductRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		Locale locale = request.raw().getLocale();
+		String locale = ProcessorUtil.getLanguage(request);
 		log.debug("request.contextPath() : "+request.contextPath());
 		log.debug("request.servletPath() : "+request.servletPath());
 		String companyId = request.session().attribute("companyId");

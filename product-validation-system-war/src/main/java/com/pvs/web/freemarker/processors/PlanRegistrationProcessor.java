@@ -26,7 +26,7 @@ public class PlanRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		Locale locale = request.raw().getLocale();
+		String locale = ProcessorUtil.getLanguage(request);
 		String htmlOutput = null;
 		try {
 			String companyName = session.attribute("companyName");
@@ -77,7 +77,7 @@ public class PlanRegistrationProcessor {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", companyName);
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class, locale);
 			} catch (IOException e) {
 				e.printStackTrace();

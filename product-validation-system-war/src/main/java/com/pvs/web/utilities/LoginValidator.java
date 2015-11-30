@@ -15,10 +15,14 @@ public class LoginValidator {
 			return true;
 		}
 		else {
+			String language = request.queryParams("language");
 			String userEmail = request.queryParams("email");
 			String password = request.queryParams("password");
 			if(ProductValidationSystemReadService.validateUser(userEmail, password)){
 				session = request.session(true);
+				if(language != null && language.length() == 2) {
+					session.attribute("language", language);
+				}
 				LoginValidator loginValidator = new LoginValidator();
 				loginValidator.initializeSessionData(session, userEmail);
 				return true;

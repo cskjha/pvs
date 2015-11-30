@@ -14,11 +14,11 @@ import spark.Session;
 public class ValidateProductProcesssor {
 	
 	public static String getJSON(Request request, Response response) {
-		Session session = request.session(false);
-		if(session == null) {
-			response.redirect(RedirectPaths.COMPANY_LOGIN);
-			return null;
-		}
+//		Session session = request.session(false);
+//		if(session == null) {
+//			response.redirect(RedirectPaths.COMPANY_LOGIN);
+//			return null;
+//		}
 		String JSONResponse = "error:product not found";
 		String productScanCode = request.queryParams("productScanCode");
 		if(productScanCode != null) {

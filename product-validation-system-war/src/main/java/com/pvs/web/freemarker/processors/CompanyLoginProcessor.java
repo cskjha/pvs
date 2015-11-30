@@ -30,7 +30,7 @@ public class CompanyLoginProcessor {
 			}
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
-			Locale locale = request.raw().getLocale();
+			String locale = ProcessorUtil.getLanguage(request);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);	
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -56,7 +56,7 @@ public class CompanyLoginProcessor {
 			else {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				dynamicValues.put("errorMessage", ProductValidationSystemWebConstants.LOGIN_FAILURE_MESSAGE);
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);
 			}
 			

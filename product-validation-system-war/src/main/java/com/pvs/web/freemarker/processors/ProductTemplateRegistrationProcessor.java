@@ -27,7 +27,7 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		Locale locale = request.raw().getLocale();
+		String locale = ProcessorUtil.getLanguage(request);
 		String userName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
@@ -68,7 +68,7 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		Locale locale = request.raw().getLocale();
+		String locale = ProcessorUtil.getLanguage(request);
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		String userName = request.session().attribute("companyName");

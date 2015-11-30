@@ -3,6 +3,7 @@ package com.pvs.web.constants;
 public class RedirectPaths {
 	public static final String HOME_PAGE = "/";
 	public static final String COMPANY_REGISTER= "companyregister";
+	public static final String CHANGE_LANGUAGE= "changelanguage";
 	public static final String PLAN_REGISTER = "planregister";
 	public static final String COMPANY_LOGIN = "companylogin";
 	public static final String DISPLAY_PLAN = "displayplan";

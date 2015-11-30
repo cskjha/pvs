@@ -47,7 +47,7 @@ public class MyPlanProcessor {
 				else {
 					response.redirect(RedirectPaths.DISPLAY_PLAN);
 				}
-				Locale locale = request.raw().getLocale();
+				String locale = ProcessorUtil.getLanguage(request);
 				if(companyPlanName != null) {
 					Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
 					if(remainingRecordCount== null || remainingRecordCount <= 0L) {
