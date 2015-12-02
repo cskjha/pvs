@@ -10,12 +10,13 @@ nav {
 	margin-right: 200px;
 }
 .header-style {
-		font-size:11px;
+		float: right;
+		font-size:12px;
 }
 
 .header-style-language {
 		float: left;
-		font-size:11px;
+		font-size:12px;
 }
 
 td {
