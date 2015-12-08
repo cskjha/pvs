@@ -15,6 +15,7 @@ public class RedirectPaths {
 	public static final String LOGOUT = "logout";
 	public static final String GENERATE_QR_CODE = "generateqrcode";
 	public static final String GENERIC_ERROR_PAGE = "genericerrorpage";
-	
+	public static final String DOWNLOAD_PRODUCT_FORMAT = "downloadproductformat";
+	public static final String UPLOAD_PRODUCT = "uploadproduct";	
 
 }

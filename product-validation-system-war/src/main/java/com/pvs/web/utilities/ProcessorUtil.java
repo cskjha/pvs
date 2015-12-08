@@ -66,22 +66,22 @@ public class ProcessorUtil {
 		}
 	}
 	public static String getLanguage(Request request) {
-		String language = null;
-		Session session = request.session(false);
-		if(session != null) {
-			language = session.attribute("language");
-			if(language == null || language.length() != 2) {
-				Locale locale = request.raw().getLocale();
-				language = locale.getLanguage();
-			}
-		}
-		else {
-			language = request.queryParams("language");
-			if(language == null || language.length() != 2) {
-				Locale locale = request.raw().getLocale();
-				language = locale.getLanguage();
-			}
-		}
+		String language = "en";
+//		Session session = request.session(false);
+//		if(session != null) {
+//			language = session.attribute("language");
+//			if(language == null || language.length() != 2) {
+//				Locale locale = request.raw().getLocale();
+//				language = locale.getLanguage();
+//			}
+//		}
+//		else {
+//			language = request.queryParams("language");
+//			if(language == null || language.length() != 2) {
+//				Locale locale = request.raw().getLocale();
+//				language = locale.getLanguage();
+//			}
+//		}
 				
 		return language;
 	}

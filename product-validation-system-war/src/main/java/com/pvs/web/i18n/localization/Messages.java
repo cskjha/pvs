@@ -41,6 +41,9 @@ public enum Messages {
 	GERMAN,
 	HINDI,
 	ITALIAN,
+	UPLOAD,
+	FORMAT,
+	DOWNLOAD,
 	
 	MY_PLAN_MESSAGE1,
 	MY_PLAN_MESSAGE2,
