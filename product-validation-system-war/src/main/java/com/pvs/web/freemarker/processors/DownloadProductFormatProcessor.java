@@ -12,6 +12,7 @@ import org.bson.Document;
 
 import com.pvs.service.excel.read.ExcelFileWriteService;
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.utilities.ProcessorUtil;
 
@@ -37,6 +38,7 @@ public class DownloadProductFormatProcessor {
 					
 					String productTemplateId = request.queryParams("productTemplateId");
 					String productType = request.queryParams("productType");
+					String templateName = request.queryParams("templateName");
 					//String companyName = session.attribute("companyName");
 					
 					Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
@@ -44,7 +46,7 @@ public class DownloadProductFormatProcessor {
 					if(productTemplateDocument != null) {
 						Workbook workbook = new ExcelFileWriteService().writeSingleDocument(productTemplateDocument, productType+productTemplateId+".xlsx", 0);
 						if(workbook != null) {
-							workbook.set
+							response.header("Content-Disposition", ("attachment;filename="+templateName+"_"+productType+productTemplateId+"."+ProductValidationSystemWebConstants.EXCEL_EXTENSION));
 							workbook.write(response.raw().getOutputStream());
 						}
 						return null;
