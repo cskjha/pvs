@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bson.Document;
 
 import com.pvs.db.connection.utils.DatabaseConstants;
+import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -50,6 +51,7 @@ public class CompanyRegistrationProcessor {
 		companyDocument.append("companyName", companyName);
 		companyDocument.append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
 		companyDocument.append("companyPassword", companyPassword);
+		new CommonUtils().addHistoryFields(companyDocument);
 		if(ProductValidationSystemWriteService.registerCompany(companyDocument)) {
 			try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();

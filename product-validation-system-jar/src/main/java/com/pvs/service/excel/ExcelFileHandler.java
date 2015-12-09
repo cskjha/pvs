@@ -22,6 +22,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.bson.Document;
 
 import com.pvs.service.excel.utils.ExcelUtil;
+import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 
 public class ExcelFileHandler {
@@ -124,9 +125,7 @@ public class ExcelFileHandler {
 		        		  columnIndex++;
 		        	  }
 		        }
-		        String pattern = "dd-MM-yyyy";
-		        String dateInString =new SimpleDateFormat(pattern).format(new Date());
-		        productDocument.append("creationDate", dateInString);
+		        new CommonUtils().addHistoryFields(productDocument);
 		        if(rowIndex != 0) {
 		        	productDocumentList.add(productDocument);
 		        }		        

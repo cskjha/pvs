@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -134,7 +135,7 @@ public class ProductRegistrationProcessor {
 			companyId = request.queryParams("companyId");
 			productDocument.append("productTemplateId", productTemplateId);
 			productDocument.append("companyId", companyId);
-			
+			new CommonUtils().addHistoryFields(productDocument);
 			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
 //			String hostName = request.host();
 //			String contextRoot = request.contextPath();

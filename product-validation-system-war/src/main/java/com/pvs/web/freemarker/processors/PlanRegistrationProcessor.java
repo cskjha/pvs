@@ -8,6 +8,7 @@ import java.util.Map;
 import org.bson.Document;
 
 import com.pvs.enums.PlanStates;
+import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -71,6 +72,7 @@ public class PlanRegistrationProcessor {
 		planDocument.append("planPrice", planPrice);
 		planDocument.append("planState", planState);
 		planDocument.append("currencyCode", currencyCode);
+		new CommonUtils().addHistoryFields(planDocument);
 		if(ProductValidationSystemWriteService.registerPlan(planDocument)) {
 			try {
 				String companyName = session.attribute("companyName");

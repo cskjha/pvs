@@ -9,6 +9,7 @@ import java.util.Set;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -92,6 +93,7 @@ public class ProductTemplateRegistrationProcessor {
 			}
 		}
 		String productType = request.queryParams("productType");
+		new CommonUtils().addHistoryFields(productTemplateDocument);
 		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyId);	
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();

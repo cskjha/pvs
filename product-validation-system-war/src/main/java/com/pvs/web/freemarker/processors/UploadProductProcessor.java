@@ -73,7 +73,7 @@ public class UploadProductProcessor {
 				else {
 					String productTemplateId = request.queryParams("productTemplateId");
 					String productType = request.queryParams("productType");
-					//String companyName = session.attribute("companyName");	
+					String companyName = session.attribute("companyName");	
 					String companyId = session.attribute("companyId");
 					
 					
@@ -114,13 +114,9 @@ public class UploadProductProcessor {
 				      }
 				   }catch(Exception ex) {
 				       System.out.println(ex);
-				   }
-					
-					
-					
-					
-					
-					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.VIEW_PRODUCT_TEMPLATE, dynamicValues, ViewProductTemplateProcessor.class, locale);
+				   }					
+				    dynamicValues.put("companyName", companyName);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.UPLOAD_PRDUCT_FROM_EXCEL_POST, dynamicValues, ViewProductTemplateProcessor.class, locale);
 					return htmlOutput;
 				}		
 			

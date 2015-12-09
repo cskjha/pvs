@@ -1,6 +1,10 @@
 package com.pvs.service.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.apache.log4j.Logger;
+import org.bson.Document;
 
 import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.enums.ProductTypes;
@@ -26,5 +30,11 @@ public class CommonUtils {
 			collectionName = DatabaseConstants.NON_FOOD_PRODUCT_TEMPLATE_COLLECTION_NAME;
 		}
 		return collectionName;
+	}
+	
+	public void addHistoryFields(Document productDocument) {
+		String pattern = "dd-MM-yyyy";
+        String dateInString =new SimpleDateFormat(pattern).format(new Date());
+        productDocument.append("creationDate", dateInString);
 	}
 }
