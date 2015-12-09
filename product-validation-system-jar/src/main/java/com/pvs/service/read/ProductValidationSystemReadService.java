@@ -148,6 +148,7 @@ public class ProductValidationSystemReadService {
 				String productType = companyTemplate.getString(DatabaseConstants.PRODUCT_TYPE);
 				MongoCollection<Document> productTemplateCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, CommonUtils.getProductTemplateCollectionName(productType));		
 				searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productTemplateId));
+				//pratyay
 				FindIterable<Document> productTemplateDocuments = productTemplateCollection.find(searchCriteria);
 				MongoCursor<Document> productTemplateDocumentIterator = productTemplateDocuments.iterator();
 				while(productTemplateDocumentIterator != null && productTemplateDocumentIterator.hasNext()) {
@@ -285,8 +286,32 @@ public class ProductValidationSystemReadService {
 		}
 		return null;
 	}
-	
-	
-	
+	public static List<Document> getProductListViewRecord(String productTemplateId,String productType){
+		MongoClient mongoClient =null;
+		List<Document> productList = new ArrayList<Document>();
+		try{
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			String collectionName =CommonUtils.getProductCollectionName(productType);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
+			Document searchCriteria = new Document().append(DatabaseConstants.PRODUCT_TEMPLATE_ID, productTemplateId);
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			MongoCursor<Document> productListViewDocumentIterator = documents.iterator();
+			while(productListViewDocumentIterator != null && productListViewDocumentIterator.hasNext()) {
+				Document productListViewTemplateDocument = productListViewDocumentIterator.next();
+				productListViewTemplateDocument.append("productType", productType);
+				productList.add(productListViewTemplateDocument);
+			}
+			return productList;
+		}
+		catch(Exception e){
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally{
+			mongoClient.close();
+		}
+		return productList;
+	}
  
 }

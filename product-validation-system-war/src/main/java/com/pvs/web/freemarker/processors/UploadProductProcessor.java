@@ -59,7 +59,7 @@ public class UploadProductProcessor {
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
 		 boolean isMultipart;
-		 int maxFileSize = 50 * 1024;
+		 int maxFileSize = 50000 * 1024;
 		 //int maxMemSize = 4 * 1024;
 		try {			
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();

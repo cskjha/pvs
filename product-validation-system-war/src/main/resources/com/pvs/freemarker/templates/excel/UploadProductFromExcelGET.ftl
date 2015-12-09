@@ -16,7 +16,7 @@
 					<br><br>
 					<center>		
 					<form action="uploadproduct?productType=${productType}&productTemplateId=${productTemplateId}" method="post"  enctype="multipart/form-data">
-						<input type="file" name="file" size="50" />
+						<input type="file" name="file" size="500000" />
 						<br/><br/>
 						<input type="submit" value="${UPLOAD} ${FILE}" />
 					</form>	

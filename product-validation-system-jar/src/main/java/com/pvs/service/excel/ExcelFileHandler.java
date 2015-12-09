@@ -125,6 +125,8 @@ public class ExcelFileHandler {
 		        		  columnIndex++;
 		        	  }
 		        }
+		        productDocument.append("productTemplateId", productTemplateId);
+		        productDocument.append("companyId", companyId);
 		        new CommonUtils().addHistoryFields(productDocument);
 		        if(rowIndex != 0) {
 		        	productDocumentList.add(productDocument);

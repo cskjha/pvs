@@ -17,6 +17,7 @@ import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
 import com.pvs.web.freemarker.processors.ViewProductTemplateProcessor;
+import com.pvs.web.freemarker.processors.ProductListViewProcessor;
 
 import spark.Request;
 import spark.Response;
@@ -243,6 +244,13 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			
    			public Object handle(Request request, Response response) throws Exception {
    				return GenerateQRCodeProcessor.getHTML(request, response);
+   			}
+          });
+		  
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.LIST_PRODUCTS, new Route() {
+			
+   			public Object handle(Request request, Response response) throws Exception {
+   				return ProductListViewProcessor.getHTML(request, response);
    			}
           });
         

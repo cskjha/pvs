@@ -45,6 +45,8 @@ public enum Messages {
 	FORMAT,
 	DOWNLOAD,
 	FILE,
+	LIST,
+	VIEW,
 	
 	MY_PLAN_MESSAGE1,
 	MY_PLAN_MESSAGE2,

@@ -20,6 +20,7 @@ public class TemplatePaths {
 		public static final String LOCALE_TEST= "com/pvs/freemarker/templates/base/sample.ftl";
 		public static final String UPLOAD_PRDUCT_FROM_EXCEL_GET= "com/pvs/freemarker/templates/excel/UploadProductFromExcelGET.ftl";
 		public static final String UPLOAD_PRDUCT_FROM_EXCEL_POST= "com/pvs/freemarker/templates/excel/UploadProductFromExcelPOST.ftl";
+				public static final String LIST_PRODUCTS="com/pvs/freemarker/templates/productregistration/listProductTemplate.ftl";
 		
 		
 }
