@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -113,13 +114,22 @@ public class ExcelFileHandler {
 		        		    case Cell.CELL_TYPE_STRING:
 		        		    	productDocument.append(columnNames.get(columnIndex), cell.getStringCellValue());
 		        		    	break;
+		        		    	
+		        		    case Cell.CELL_TYPE_NUMERIC:
+		        		    	boolean isDate = DateUtil.isCellDateFormatted(cell);
+		        		    	if(isDate) {
+		        		    		Date date = cell.getDateCellValue();
+		        		    		String dateString = new SimpleDateFormat("dd-MMM-yyyy").format(date);
+		        		    		productDocument.append(columnNames.get(columnIndex), dateString);
+		        		    	}
+		        		    	else {
+		        		    		productDocument.append(columnNames.get(columnIndex), cell.getNumericCellValue());
+		        		    	}
+		        		    	
+		        		    	break;
 		        		 
 		        		    case Cell.CELL_TYPE_BOOLEAN:
 		        		    	productDocument.append(columnNames.get(columnIndex), cell.getBooleanCellValue());
-		        		    	break;
-		        		 
-		        		    case Cell.CELL_TYPE_NUMERIC:
-		        		    	productDocument.append(columnNames.get(columnIndex), cell.getNumericCellValue());
 		        		    	break;
 		        		    }
 		        		  columnIndex++;
