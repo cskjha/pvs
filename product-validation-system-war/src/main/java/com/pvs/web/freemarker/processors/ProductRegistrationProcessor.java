@@ -116,7 +116,16 @@ public class ProductRegistrationProcessor {
 			Set<String> queryParams = request.queryParams();
 			Document productDocument = new Document();
 			for(String param: queryParams) {
-				if(param.equals("productName") || param.startsWith("field")) {
+				if(param.startsWith("field")) {
+					int indexFieldNameParam = param.indexOf("Name");
+					if(indexFieldNameParam > 0) {
+						String fieldName = request.queryParams(param);
+						String fieldValue = request.queryParams(param.substring(0, indexFieldNameParam)+"Value");
+						log.debug("FieldName : "+fieldName+" Field Value : "+fieldValue);
+						productDocument.append(fieldName, fieldValue);
+					}
+				}
+				else if(param.equals("productName")) {
 					productDocument.append(param, request.queryParams(param));
 				}
 			}
@@ -127,8 +136,8 @@ public class ProductRegistrationProcessor {
 			productDocument.append("companyId", companyId);
 			
 			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
-			String hostName = request.host();
-			String contextRoot = request.contextPath();
+//			String hostName = request.host();
+//			String contextRoot = request.contextPath();
 			//String qrCodeImagefilePath = ProductRegistrationUtil.generateQRCode(hostName+contextRoot, productId, productType);
 			try {		
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();

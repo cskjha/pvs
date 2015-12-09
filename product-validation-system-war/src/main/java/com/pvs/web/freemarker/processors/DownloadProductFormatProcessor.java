@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.bson.Document;
 
-import com.pvs.service.excel.read.ExcelFileWriteService;
+import com.pvs.service.excel.ExcelFileHandler;
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
@@ -40,11 +40,12 @@ public class DownloadProductFormatProcessor {
 					String productType = request.queryParams("productType");
 					String templateName = request.queryParams("templateName");
 					//String companyName = session.attribute("companyName");
+					log.debug("templateName : "+templateName);
 					
 					Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
 					log.debug("productTemplateDocument : "+productTemplateDocument);
 					if(productTemplateDocument != null) {
-						Workbook workbook = new ExcelFileWriteService().writeSingleDocument(productTemplateDocument, productType+productTemplateId+".xlsx", 0);
+						Workbook workbook = new ExcelFileHandler().writeSingleDocument(productTemplateDocument, productType+productTemplateId+".xlsx", 0);
 						if(workbook != null) {
 							response.header("Content-Disposition", ("attachment;filename="+templateName+"_"+productType+productTemplateId+"."+ProductValidationSystemWebConstants.EXCEL_EXTENSION));
 							workbook.write(response.raw().getOutputStream());

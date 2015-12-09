@@ -170,6 +170,13 @@ public class ProductValidationSystemMainController implements SparkApplication {
      				return UploadProductProcessor.getHTML(request, response);
      			}
             });
+        spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.UPLOAD_PRODUCT, new Route() {
+			
+   			
+ 			public Object handle(Request request, Response response) throws Exception {
+ 				return UploadProductProcessor.postHTML(request, response);
+ 			}
+        });
         
         spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REGISTER_PRODUCT, new Route() {
 			

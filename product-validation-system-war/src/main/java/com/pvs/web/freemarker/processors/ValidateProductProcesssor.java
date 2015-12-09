@@ -26,22 +26,30 @@ public class ValidateProductProcesssor {
 			String productType = ProductRegistrationUtil.getProductTypeFromProductScanCode(productScanCode);
 			Document result = ProductValidationSystemReadService.getProductDetails(productId, productType);
 			if(result != null) {
-				String companyId = result.getString("companyId");
-				ProductValidationSystemUpdateService.updateRemainingScanCount(companyId);
+//				String companyId = result.getString("companyId");
+//				ProductValidationSystemUpdateService.updateRemainingScanCount(companyId);
+//				Document productDetails = new Document();
+//				productDetails.append("productName", result.getString("productName"));
+//				for(String property : result.keySet()) {
+//					if(property.startsWith("field")) {
+//						int indexOfField = property.indexOf("Name");
+//						if(indexOfField > 0) {
+//							String prefix = property.substring(0, indexOfField);					
+//							String fieldName = result.getString(prefix+"Name");
+//							String fieldValue = result.getString(prefix+"Value");
+//							productDetails.append(fieldName, fieldValue);
+//							
+//						}
+//					}
+//				}
+				//Remove Id, company id and product template id from the response
 				Document productDetails = new Document();
-				productDetails.append("productName", result.getString("productName"));
-				for(String property : result.keySet()) {
-					if(property.startsWith("field")) {
-						int indexOfField = property.indexOf("Name");
-						if(indexOfField > 0) {
-							String prefix = property.substring(0, indexOfField);					
-							String fieldName = result.getString(prefix+"Name");
-							String fieldValue = result.getString(prefix+"Value");
-							productDetails.append(fieldName, fieldValue);
-							
-						}
+				for(String resultPropery : result.keySet()) {
+					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery))) {
+						productDetails.append(resultPropery, result.get(resultPropery));
 					}
 				}
+				
 				JSONResponse = productDetails.toJson();
 			}
 		}
