@@ -44,8 +44,9 @@ public class ValidateProductProcesssor {
 //				}
 				//Remove Id, company id and product template id from the response
 				Document productDetails = new Document();
+				productDetails.append("productRating", "4");
 				for(String resultPropery : result.keySet()) {
-					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery))) {
+					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery) || "creationDate".equals(resultPropery))) {
 						productDetails.append(resultPropery, result.get(resultPropery));
 					}
 				}
