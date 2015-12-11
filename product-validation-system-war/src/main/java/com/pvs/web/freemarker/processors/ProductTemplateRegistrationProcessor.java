@@ -104,8 +104,11 @@ public class ProductTemplateRegistrationProcessor {
 			allFileDataMap = fileMap.get("files");
 			allOtherParams = fileMap.get("params");
 		}
+		String productType = (String)allOtherParams.get("productType");
+		log.debug("Product Type : "+productType);
 		for(String param: allOtherParams.keySet()) {
-			if(param.equals("productName") || param.equals("manufacturerName") ||  param.startsWith("field")) {
+			if(param.equals("productName") || param.equals("manufacturerName") ||  param.startsWith("field") 
+					|| ("FP".equals(productType) && param.equals("expirationDate"))) {
 				productTemplateDocument.append(param, allOtherParams.get(param));
 			}
 		}
@@ -122,8 +125,6 @@ public class ProductTemplateRegistrationProcessor {
 			  log.debug("imageURL"+imageURL);
 			  productTemplateDocument.append("image", imageURL);	
 		}	
-		
-		String productType = (String)allOtherParams.get("productType");
 		new CommonUtils().addHistoryFields(productTemplateDocument);
 		ProductValidationSystemWriteService.registerProductTemplate(productTemplateDocument, productType, companyId);	
 		try {

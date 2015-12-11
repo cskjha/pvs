@@ -66,17 +66,15 @@ public class ExcelFileHandler {
 		return workbook;
 	}
 	
-	private void writeBook(Document document, Row row) {		
+	private void writeBook(Document document, Row row) {
 		int fieldCount = 1;
-		String fieldName = document.getString("field1");
-		log.debug("field Name : "+fieldName);
-		while(fieldName != null) {
+		for(String key : document.keySet()) {
 			Cell cell = row.createCell(fieldCount-1);
-			cell.setCellValue(fieldName);
+			cell.setCellValue(document.getString(key));
 			fieldCount++;
+			log.debug("field Name : "+key);
 			log.debug("fieldCount : "+fieldCount);
-			fieldName = document.getString("field"+fieldCount);
-		}		
+		}	
 	}
 	
 	public int readExcelAndInsertRecord(InputStream excelInputStream, String productTemplateId, String productType, String companyId) throws IOException {

@@ -43,9 +43,16 @@ public class DownloadProductFormatProcessor {
 					log.debug("templateName : "+templateName);
 					
 					Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
+					Document filteredTemplateDocument = new Document();
+					for(String key : productTemplateDocument.keySet()) {
+						if(!("_id".equals(key) || "manufacturerName".equals(key) || "productName".equals(key) 
+								|| "creationDate".equals(key) || "image".equals(key))) {
+							filteredTemplateDocument.append(key, productTemplateDocument.getString(key));
+						}
+					}
 					log.debug("productTemplateDocument : "+productTemplateDocument);
 					if(productTemplateDocument != null) {
-						Workbook workbook = new ExcelFileHandler().writeSingleDocument(productTemplateDocument, productType+productTemplateId+".xlsx", 0);
+						Workbook workbook = new ExcelFileHandler().writeSingleDocument(filteredTemplateDocument, productType+productTemplateId+".xlsx", 0);
 						if(workbook != null) {
 							response.header("Content-Disposition", ("attachment;filename="+templateName+"_"+productType+productTemplateId+"."+ProductValidationSystemWebConstants.EXCEL_EXTENSION));
 							workbook.write(response.raw().getOutputStream());

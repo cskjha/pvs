@@ -20,4 +20,14 @@ jQuery(document).ready(function($){
 				});
 				return false;
 			});
+			
+			$('#ProductTypeFP').click(function(){
+				alert('ProductTypeFP');
+				//return false;
+			});
+			
+			$('#ProductTypeNFP').click( function(){
+				alert('ProductTypeNFP');
+				//return false;
+			});			
 		});

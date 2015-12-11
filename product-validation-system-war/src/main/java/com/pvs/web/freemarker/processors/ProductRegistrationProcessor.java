@@ -58,18 +58,25 @@ public class ProductRegistrationProcessor {
 			if(productTemplateDocument != null) {
 				String productName = productTemplateDocument.getString("productName");
 				int fieldCount = 1;
-				String fieldName = productTemplateDocument.getString("field1");
 				Map<String, String> fieldMap = new HashMap<String, String>();
-				while(fieldName != null) {
-					fieldMap.put("field"+fieldCount, fieldName);
-					fieldCount++;
-					fieldName = productTemplateDocument.getString("field"+fieldCount);
+				for(String key : productTemplateDocument.keySet()) {
+					if(key.startsWith("field")) {
+						fieldMap.put(key, productTemplateDocument.getString(key));
+					}
+				}
+				String expirationDate = productTemplateDocument.getString("expirationDate");
+				if(expirationDate != null) {
+					fieldMap.put("expirationDate", expirationDate);
 				}
 				dynamicValues.put("productName", productName);
 				dynamicValues.put("productType", productType);
 				dynamicValues.put("productTemplateId", productTemplateId);
 				dynamicValues.put("companyId", companyId);
-				dynamicValues.put("fieldMap", fieldMap);			
+				dynamicValues.put("fieldMap", fieldMap);	
+//				log.debug("Product Type : "+productType);
+//				if("FP".equals(productType)) {
+//					dynamicValues.put("foodProduct", "TRUE");
+//				}
 				try {
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
 							dynamicValues, ProductRegistrationProcessor.class, locale);
@@ -127,6 +134,12 @@ public class ProductRegistrationProcessor {
 					}
 				}
 				else if(param.equals("productName")) {
+					productDocument.append(param, request.queryParams(param));
+				}
+				else if(param.equals("manufacturedOn")) {
+					productDocument.append(param, request.queryParams(param));
+				}
+				else if(param.equals("expirationDate")) {
 					productDocument.append(param, request.queryParams(param));
 				}
 			}

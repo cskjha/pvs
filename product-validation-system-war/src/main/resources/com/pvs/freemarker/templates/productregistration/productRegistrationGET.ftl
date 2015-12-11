@@ -24,11 +24,30 @@
 					<input type="hidden" name="productName" value="${productName}" />
 					<input type="hidden" name="productType" value="${productType}" />
 					<#list fieldMap?keys as field>
-						<tr>
-							<td>${fieldMap[field]} <input type="hidden" name="${field}Name" value="${fieldMap[field]}" /></td>
-							<td><input type="text" name="${field}Value" placeholder="${fieldMap[field]}" /><td>
-						</tr>
+						<#if field == 'expirationDate'>
+						  		<tr>
+									<td>${fieldMap[field]} <input type="hidden" name="${field}Name" value="${fieldMap[field]}" /></td>
+									<td><input type="date" name="expirationDate" placeholder="${fieldMap[field]}" /></td>
+								</tr> 
+						<#else>
+								<tr>
+									<td>${fieldMap[field]} <input type="hidden" name="${field}Name" value="${fieldMap[field]}" /></td>
+									<td><input type="text" name="${field}Value" placeholder="${fieldMap[field]}" /></td>
+								</tr> 
+						</#if>
 					</#list> 
+					<tr>
+						<td>${MANUFACTURED} ${ON} </td>
+						<td><input type="date" name="manufacturedOn" placeholder="${MANUFACTURED} ${ON}" required/></td>					
+					</tr>
+		<#--		<#if foodProduct??>
+					<tr>
+						<td>${EXPIRATION} ${DATE} </td>
+						<td><input type="date" name="expirationDate" placeholder="${EXPIRATION} ${DATE}" required/></td>					
+					</tr>
+				</#if>
+		-->
+					
 					</table>
 					<p><input class="button" type="submit" name="submit" value="${SAVE}" /></p>
                     </form>
