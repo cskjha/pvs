@@ -47,6 +47,8 @@ public enum Messages {
 	FILE,
 	LIST,
 	VIEW,
+	MANUFACTURER,
+	IMAGE,
 	
 	MY_PLAN_MESSAGE1,
 	MY_PLAN_MESSAGE2,

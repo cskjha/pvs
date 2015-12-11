@@ -92,6 +92,7 @@ public class ProductValidationSystemWriteService {
 	
 	public static boolean registerProductTemplate(Document productTemplateModel, String productType, String companyId) {
 		if(productTemplateModel ==null || productType == null || companyId == null) {
+			log.debug("Any of the parameters is null : productTemplateModel : "+productTemplateModel+" productType :"+productType+" companyId"+companyId);
 			return false;
 		}
 		MongoClient mongoClient = null;		
@@ -99,8 +100,10 @@ public class ProductValidationSystemWriteService {
 			String templateCollectionName = CommonUtils.getProductTemplateCollectionName(productType);
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			log.debug("Calling database insert");
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, templateCollectionName);
 			mongoCollection.insertOne(productTemplateModel);
+			log.debug("Database insert Completed");
 			ObjectId productTemplateId = productTemplateModel.getObjectId(DatabaseConstants._ID);
 			log.debug("productTemplateId : "+productTemplateId);
 			mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);

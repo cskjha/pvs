@@ -1,5 +1,6 @@
 package com.pvs.web.freemarker.processors;
 
+import org.apache.log4j.Logger;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
@@ -12,6 +13,8 @@ import spark.Response;
 import spark.Session;
 
 public class ValidateProductProcesssor {
+	
+	static final Logger log = Logger.getLogger(ValidateProductProcesssor.class);
 	
 	public static String getJSON(Request request, Response response) {
 //		Session session = request.session(false);
@@ -50,7 +53,14 @@ public class ValidateProductProcesssor {
 						productDetails.append(resultPropery, result.get(resultPropery));
 					}
 				}
-				
+				String productTemplateId = result.getString("productTemplateId");
+				log.debug("productTemplateId :"+productTemplateId +" Product Type" +productType);
+				Document productTemplateRecord = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
+				log.debug("productTemplateRecord"+productTemplateRecord);
+				String manufacturerName = (String)productTemplateRecord.get("manufacturerName");
+				String imageURL = (String)productTemplateRecord.get("image");
+				productDetails.append("manufacturerName", manufacturerName);
+				productDetails.append("image", imageURL);
 				JSONResponse = productDetails.toJson();
 			}
 		}

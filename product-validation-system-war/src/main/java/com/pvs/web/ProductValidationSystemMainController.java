@@ -33,7 +33,8 @@ public class ProductValidationSystemMainController implements SparkApplication {
     	
     	
     	
-    	Spark.externalStaticFileLocation(ProductValidationSystemWebConstants.QR_CODE_ROOT_PATH);
+    	//Spark.externalStaticFileLocation(ProductValidationSystemWebConstants.QR_CODE_ROOT_PATH);
+    	Spark.externalStaticFileLocation(ProductValidationSystemWebConstants.PRODUCT_IMAGE_ROOT_PATH);
     	
     	spark.Spark.get(RedirectPaths.HOME_PAGE, new Route() {
 			

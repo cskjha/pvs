@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import com.pvs.service.excel.ExcelFileHandler;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
+import com.pvs.web.utilities.FormUploadedFileReaderUtil;
 import com.pvs.web.utilities.ProcessorUtil;
 
 import freemarker.template.TemplateException;
@@ -58,11 +59,8 @@ public class UploadProductProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
-		 boolean isMultipart;
-		 int maxFileSize = 50000 * 1024;
-		 //int maxMemSize = 4 * 1024;
-		try {			
-				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+		Map<String, Object> dynamicValues = new HashMap<String, Object>();
+		try {	
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
 				String locale = ProcessorUtil.getLanguage(request);
@@ -71,60 +69,27 @@ public class UploadProductProcessor {
 					return null;
 				}
 				else {
-					String productTemplateId = request.queryParams("productTemplateId");
-					String productType = request.queryParams("productType");
-					String companyName = session.attribute("companyName");	
-					String companyId = session.attribute("companyId");
-					
-					
-					// Check that we have a file upload request
-				      isMultipart = ServletFileUpload.isMultipartContent(request.raw());
-				      if( !isMultipart ){
-				         System.out.println("Please upload a file");
-				      }
-				      DiskFileItemFactory factory = new DiskFileItemFactory();
-				      // maximum size that will be stored in memory
-				     // factory.setSizeThreshold(maxMemSize);
-				      // Location to save data that is larger than maxMemSize.
-				     // factory.setRepository(new File("c:\\temp"));
-
-				      // Create a new file upload handler
-				      ServletFileUpload upload = new ServletFileUpload(factory);
-				      // maximum file size to be uploaded.
-				      upload.setSizeMax( maxFileSize );
-
-				      try{ 
-				      // Parse the request to get file items.
-				      List<FileItem> fileItems = upload.parseRequest(request.raw());
-					  log.debug("Parse File Workd : File List : "+fileItems);
-				      // Process the uploaded file items
-				      Iterator<FileItem> fileNameIterator = fileItems.iterator();
-				      while ( fileNameIterator.hasNext () ) 
-				      {
-				         FileItem fileItem = (FileItem)fileNameIterator.next();
-				         if ( !fileItem.isFormField () )	
-				         {
-				            // Get the uploaded file parameters
-				            String fileName = fileItem.getName();
-				            log.debug("fileName : "+fileName);
-				            InputStream inputStream = fileItem.getInputStream();
-				            int recordInserted = new ExcelFileHandler().readExcelAndInsertRecord(inputStream, productTemplateId, productType, companyId);
-				            log.debug("Number of Record Inserted : "+ recordInserted);
-				         }
-				      }
-				   }catch(Exception ex) {
-				       System.out.println(ex);
-				   }					
+					Map<String, Map<String, Object>> fileMap = new FormUploadedFileReaderUtil().getMultipleFiles(request);
+					Map<String, Object> allFileDataMap = null;
+					Map<String, Object> allOtherParams = null;
+					if(fileMap != null) {
+						allFileDataMap = fileMap.get("files");
+						allOtherParams = fileMap.get("params");
+					}
+					String productTemplateId = (String)allOtherParams.get("productTemplateId");
+					String productType = (String)allOtherParams.get("productType");
+					String companyName = (String)allOtherParams.get("companyName");	
+					String companyId = (String)allOtherParams.get("companyId");
+					for(String fileName : allFileDataMap.keySet()) {
+						  int recordInserted = new ExcelFileHandler().readExcelAndInsertRecord((InputStream)fileMap.get(fileName), productTemplateId, productType, companyId);
+						  log.debug("Number of Record Inserted : "+ recordInserted);
+					}
 				    dynamicValues.put("companyName", companyName);
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.UPLOAD_PRDUCT_FROM_EXCEL_POST, dynamicValues, ViewProductTemplateProcessor.class, locale);
-					return htmlOutput;
-				}		
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TemplateException e) {
-			e.printStackTrace();
-		}		
+				}
+		}catch(Exception ex) {
+			log.debug(ex);
+		}					
 		return htmlOutput;
-	}
+	} 
 }

@@ -18,11 +18,13 @@
         	<section>
             	<div class="my-form"> 
                 
-                	<form method="post" role="form" action="registerproducttemplate">
+                	<form method="post" role="form" action="registerproducttemplate" enctype="multipart/form-data">
 					
 						<h3>${PRODUCT_TEMPLATE_REG_MSG1} ${TEMPLATE}</h3>
-                		${PRODUCT} ${NAME}</td><td> <input type="text" name="productName" placeholder="${PRODUCT} ${NAME}" /><br>
-                		${PRODUCT} ${TYPE} </td><td> <input type="radio" name="productType" value="FP"/>${FOOD} <input type="radio" name="productType" value="NFP"/>${NON_FOOD}<br>
+                		${PRODUCT} ${NAME}</td><td> <input type="text" name="productName" placeholder="${PRODUCT} ${NAME}" required/><br><br>
+                		${MANUFACTURER} ${NAME}</td><td> <input type="text" name="manufacturerName" placeholder="${MANUFACTURER} ${NAME}" required/><br><br>
+                		${PRODUCT} ${IMAGE} <input type="file" name="file" size="500000" /><br><br>
+                		${PRODUCT} ${TYPE} </td><td> <input type="radio" name="productType" value="FP"/>${FOOD} <input type="radio" name="productType" value="NFP"/>${NON_FOOD}<br><br>
                         <h3>${PRODUCT_TEMPLATE_REG_MSG2}</h3>
 						<p class="text-box">
 							<label for="box1">${FIELD} <span class="box-number">1</span></label>
