@@ -76,13 +76,16 @@ public class UploadProductProcessor {
 						allFileDataMap = fileMap.get("files");
 						allOtherParams = fileMap.get("params");
 					}
-					String productTemplateId = (String)allOtherParams.get("productTemplateId");
-					String productType = (String)allOtherParams.get("productType");
-					String companyName = (String)allOtherParams.get("companyName");	
-					String companyId = (String)allOtherParams.get("companyId");
+					String productTemplateId = request.queryParams("productTemplateId");
+					String productType = request.queryParams("productType");
+					String companyName = request.session().attribute("companyName");	
+					String companyId = request.session().attribute("companyId");
+					log.debug("productTemplateId :"+productTemplateId+ " productType :"+productType+ " companyName:"+companyName+" companyId:"+companyId);
 					for(String fileName : allFileDataMap.keySet()) {
-						  int recordInserted = new ExcelFileHandler().readExcelAndInsertRecord((InputStream)fileMap.get(fileName), productTemplateId, productType, companyId);
-						  log.debug("Number of Record Inserted : "+ recordInserted);
+						  if(fileName != null && fileName.indexOf("xlsx") > 0) {
+							  int recordInserted = new ExcelFileHandler().readExcelAndInsertRecord((InputStream)allFileDataMap.get(fileName), productTemplateId, productType, companyId);
+							  log.debug("Number of Record Inserted : "+ recordInserted);
+						  }
 					}
 				    dynamicValues.put("companyName", companyName);
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.UPLOAD_PRDUCT_FROM_EXCEL_POST, dynamicValues, ViewProductTemplateProcessor.class, locale);

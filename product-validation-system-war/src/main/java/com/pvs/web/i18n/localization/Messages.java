@@ -49,6 +49,7 @@ public enum Messages {
 	VIEW,
 	MANUFACTURER,
 	IMAGE,
+	TEXT,
 	
 	MY_PLAN_MESSAGE1,
 	MY_PLAN_MESSAGE2,

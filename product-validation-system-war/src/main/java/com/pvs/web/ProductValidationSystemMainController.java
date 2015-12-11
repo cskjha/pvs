@@ -12,12 +12,13 @@ import com.pvs.web.freemarker.processors.LanguageChangeProcessor;
 import com.pvs.web.freemarker.processors.LogoutProcessor;
 import com.pvs.web.freemarker.processors.MyPlanProcessor;
 import com.pvs.web.freemarker.processors.PlanRegistrationProcessor;
+import com.pvs.web.freemarker.processors.ProductListViewProcessor;
 import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
+import com.pvs.web.freemarker.processors.TextFileDownloadProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
 import com.pvs.web.freemarker.processors.ViewProductTemplateProcessor;
-import com.pvs.web.freemarker.processors.ProductListViewProcessor;
 
 import spark.Request;
 import spark.Response;
@@ -252,6 +253,13 @@ public class ProductValidationSystemMainController implements SparkApplication {
 			
    			public Object handle(Request request, Response response) throws Exception {
    				return ProductListViewProcessor.getHTML(request, response);
+   			}
+          });
+		  
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.TEXT_FILE_DOWNLOAD, new Route() {
+			
+   			public Object handle(Request request, Response response) throws Exception {
+   				return TextFileDownloadProcessor.getHTML(request, response);
    			}
           });
         
