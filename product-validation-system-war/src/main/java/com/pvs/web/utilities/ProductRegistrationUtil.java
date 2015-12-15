@@ -30,8 +30,6 @@ import com.pvs.web.constants.RedirectPaths;
 
 public class ProductRegistrationUtil {
 	static final Logger log = Logger.getLogger(ProductRegistrationUtil.class);
-	
-	
 	public static String generateProductScanCode(String productId, String productType) {
 		String productScanId = null;
 		if(productId != null && productType != null) {
