@@ -1,6 +1,6 @@
 jQuery(document).ready(function($){
 						$('.my-form .add-box').click(function(){
-							var n = $('.text-box').length + 1;
+							var n = $('.text-box').length;
 								if( 50 < n ) {
 								alert('Limit 50!');
 								return false;
@@ -22,12 +22,10 @@ jQuery(document).ready(function($){
 			});
 			
 			$('#ProductTypeFP').click(function(){
-				alert('ProductTypeFP');
 				//return false;
 			});
 			
 			$('#ProductTypeNFP').click( function(){
-				alert('ProductTypeNFP');
 				//return false;
 			});			
 		});

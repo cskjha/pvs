@@ -107,7 +107,7 @@ public class ProductTemplateRegistrationProcessor {
 		String productType = (String)allOtherParams.get("productType");
 		log.debug("Product Type : "+productType);
 		for(String param: allOtherParams.keySet()) {
-			if(param.equals("productName") || param.equals("manufacturerName") ||  param.startsWith("field") 
+			if(param.equals("productName") || param.equals("manufacturerName") || param.equals("manufacturedOn") ||  param.startsWith("field") 
 					|| ("FP".equals(productType) && param.equals("expirationDate"))) {
 				productTemplateDocument.append(param, allOtherParams.get(param));
 			}
