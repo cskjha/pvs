@@ -34,8 +34,8 @@
 						<h3>${PRODUCT_TEMPLATE_REG_MSG1} ${TEMPLATE}</h3>
                 		${PRODUCT} ${NAME}</td><td> <input type="text" name="productName" placeholder="${PRODUCT} ${NAME}" required/><br><br>
                 		${MANUFACTURER} ${NAME}</td><td> <input type="text" name="manufacturerName" placeholder="${MANUFACTURER} ${NAME}" required/><br><br>
-                		${PRODUCT} ${IMAGE} <input type="file" name="file" size="500000" /><br><br>
-                		${PRODUCT} ${TYPE} </td><td> <input type="radio" name="productType" id="ProductTypeFP" value="FP" onclick="showExpirationDate()"/>${FOOD} <input type="radio" name="productType" id="ProductTypeNFP" value="NFP" onclick="hideExpirationDate()"/>${NON_FOOD}<br><br>
+                		${PRODUCT} ${IMAGE} <input type="file" name="file" size="500000" required/><br><br>
+                		${PRODUCT} ${TYPE} </td><td> <input type="radio" name="productType" id="ProductTypeFP" value="FP" onclick="showExpirationDate()" required/>${FOOD} <input type="radio" name="productType" id="ProductTypeNFP" value="NFP" onclick="hideExpirationDate()" required/>${NON_FOOD}<br><br>
                         <h3>${PRODUCT_TEMPLATE_REG_MSG2}</h3>
                         <p class="text-box" id="expirationDateBox" style="display:none">
 							<label for="box0">${FIELD} <span class="box-number">0</span></label>
