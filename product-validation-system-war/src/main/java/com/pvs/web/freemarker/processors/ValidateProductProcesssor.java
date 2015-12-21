@@ -1,13 +1,26 @@
 package com.pvs.web.freemarker.processors;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.update.ProductValidationSystemUpdateService;
+import com.pvs.service.valueobjects.ProductVO;
+import com.pvs.service.valueobjects.ProductValueVO;
+import com.pvs.service.valueobjects.ProductWebViewVO;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
+import com.pvs.web.constants.TemplatePaths;
+import com.pvs.web.utilities.ProcessorUtil;
 import com.pvs.web.utilities.ProductRegistrationUtil;
 
+import freemarker.template.TemplateException;
 import spark.Request;
 import spark.Response;
 import spark.Session;
@@ -22,7 +35,7 @@ public class ValidateProductProcesssor {
 //			response.redirect(RedirectPaths.COMPANY_LOGIN);
 //			return null;
 //		}
-		String JSONResponse = "error:product not found";
+		String JSONResponse = "error json:product not found";
 		String productScanCode = request.queryParams("productScanCode");
 		if(productScanCode != null) {
 			String productId = ProductRegistrationUtil.getProductIdFromProductScanCode(productScanCode);
@@ -66,7 +79,88 @@ public class ValidateProductProcesssor {
 		}
 		return JSONResponse;
 	}
+	
+	public static String getHTML(Request request, Response response) {
+		String HTMLResponse = "error html:product not found";
+		String productScanCode = request.queryParams("productScanCode");
+		if(productScanCode != null) {
+			String productId = ProductRegistrationUtil.getProductIdFromProductScanCode(productScanCode);
+			String productType = ProductRegistrationUtil.getProductTypeFromProductScanCode(productScanCode);
+			Document result = ProductValidationSystemReadService.getProductDetails(productId, productType);
+			if(result != null) {
+			
+				
+				String productTemplateId = result.getString("productTemplateId");
+				log.debug("productTemplateId :"+productTemplateId +" Product Type" +productType);
+				Document productTemplateRecord = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
+				log.debug("productTemplateRecord"+productTemplateRecord);
+				String manufacturerName = (String)productTemplateRecord.get("manufacturerName");
+				String imageURL = (String)productTemplateRecord.get("image");
+				
+				
+				String locale = ProcessorUtil.getLanguage(request);
+				//List<ProductWebViewVO> productwebviewVOList = new ArrayList<ProductWebViewVO>();
+				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				ProcessorUtil.populateDynamicValues(dynamicValues);
+				
+				ProductWebViewVO productWebViewVO = new ProductWebViewVO();
+				productWebViewVO.setManufacturerName(manufacturerName);
+				productWebViewVO.setProductRating("4");
+				productWebViewVO.setImage(imageURL);
+				//productwebviewVOList.add(productwebviewVO);
+				ArrayList<ProductValueVO> productValueArrayList = new ArrayList<ProductValueVO>();
+				
+				
+				
+				for(String resultPropery : result.keySet()) {
+					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery) || "creationDate".equals(resultPropery))) {
+						
+						if (resultPropery.equals("manufacturedOn")) {
+							productWebViewVO.setManufacturedOn(result.get(resultPropery).toString());
+						}
+						else if(resultPropery.equals("productName")){
+							productWebViewVO.setProductName(result.get(resultPropery).toString());
+						}
+						else{
+							ProductValueVO productValueVO = new ProductValueVO();
+						
+							productValueVO.setFieldName(resultPropery);
+							productValueVO.setFieldValue(result.get(resultPropery).toString());
+							productValueArrayList.add(productValueVO);
+						}
+					}
+				}
+				
+				productWebViewVO.setDynamicValues(productValueArrayList);
+				
+				dynamicValues.put("productwebview", productWebViewVO);
+				
+				try {
+					HTMLResponse = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_WEBVIEW, dynamicValues, ValidateProductProcesssor.class, locale);
+					return HTMLResponse;
+				} catch (TemplateException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return HTMLResponse;
+	}
+	
 	public static String postJSON(Request request, Response response) {
 		return postJSON(request, response);
+	}
+	public static String getJSONORHTML(Request request, Response response) {
+
+		String type = (null!=request.queryParams("type")?request.queryParams("type"):"") ;
+		
+		if (type.equals(ProductValidationSystemWebConstants.JSON))
+			return getJSON(request,response);
+		else
+			return getHTML(request, response);
+		
 	}
 }

@@ -48,8 +48,9 @@ public class CompanyLoginProcessor {
 				response.redirect(RedirectPaths.DISPLAY_PLAN);
 				return null;
 			}
-			boolean validateLogin = LoginValidator.validateLogin(request);
-			if(validateLogin) {
+			LoginValidator.validateLogin(request);
+			boolean validateCategory=ProductValidationSystemReadService.validateCategory(request.queryParams("email"));
+			if(validateCategory) {
 				response.redirect(RedirectPaths.DISPLAY_PLAN);
 				return null;
 			}			

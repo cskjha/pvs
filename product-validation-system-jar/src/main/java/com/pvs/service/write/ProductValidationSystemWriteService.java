@@ -198,4 +198,26 @@ public class ProductValidationSystemWriteService {
 		}
 		return false;
 	}
+
+	public static boolean ratingInfo(Document ratingDocument) {
+		// TODO Auto-generated method stub
+		MongoClient mongoClient = null;
+		
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.RATING_COLLECTION_NAME).insertOne(ratingDocument);
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
+	}
+
+
+	
 }

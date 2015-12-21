@@ -43,7 +43,26 @@ public class ProductValidationSystemReadService {
 		}
 		return false;
 	}
-	
+	public static boolean validateCategory(String userid) {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);
+			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, userid).append("category", "company");
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			if(documents.first() != null) {
+				return true;
+			}
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
+	}
 	
 	public static Document getProductDetails(String productId, String productType) {
 		

@@ -15,6 +15,7 @@ import com.pvs.web.freemarker.processors.PlanRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductListViewProcessor;
 import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
+import com.pvs.web.freemarker.processors.RatingInfoProcessor;
 import com.pvs.web.freemarker.processors.TextFileDownloadProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
@@ -203,7 +204,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
 					
 		   			
 		   			public Object handle(Request request, Response response) throws Exception {
-		   				return ValidateProductProcesssor.getJSON(request, response);
+		   				return ValidateProductProcesssor.getJSONORHTML(request, response);
 		   			}
 		          });
 
@@ -262,6 +263,12 @@ public class ProductValidationSystemMainController implements SparkApplication {
    				return TextFileDownloadProcessor.getHTML(request, response);
    			}
           });
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.RATING_INFO, new Route() {
+				
+	   			public Object handle(Request request, Response response) throws Exception {
+	   				return RatingInfoProcessor.postHTML(request, response);
+	   			}
+	        });
         
     }
 
