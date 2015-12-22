@@ -12,6 +12,6 @@ public class ProductValidationSystemWebConstants {
 	public static final int QR_CODE_WIDTH = 200;
 	public static final String QR_CODE_FILE_EXTENSION = "png";
 	public static final String EXCEL_EXTENSION = "xlsx";
-	
+	public static final String JSON="json";
 
 }
