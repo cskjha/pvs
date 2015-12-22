@@ -21,5 +21,5 @@ public class DatabaseConstants {
 	public static final String PRODUCT_TYPE = "productType";
 	public static final String COMPANY_ID = "companyId";
 	public static final String RATING_COLLECTION_NAME="ratingcollection";
-	
+	public static final String COMPANY_AUDIT_COLLECTION_NAME="companyauditcollection";
 }

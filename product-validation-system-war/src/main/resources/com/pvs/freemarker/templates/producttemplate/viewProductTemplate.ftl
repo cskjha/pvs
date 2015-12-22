@@ -18,8 +18,8 @@
         	<td>${REGISTRATION} ${LINK} </td>
         	<td>${DOWNLOAD} ${PRODUCT} ${FORMAT} ${LINK} </td>
         	<td>${UPLOAD} ${PRODUCT} ${LINK}</td>
-		<td>${PRODUCT} ${LIST}</td>
-		<td>${DOWNLOAD} ${TEXT} ${FILE}</td>
+			<td>${PRODUCT} ${LIST}</td>
+			<td>${DOWNLOAD} ${TEXT} ${FILE}</td>
         </tr>
         <#list productTemplateList as productTemplate>
         	<tr>
@@ -28,8 +28,8 @@
         		<td><a href="downloadproductformat?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}&templateName=${productTemplate.productTemplateName}">${DOWNLOAD} ${PRODUCT} ${FORMAT}</a></td>
         		<td><a href="uploadproduct?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${UPLOAD} ${PRODUCT}</a></td>
         		<td><a href="listproducts?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${VIEW} ${PRODUCT}</a></td>
-			<td><a target="_blank" href="textfiledownload?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${DOWNLOAD}</a></td>
-		</tr>
+				<td><a target="_blank" href="textfiledownload?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${DOWNLOAD}</a></td>
+			</tr>
         </#list>
         <#else>
         	${VIEW_PROD_TEMPLATE_MSG2}.<br>

@@ -54,6 +54,7 @@ public enum Messages {
 	ON,
 	EXPIRATION,
 	DATE,
+	PREVIOUS,
 	
 	MY_PLAN_MESSAGE1,
 	MY_PLAN_MESSAGE2,

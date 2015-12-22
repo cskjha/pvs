@@ -58,8 +58,22 @@
 							</p>
                     </form>
                 </div>
-            </section>
-			
+            	<div align="right">
+					<#if productTemplateList??>
+        			<table>
+        					<tr>
+					        	<td><h2>${PREVIOUS} ${PRODUCT} ${TEMPLATE} ${NAME}</h2></td>
+					        </tr>
+					<#list productTemplateList as productTemplate>
+        					<tr>
+        						<td><h3>${productTemplate.productTemplateName}</h3></td>	
+        					</tr>
+        			</#list>
+        				
+        			</#if>
+        			</table>
+        		</div>	
+			</section>
 			</div>   	
     	</center>
     </body>

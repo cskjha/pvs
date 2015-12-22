@@ -1,6 +1,8 @@
 package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -52,11 +54,20 @@ public class CompanyRegistrationProcessor {
 		companyDocument.append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
 		companyDocument.append("companyPassword", companyPassword);
 		new CommonUtils().addHistoryFields(companyDocument);
+		
+		
 		if(ProductValidationSystemWriteService.registerCompany(companyDocument)) {
 			try {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				String locale = ProcessorUtil.getLanguage(request);
+				String timeStamp = new SimpleDateFormat("dd.MM.yyyy_HH:mm:ss").format(Calendar.getInstance().getTime());
+				Document auditDocument = new Document();
+				auditDocument.append("companyName", companyName);
+				auditDocument.append("username", companyEmail);
+				auditDocument.append("status", "one new user has been successfully registered");
+				auditDocument.append("time", timeStamp);
+				ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_REGISTRATION_POST, dynamicValues, CompanyRegistrationProcessor.class, locale);
 			} catch (IOException e) {
 				e.printStackTrace();

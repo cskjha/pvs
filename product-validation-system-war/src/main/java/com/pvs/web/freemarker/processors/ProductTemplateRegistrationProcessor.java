@@ -4,7 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,6 +19,7 @@ import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.utils.CommonUtils;
+import com.pvs.service.valueobjects.ProductTemplateVO;
 import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
@@ -37,12 +43,14 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		String locale = ProcessorUtil.getLanguage(request);
 		String userName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
+		
+		String locale = ProcessorUtil.getLanguage(request);
+		Map<String, Object> dynamicValues = new HashMap<String, Object>();
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
-				Map<String, Object> dynamicValues = new HashMap<String, Object>();
+				
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
 				try {
@@ -53,8 +61,19 @@ public class ProductTemplateRegistrationProcessor {
 					e.printStackTrace();
 				}
 		}
-	
-			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+		List<ProductTemplateVO> productTemplateVOList = new ArrayList<ProductTemplateVO>();
+		List<Document> productTemplates = ProductValidationSystemReadService.getCompanyTemplateRecords(companyId);
+		
+		Iterator<Document> productTemplateIterator = productTemplates.iterator();
+		while(productTemplateIterator.hasNext()) {
+			Document productTemplate = productTemplateIterator.next();
+			String productTemplateName = productTemplate.getString("productName");
+			ProductTemplateVO productTemplateVO = new ProductTemplateVO();
+			productTemplateVO.setProductTemplateName(productTemplateName);
+			productTemplateVOList.add(productTemplateVO);
+		}
+		dynamicValues.put("productTemplateList", productTemplateVOList);
+			
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
 			try {
@@ -73,6 +92,7 @@ public class ProductTemplateRegistrationProcessor {
 	
 	public static String postHTML(Request request, Response response) throws IOException {
 		String htmlOutput = null;
+		String productname = null;
 		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
@@ -110,6 +130,9 @@ public class ProductTemplateRegistrationProcessor {
 			if(param.equals("productName") || param.equals("manufacturerName") || param.equals("manufacturedOn") ||  param.startsWith("field") 
 					|| ("FP".equals(productType) && param.equals("expirationDate"))) {
 				productTemplateDocument.append(param, allOtherParams.get(param));
+				if(param.equals("productName")){
+					productname=allOtherParams.get(param).toString();
+				}
 			}
 		}
 		for(String fileName : allFileDataMap.keySet()) {
@@ -131,6 +154,13 @@ public class ProductTemplateRegistrationProcessor {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
+			String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+			Document auditDocument = new Document();
+			auditDocument.append("companyName", userName);
+			auditDocument.append("username", userName);
+			auditDocument.append("status", "one new product "+productname +" template has been successfully registered");
+			auditDocument.append("time", timeStamp);
+			ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_POST,
 					dynamicValues, ProductRegistrationProcessor.class, locale);
 			

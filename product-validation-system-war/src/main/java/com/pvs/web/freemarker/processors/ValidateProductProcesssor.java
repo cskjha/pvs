@@ -157,7 +157,7 @@ public class ValidateProductProcesssor {
 
 		String type = (null!=request.queryParams("type")?request.queryParams("type"):"") ;
 		
-		if (type.equals(ProductValidationSystemWebConstants.JSON))
+		if (type.equalsIgnoreCase(ProductValidationSystemWebConstants.JSON))
 			return getJSON(request,response);
 		else
 			return getHTML(request, response);
