@@ -67,11 +67,16 @@ public class ProductTemplateRegistrationProcessor {
 		Iterator<Document> productTemplateIterator = productTemplates.iterator();
 		while(productTemplateIterator.hasNext()) {
 			Document productTemplate = productTemplateIterator.next();
+			String productTemplateId = productTemplate.getObjectId("_id").toHexString();
 			String productTemplateName = productTemplate.getString("productName");
+			String productType = productTemplate.getString("productType");
 			ProductTemplateVO productTemplateVO = new ProductTemplateVO();
+			productTemplateVO.setProductTemplateId(productTemplateId);
 			productTemplateVO.setProductTemplateName(productTemplateName);
+			productTemplateVO.setProductType(productType);
 			productTemplateVOList.add(productTemplateVO);
 		}
+				
 		dynamicValues.put("productTemplateList", productTemplateVOList);
 			
 			ProcessorUtil.populateDynamicValues(dynamicValues);

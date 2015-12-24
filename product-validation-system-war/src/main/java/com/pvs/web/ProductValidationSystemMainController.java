@@ -5,6 +5,7 @@ import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
+import com.pvs.web.freemarker.processors.DisplayUserListProcessor;
 import com.pvs.web.freemarker.processors.DownloadProductFormatProcessor;
 import com.pvs.web.freemarker.processors.GenerateQRCodeProcessor;
 import com.pvs.web.freemarker.processors.GenericErrorProcessor;
@@ -16,6 +17,7 @@ import com.pvs.web.freemarker.processors.ProductListViewProcessor;
 import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
 import com.pvs.web.freemarker.processors.RatingInfoProcessor;
+import com.pvs.web.freemarker.processors.RemoveProductTemplateProcessor;
 import com.pvs.web.freemarker.processors.TextFileDownloadProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
@@ -199,6 +201,13 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			}
           });
         
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REMOVE_PRODUCT_TEMPLATE, new Route() {
+			
+   			
+   			public Object handle(Request request, Response response) throws Exception {
+   				return RemoveProductTemplateProcessor.getHTML(request, response);
+   			}
+          });
         
 		spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.VALIDATE_PRODUCT, new Route() {
 					
@@ -267,6 +276,12 @@ public class ProductValidationSystemMainController implements SparkApplication {
 				
 	   			public Object handle(Request request, Response response) throws Exception {
 	   				return RatingInfoProcessor.postHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_USERLIST, new Route() {
+				
+	   			public Object handle(Request request, Response response) throws Exception {
+	   				return DisplayUserListProcessor.getHTML(request, response);
 	   			}
 	        });
         

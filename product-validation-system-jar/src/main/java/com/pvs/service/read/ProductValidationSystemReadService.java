@@ -43,25 +43,51 @@ public class ProductValidationSystemReadService {
 		}
 		return false;
 	}
-	public static boolean validateCategory(String userid) {
+	public static boolean validateCategory(String username) {
 		MongoClient mongoClient = null;
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);
-			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, userid).append("category", "company");
+			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, username).append("category", "company");
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			if(documents.first() != null) {
 				return true;
 			}
+			else
+				return false;
 		} catch (Exception e) {
 			log.error("PVS Exception occured : Message :  "+e.getMessage());
 			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			return false;
 		}
 		finally {
 			mongoClient.close();
 		}
-		return false;
+		
+	}
+	public static boolean userStatus(String username){
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);
+			Document searchCriteria = new Document().append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, username).append("status", "enabled");
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			if(documents.first() != null) {
+				return true;
+			}
+			else
+				return false;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			return false;
+		}
+		finally {
+			mongoClient.close();
+		}
+		
 	}
 	
 	public static Document getProductDetails(String productId, String productType) {
@@ -332,5 +358,31 @@ public class ProductValidationSystemReadService {
 		}
 		return productList;
 	}
+	public static List<Document> getAllCompanyUserStatus() {
+		MongoClient mongoClient =null;
+		List<Document> userList = new ArrayList<Document>();
+		try{
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);		
+			
+			FindIterable<Document> documents = mongoCollection.find();
+			MongoCursor<Document> userListViewDocumentIterator = documents.iterator();
+			while(userListViewDocumentIterator != null && userListViewDocumentIterator.hasNext()) {
+				Document productListViewTemplateDocument = userListViewDocumentIterator.next();
+				userList.add(productListViewTemplateDocument);
+			}
+			return userList;
+		}
+		catch(Exception e){
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally{
+			mongoClient.close();
+		}
+		return userList;
+	}
+	
  
 }
