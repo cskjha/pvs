@@ -365,8 +365,8 @@ public class ProductValidationSystemReadService {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);		
-			
-			FindIterable<Document> documents = mongoCollection.find();
+			Document searchCriteria = new Document().append(DatabaseConstants.CATEGORY_ID, "company");
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			MongoCursor<Document> userListViewDocumentIterator = documents.iterator();
 			while(userListViewDocumentIterator != null && userListViewDocumentIterator.hasNext()) {
 				Document productListViewTemplateDocument = userListViewDocumentIterator.next();

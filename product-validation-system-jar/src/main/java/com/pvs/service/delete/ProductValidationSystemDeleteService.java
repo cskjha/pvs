@@ -51,4 +51,31 @@ public class ProductValidationSystemDeleteService {
 		}
 		
 	}
+	@SuppressWarnings("deprecation")
+	public static boolean removeUser(String companyName, String userName) {
+		
+		if(companyName ==null || userName == null ) {
+			return false;
+		}
+		MongoClient mongoClient =new MongoClient();		
+		try {
+			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
+			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);
+			BasicDBObject query = new BasicDBObject();
+			query.append("companyEmail", userName).append("companyName", companyName);
+			collection.remove(query);
+			
+			log.debug("User is removed successfully");
+			return true;
+		} catch (Exception e) {
+			
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			return false;
+		}
+		finally {
+			mongoClient.close();
+		}
+		
+	}
 }

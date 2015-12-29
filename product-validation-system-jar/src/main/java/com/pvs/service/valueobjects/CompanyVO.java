@@ -1,7 +1,15 @@
 package com.pvs.service.valueobjects;
 
 public class CompanyVO {
-	String companyEmail,status;
+	String companyName,companyEmail,status;
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
 	public String getCompanyEmail() {
 		return companyEmail;

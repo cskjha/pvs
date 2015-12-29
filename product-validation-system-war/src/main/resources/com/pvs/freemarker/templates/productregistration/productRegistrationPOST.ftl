@@ -4,6 +4,7 @@
 		<title>${PRODUCT} ${VALIDATION} ${SYSTEM}</title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
 		<script src="scripts/jquery/jquery.js" type="text/javascript"></script>
+		<script src="scripts/common.js" type="text/javascript"></script>
 		<script src="scripts/product-registration.js" type="text/javascript"></script>
     </head>
     

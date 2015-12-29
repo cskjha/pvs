@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 	<html>
     <head>
-		<title>${PRODUCT} ${VALIDATION} ${SYSTEM}</title>
+		<title>${PRODUCT} ${VALIDATION} ${SYSTEM} </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
 		<script src="scripts/jquery/jquery.js" type="text/javascript"></script>
 		<script src="scripts/product-registration.js" type="text/javascript"></script>
@@ -9,9 +9,10 @@
     
     <body>
     	<center>
-    	 <#include "../base/admin_header.ftl"><br>
-    		<h4>Plan Registration Successful</h4>
-    		<h5> Register another Plan <a href="planregister"> ${HERE} </a></h5>
+    	 <#include "../base/header.ftl"><br>
+    		<h4> ${PRODUCT_TEMPLATE_REG_MSG3}</h4>
+    		<h5> ${PRODUCT_TEMPLATE_REG_MSG4} <a href="registerproducttemplate"> ${HERE} </a></h5>
+    		<h5> ${PRODUCT_TEMPLATE_REG_MSG5}  <a href="viewproducttemplates"> ${HERE} </a></h5>
     	</center>
     </body>
     </html>

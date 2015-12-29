@@ -22,4 +22,5 @@ public class DatabaseConstants {
 	public static final String COMPANY_ID = "companyId";
 	public static final String RATING_COLLECTION_NAME="ratingcollection";
 	public static final String COMPANY_AUDIT_COLLECTION_NAME="companyauditcollection";
+	public static final String CATEGORY_ID="category";
 }

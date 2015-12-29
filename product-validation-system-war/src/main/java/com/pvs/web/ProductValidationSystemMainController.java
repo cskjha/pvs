@@ -18,6 +18,7 @@ import com.pvs.web.freemarker.processors.ProductRegistrationProcessor;
 import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
 import com.pvs.web.freemarker.processors.RatingInfoProcessor;
 import com.pvs.web.freemarker.processors.RemoveProductTemplateProcessor;
+import com.pvs.web.freemarker.processors.RemoveUserProcessor;
 import com.pvs.web.freemarker.processors.TextFileDownloadProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
@@ -204,7 +205,7 @@ public class ProductValidationSystemMainController implements SparkApplication {
         spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REMOVE_PRODUCT_TEMPLATE, new Route() {
 			
    			
-   			public Object handle(Request request, Response response) throws Exception {
+   			public String handle(Request request, Response response) throws Exception {
    				return RemoveProductTemplateProcessor.getHTML(request, response);
    			}
           });
@@ -280,8 +281,20 @@ public class ProductValidationSystemMainController implements SparkApplication {
 	        });
 		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_USERLIST, new Route() {
 				
-	   			public Object handle(Request request, Response response) throws Exception {
+	   			public String handle(Request request, Response response) throws Exception {
 	   				return DisplayUserListProcessor.getHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_USERLIST, new Route() {
+				
+	   			public String handle(Request request, Response response) throws Exception {
+	   				return DisplayUserListProcessor.postHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REMOVE_USER, new Route() {
+				
+	   			public Object handle(Request request, Response response) throws Exception {
+	   				return RemoveUserProcessor.getHTML(request, response);
 	   			}
 	        });
         

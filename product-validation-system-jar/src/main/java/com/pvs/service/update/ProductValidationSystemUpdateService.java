@@ -5,6 +5,9 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -41,122 +44,145 @@ public class ProductValidationSystemUpdateService {
 			}
 	return false;
 	}
-public static synchronized boolean updateRemainingRecordCount(String companyId) {
-			MongoClient mongoClient = null;
-			try {
-				mongoClient = ConnectionManagerFactory.getMongoClient();
-				MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
-				MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
-				Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
-				Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
-				log.debug("companyPlanRecord : "+companyPlanRecord);
-				if(companyPlanRecord != null) {
-					Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
-					log.debug("remainingRecordCount : "+remainingRecordCount);
-					remainingRecordCount--;
-					Document updateDocument = new Document();
-					updateDocument.append("$set",new Document("remainingRecordCount", remainingRecordCount.toString()));
-					UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
-					log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
+	public static synchronized boolean updateRemainingRecordCount(String companyId) {
+				MongoClient mongoClient = null;
+				try {
+					mongoClient = ConnectionManagerFactory.getMongoClient();
+					MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+					MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
+					Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
+					Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
+					log.debug("companyPlanRecord : "+companyPlanRecord);
+					if(companyPlanRecord != null) {
+						Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
+						log.debug("remainingRecordCount : "+remainingRecordCount);
+						remainingRecordCount--;
+						Document updateDocument = new Document();
+						updateDocument.append("$set",new Document("remainingRecordCount", remainingRecordCount.toString()));
+						UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
+						log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
+					}
+					return true;
+				} catch (Exception e) {
+					log.error("PVS Exception occured : Message :  "+e.getMessage());
+					log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 				}
-				return true;
-			} catch (Exception e) {
-				log.error("PVS Exception occured : Message :  "+e.getMessage());
-				log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+				finally {
+					mongoClient.close();
+				}
+		return false;
+		}
+	
+	public static synchronized boolean updateRemainingRecordCount(String companyId, int totalDecrement) {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
+			Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
+			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
+			log.debug("companyPlanRecord : "+companyPlanRecord);
+			if(companyPlanRecord != null) {
+				Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
+				log.debug("remainingRecordCount : "+remainingRecordCount);
+				remainingRecordCount = remainingRecordCount - totalDecrement ;
+				Document updateDocument = new Document();
+				updateDocument.append("$set",new Document("remainingRecordCount", remainingRecordCount.toString()));
+				UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
+				log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
 			}
-			finally {
-				mongoClient.close();
-			}
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
 	return false;
 	}
-
-public static synchronized boolean updateRemainingRecordCount(String companyId, int totalDecrement) {
-	MongoClient mongoClient = null;
-	try {
-		mongoClient = ConnectionManagerFactory.getMongoClient();
-		MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
-		MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
-		Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
-		Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
-		log.debug("companyPlanRecord : "+companyPlanRecord);
-		if(companyPlanRecord != null) {
-			Long remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));
-			log.debug("remainingRecordCount : "+remainingRecordCount);
-			remainingRecordCount = remainingRecordCount - totalDecrement ;
-			Document updateDocument = new Document();
-			updateDocument.append("$set",new Document("remainingRecordCount", remainingRecordCount.toString()));
-			UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
-			log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
+	
+	
+	public static synchronized boolean updateRemainingScanCount(String companyId) {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
+			Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
+			Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
+			log.debug("companyPlanRecord : "+companyPlanRecord);
+			if(companyPlanRecord != null) {
+				Long remainingScanCount = Long.parseLong(companyPlanRecord.getString("remainingScanCount"));
+				log.debug("remainingScanCount : "+remainingScanCount);
+				remainingScanCount--;
+				Document updateDocument = new Document();
+				updateDocument.append("$set",new Document("remainingRecordCount", remainingScanCount.toString()));
+				UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
+				log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
+			}
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
 		}
-		return true;
-	} catch (Exception e) {
-		log.error("PVS Exception occured : Message :  "+e.getMessage());
-		log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
-	}
-	finally {
-		mongoClient.close();
-	}
-return false;
-}
-
-
-public static synchronized boolean updateRemainingScanCount(String companyId) {
-	MongoClient mongoClient = null;
-	try {
-		mongoClient = ConnectionManagerFactory.getMongoClient();
-		MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
-		MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME);
-		Document searchCriteria = new Document().append(DatabaseConstants.COMPANY_ID, companyId);
-		Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
-		log.debug("companyPlanRecord : "+companyPlanRecord);
-		if(companyPlanRecord != null) {
-			Long remainingScanCount = Long.parseLong(companyPlanRecord.getString("remainingScanCount"));
-			log.debug("remainingScanCount : "+remainingScanCount);
-			remainingScanCount--;
-			Document updateDocument = new Document();
-			updateDocument.append("$set",new Document("remainingRecordCount", remainingScanCount.toString()));
-			UpdateResult updateResult = mongoCollection.updateOne(searchCriteria, updateDocument);
-			log.debug("updateResult.getModifiedCount() : "+updateResult.getModifiedCount());
+		finally {
+			mongoClient.close();
 		}
-		return true;
-	} catch (Exception e) {
-		log.error("PVS Exception occured : Message :  "+e.getMessage());
-		log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
-	}
-	finally {
-		mongoClient.close();
-	}
-	return false;
-}
-
-public static boolean rechargeCompanyPlan(String companyId, String companyPlanId) {
-	if(companyId ==null || companyPlanId == null) {
 		return false;
 	}
-	MongoClient mongoClient = null;		
-	try {
-		String collectionName = DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME;
-		Document planDocument = ProductValidationSystemReadService.getPlanRecord(companyPlanId);
-		String remainingRecordCount = planDocument.getString("allowedRecordCount");
-		String remainingScanCount = planDocument.getString("allowedScanCount");
-		mongoClient = ConnectionManagerFactory.getMongoClient();
-		Document searchCriteria = new Document();
-		searchCriteria.append(DatabaseConstants.COMPANY_ID, companyId).append("companyPlanId", companyPlanId);
-		Document planModel = new Document();
-		planModel.append("remainingRecordCount", remainingRecordCount);
-		planModel.append("remainingScanCount", remainingScanCount);
-		Document updateDocument = new Document().append("$set", planModel);
-		MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
-		DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).updateOne(searchCriteria, updateDocument);
-		return true;
-	} catch (Exception e) {
-		log.error("PVS Exception occured : Message :  "+e.getMessage());
-		log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+
+	public static boolean rechargeCompanyPlan(String companyId, String companyPlanId) {
+		if(companyId ==null || companyPlanId == null) {
+			return false;
+		}
+		MongoClient mongoClient = null;		
+		try {
+			String collectionName = DatabaseConstants.COMPANY_PLAN_COLLECTION_NAME;
+			Document planDocument = ProductValidationSystemReadService.getPlanRecord(companyPlanId);
+			String remainingRecordCount = planDocument.getString("allowedRecordCount");
+			String remainingScanCount = planDocument.getString("allowedScanCount");
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			Document searchCriteria = new Document();
+			searchCriteria.append(DatabaseConstants.COMPANY_ID, companyId).append("companyPlanId", companyPlanId);
+			Document planModel = new Document();
+			planModel.append("remainingRecordCount", remainingRecordCount);
+			planModel.append("remainingScanCount", remainingScanCount);
+			Document updateDocument = new Document().append("$set", planModel);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).updateOne(searchCriteria, updateDocument);
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
 	}
-	finally {
-		mongoClient.close();
+	@SuppressWarnings("deprecation")
+	public static boolean updateStatus(String companyName,String companyEmail,String status){
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
+			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);			BasicDBObject newDocument = new BasicDBObject();
+			newDocument.put("status", status);
+		
+			BasicDBObject searchQuery = new BasicDBObject().append("companyName", companyName).append("companyEmail", companyEmail);
+		
+			collection.update(searchQuery, newDocument);
+			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		finally{
+			mongoClient.close();
+		}
+		
 	}
-	return false;
-}
 
 }

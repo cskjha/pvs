@@ -8,7 +8,7 @@
     
     <body>
     	<center>
-        <#include "../base/header.ftl">
+        <#include "../base/admin_header.ftl">
         <br /><br />
         <section>
 				<ul>
