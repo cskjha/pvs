@@ -23,6 +23,28 @@ import com.pvs.service.valueobjects.PlanVO;
 
 public class ProductValidationSystemReadService {
 	final static Logger log = Logger.getLogger(ProductValidationSystemReadService.class);
+	public static Document getCompanyEmail(String companyName, String companyId) {
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);		
+			Document searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(companyId)).append("companyName", companyName);
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			if(documents != null) {
+				return documents.first();
+			}
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			
+		}
+		finally {
+			mongoClient.close();
+		}
+		return null;
+	}
+	
 	public static boolean validateUser(String userid, String password) {
 		MongoClient mongoClient = null;
 		try {
@@ -123,10 +145,12 @@ public class ProductValidationSystemReadService {
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
 			if(documents != null) {
 				return documents.first();
-			}
+			} 
+			return null;
 		} catch (Exception e) {
 			log.error("PVS Exception occured : Message :  "+e.getMessage());
 			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			return null;
 		}
 		finally {
 			mongoClient.close();
@@ -358,6 +382,7 @@ public class ProductValidationSystemReadService {
 		}
 		return productList;
 	}
+	
 	public static List<Document> getAllCompanyUserStatus() {
 		MongoClient mongoClient =null;
 		List<Document> userList = new ArrayList<Document>();
@@ -383,6 +408,8 @@ public class ProductValidationSystemReadService {
 		}
 		return userList;
 	}
+
+	
 	
  
 }

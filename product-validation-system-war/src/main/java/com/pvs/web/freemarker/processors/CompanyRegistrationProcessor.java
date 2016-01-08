@@ -1,6 +1,9 @@
 package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -46,13 +49,38 @@ public class CompanyRegistrationProcessor {
 	
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
+		String companyPassword = null;
 		String companyName = request.queryParams("companyName");
 		String companyEmail = request.queryParams("email");
-		String companyPassword = request.queryParams("password");
+		String originalcompanyPassword = request.queryParams("password");
+		
+		try {
+			MessageDigest m = MessageDigest.getInstance("MD5");
+			m.reset();
+			m.update(originalcompanyPassword.getBytes());
+			byte[] digest = m.digest();
+			BigInteger bigInt = new BigInteger(1,digest);
+			companyPassword = bigInt.toString(16);
+			// Now we need to zero pad it if you actually want the full 32 chars.
+			while(companyPassword.length() < 32 ){
+				companyPassword = "0"+companyPassword;
+			}
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		
+		
+		String category = "company";
+		String status="enabled";
 		Document companyDocument = new Document();
 		companyDocument.append("companyName", companyName);
 		companyDocument.append(DatabaseConstants.PRIMARY_KEY_COMPANY_COLLECTION, companyEmail);
 		companyDocument.append("companyPassword", companyPassword);
+		companyDocument.append("category", category);
+		companyDocument.append("status", status);
 		new CommonUtils().addHistoryFields(companyDocument);
 		
 		

@@ -19,8 +19,10 @@ import com.pvs.web.freemarker.processors.ProductTemplateRegistrationProcessor;
 import com.pvs.web.freemarker.processors.RatingInfoProcessor;
 import com.pvs.web.freemarker.processors.RemoveProductTemplateProcessor;
 import com.pvs.web.freemarker.processors.RemoveUserProcessor;
+import com.pvs.web.freemarker.processors.SaveProductAsStolen;
 import com.pvs.web.freemarker.processors.TextFileDownloadProcessor;
 import com.pvs.web.freemarker.processors.UploadProductProcessor;
+import com.pvs.web.freemarker.processors.UserProductTemplateProcessor;
 import com.pvs.web.freemarker.processors.ValidateProductProcesssor;
 import com.pvs.web.freemarker.processors.ViewProductTemplateProcessor;
 
@@ -285,16 +287,22 @@ public class ProductValidationSystemMainController implements SparkApplication {
 	   				return DisplayUserListProcessor.getHTML(request, response);
 	   			}
 	        });
-		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_USERLIST, new Route() {
+		    spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.DISPLAY_USERLIST, new Route() {
 				
 	   			public String handle(Request request, Response response) throws Exception {
 	   				return DisplayUserListProcessor.postHTML(request, response);
 	   			}
 	        });
-		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REMOVE_USER, new Route() {
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.USER_PRODUCT_TEMPLATE , new Route() {
 				
-	   			public Object handle(Request request, Response response) throws Exception {
-	   				return RemoveUserProcessor.getHTML(request, response);
+	   			public String handle(Request request, Response response) throws Exception {
+	   				return UserProductTemplateProcessor.getHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.UPDATE_STOLEN_PRODUCT_RESPONSECODE, new Route() {
+				
+	   			public String handle(Request request, Response response) throws Exception {
+	   				return SaveProductAsStolen.postHTML(request, response);
 	   			}
 	        });
         

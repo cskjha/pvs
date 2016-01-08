@@ -32,6 +32,7 @@ public class CommonUtils {
 		return collectionName;
 	}
 	
+	
 	public void addHistoryFields(Document productDocument) {
 		String pattern = "dd-MM-yyyy";
         String dateInString =new SimpleDateFormat(pattern).format(new Date());

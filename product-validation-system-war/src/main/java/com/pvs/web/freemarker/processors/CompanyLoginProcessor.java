@@ -45,44 +45,45 @@ public class CompanyLoginProcessor {
 
 		return htmlOutput;
 	}
+
 	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
 		
 		try {
 			Session session = request.session(false);
-			if(session != null) {
-				response.redirect(RedirectPaths.DISPLAY_PLAN);
-				return null;
-			}
+				if(session != null) {
+					response.redirect(RedirectPaths.DISPLAY_PLAN);
+					return null;
+				}
 			
-			boolean validateLogin=LoginValidator.validateLogin(request);
-			if(validateLogin){
-				boolean validateCategory=ProductValidationSystemReadService.validateCategory(request.queryParams("email"));
-				boolean userStatus= ProductValidationSystemReadService.userStatus(request.queryParams("email"));
-				if( validateCategory==true ) {
-					if(userStatus==true){
-						String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-						Document auditDocument = new Document();
-						auditDocument.append("companyName", request.queryParams("companyName"));
-						auditDocument.append("username", request.queryParams("email"));
-						auditDocument.append("status", "one user has been successfully LoggedIn");
-						auditDocument.append("time", timeStamp);
-						ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
-						response.redirect(RedirectPaths.DISPLAY_PLAN);
-						return null;
+				boolean validateLogin=LoginValidator.validateLogin(request);
+				if(validateLogin){
+					boolean validateCategory=ProductValidationSystemReadService.validateCategory(request.queryParams("email"));
+					if( validateCategory==true ) {
+						//boolean userStatus= ProductValidationSystemReadService.userStatus(request.queryParams("email"));
+						//if(userStatus){
+							String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+							Document auditDocument = new Document();
+							auditDocument.append("companyName", request.queryParams("companyName"));
+							auditDocument.append("username", request.queryParams("email"));
+							auditDocument.append("status", "one user has been successfully LoggedIn");
+							auditDocument.append("time", timeStamp);
+							ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
+							response.redirect(RedirectPaths.DISPLAY_PLAN);
+							return null;
+						//}
 					}
-				}
+					else {
+						//it is admin
+						response.redirect(RedirectPaths.DISPLAY_USERLIST);	
+					}
+				}	
 				else {
-					//it is admin
-					response.redirect(RedirectPaths.DISPLAY_USERLIST);
+					Map<String, Object> dynamicValues = new HashMap<String, Object>();
+					dynamicValues.put("errorMessage", ProductValidationSystemWebConstants.LOGIN_FAILURE_MESSAGE);
+					String locale = ProcessorUtil.getLanguage(request);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);
 				}
-			}	
-			else {
-				Map<String, Object> dynamicValues = new HashMap<String, Object>();
-				dynamicValues.put("errorMessage", ProductValidationSystemWebConstants.LOGIN_FAILURE_MESSAGE);
-				String locale = ProcessorUtil.getLanguage(request);
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.COMPANY_LOGIN, dynamicValues, CompanyLoginProcessor.class, locale);
-			}
 			
 		} catch (IOException e) {
 			e.printStackTrace();

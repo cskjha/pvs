@@ -12,7 +12,7 @@ import spark.Session;
 
 public class RemoveProductTemplateProcessor {
 
-	final static Logger log = Logger.getLogger(ProductRegistrationProcessor.class);
+	final static Logger log = Logger.getLogger(RemoveProductTemplateProcessor.class);
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 		Session session = request.session(false);
@@ -25,12 +25,8 @@ public class RemoveProductTemplateProcessor {
 		String companyName = request.queryParams("companyName");
 		log.debug("productTemplateName : "+productName);
 		//String companyId = request.session().attribute("companyId");
-		//String locale = ProcessorUtil.getLanguage(request);
-		boolean flag=ProductValidationSystemDeleteService.removeProductTemplate(productType,productName,companyName);
-		if(flag)
-			response.redirect(RedirectPaths.VIEW_PRODUCT_TEMPLATES);
-		else
-			response.redirect(RedirectPaths.REGISTER_PRODUCT_TEMPLATE);
+		ProductValidationSystemDeleteService.removeProductTemplate(productType,productName,companyName);
+		response.redirect(RedirectPaths.VIEW_PRODUCT_TEMPLATES);
 		return htmlOutput;
 	}
 	

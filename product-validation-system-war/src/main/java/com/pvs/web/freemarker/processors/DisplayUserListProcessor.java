@@ -9,7 +9,9 @@ import java.util.Map;
 
 import org.bson.Document;
 
+import com.pvs.service.delete.ProductValidationSystemDeleteService;
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.update.ProductValidationSystemUpdateService;
 import com.pvs.service.valueobjects.CompanyVO;
 import com.pvs.service.valueobjects.ProductVO;
 import com.pvs.web.constants.RedirectPaths;
@@ -28,25 +30,29 @@ public class DisplayUserListProcessor {
 		try {
 				Session session = request.session(false);
 				if(session != null) {
+					String companyName = session.attribute("companyName");
+					String category = session.attribute("category");
+					String locale = ProcessorUtil.getLanguage(request);
+					Map<String, Object> dynamicValues = new HashMap<String, Object>();
+					ProcessorUtil.populateDynamicValues(dynamicValues);
+					List<CompanyVO> userVOList = new ArrayList<CompanyVO>();
+					List<Document> userListViewDocument = ProductValidationSystemReadService.getAllCompanyUserStatus();
+					Iterator<Document> productListIterator = userListViewDocument.iterator();
+					while(productListIterator.hasNext()) {
+						Document user = productListIterator.next();
+						CompanyVO companyVO = new CompanyVO();
+						companyVO.setCompanyName(user.getString("companyName"));  	//users'company name
+						companyVO.setCompanyEmail(user.getString("companyEmail"));
+						companyVO.setStatus(user.getString("status"));
+						
+						userVOList.add(companyVO);
+					}					
 			
-				String locale = ProcessorUtil.getLanguage(request);
-				Map<String, Object> dynamicValues = new HashMap<String, Object>();
-				ProcessorUtil.populateDynamicValues(dynamicValues);
-				List<CompanyVO> userVOList = new ArrayList<CompanyVO>();
-				List<Document> userListViewDocument = ProductValidationSystemReadService.getAllCompanyUserStatus();
-				Iterator<Document> productListIterator = userListViewDocument.iterator();
-				while(productListIterator.hasNext()) {
-					Document user = productListIterator.next();
-					CompanyVO companyVO = new CompanyVO();
-					companyVO.setCompanyEmail(user.getString("companyEmail"));
-					companyVO.setStatus(user.getString("status"));
-					
-					userVOList.add(companyVO);
-				}					
-		
-				dynamicValues.put("userList", userVOList);
-				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_USERLIST, dynamicValues, DisplayUserListProcessor.class, locale);
-				return htmlOutput;
+					dynamicValues.put("userList", userVOList);
+					dynamicValues.put("companyName", companyName);
+					dynamicValues.put("category", category);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_USERLIST, dynamicValues, DisplayUserListProcessor.class, locale);
+					return htmlOutput;
 				}
 				else {
 					response.redirect("companylogin");
@@ -58,6 +64,21 @@ public class DisplayUserListProcessor {
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}		
+		return htmlOutput;
+	}
+
+	public static String postHTML(Request request, Response response) {
+		String htmlOutput = null;
+		Session session = request.session(false);
+		if(session == null) {
+			response.redirect(RedirectPaths.COMPANY_LOGIN);
+			return null;
+		}
+		String userName = request.queryParams("companyEmail");
+		String companyName = request.queryParams("companyName");
+		String status= request.queryParams("status_select");
+		ProductValidationSystemUpdateService.updateStatus(companyName,userName,status);			
+		response.redirect(RedirectPaths.DISPLAY_USERLIST);
 		return htmlOutput;
 	}
 }

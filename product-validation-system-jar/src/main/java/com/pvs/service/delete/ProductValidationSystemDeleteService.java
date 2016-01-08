@@ -28,10 +28,10 @@ public class ProductValidationSystemDeleteService {
 			//log.debug("Any parameter is null : productType : "+productType+" : productModel :"+companyName+" : productName :"+productName);
 			return false;
 		}
-		MongoClient mongoClient =new MongoClient();		
+		MongoClient mongoClient = null;		
 		try {
 			String collectionName = CommonUtils.getProductTemplateCollectionName(productType);
-			//mongoClient = ConnectionManagerFactory.getMongoClient();
+			mongoClient = ConnectionManagerFactory.getMongoClient();
 			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
 			DBCollection collection = db.getCollection(collectionName);
 			BasicDBObject query = new BasicDBObject();
@@ -57,8 +57,9 @@ public class ProductValidationSystemDeleteService {
 		if(companyName ==null || userName == null ) {
 			return false;
 		}
-		MongoClient mongoClient =new MongoClient();		
+		MongoClient mongoClient = null;		
 		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
 			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
 			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);
 			BasicDBObject query = new BasicDBObject();

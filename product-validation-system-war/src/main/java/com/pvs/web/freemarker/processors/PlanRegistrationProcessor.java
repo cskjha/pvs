@@ -31,9 +31,11 @@ public class PlanRegistrationProcessor {
 		String htmlOutput = null;
 		try {
 			String companyName = session.attribute("companyName");
+			String category = session.attribute("category");
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
-			dynamicValues.put("companyName", companyName);
+			dynamicValues.put("companyName", companyName );
+			dynamicValues.put("category", category );
 			htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_GET, dynamicValues,
 					PlanRegistrationProcessor.class, locale	);
 			

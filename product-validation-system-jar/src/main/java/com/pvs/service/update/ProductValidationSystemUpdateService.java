@@ -4,10 +4,13 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -17,6 +20,7 @@ import com.pvs.db.connection.DBCollectionManagerFactory;
 import com.pvs.db.connection.DatabaseManagerFactory;
 import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.service.read.ProductValidationSystemReadService;
+import com.pvs.service.utils.CommonUtils;
 
 public class ProductValidationSystemUpdateService {
 	static final Logger log = Logger.getLogger(ProductValidationSystemUpdateService.class);
@@ -161,19 +165,58 @@ public class ProductValidationSystemUpdateService {
 		}
 		return false;
 	}
-	@SuppressWarnings("deprecation")
+	
 	public static boolean updateStatus(String companyName,String companyEmail,String status){
+		if(companyName ==null || companyEmail == null || status == null ) {
+			return false;
+		}
 		MongoClient mongoClient = null;
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
-			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
+			Document searchCriteria = new Document();
 			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);			BasicDBObject newDocument = new BasicDBObject();
 			newDocument.put("status", status);
 		
-			BasicDBObject searchQuery = new BasicDBObject().append("companyName", companyName).append("companyEmail", companyEmail);
+			searchCriteria.append("companyName", companyName).append("companyEmail", companyEmail);
 		
-			collection.update(searchQuery, newDocument);
+			Document companyModel = new Document();
+			companyModel.append("status", status);
+			Document updateDocument = new Document().append("$set", companyModel);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME).updateOne(searchCriteria, updateDocument);
 			return true;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		finally{
+			mongoClient.close();
+		}
+		
+	}
+
+
+	public static boolean updateProductResponseCode(String productId,String responseCode,String productType){
+		if(productId ==null || responseCode == null ) {
+			return false;
+		}
+		MongoClient mongoClient = null;
+		try {
+						
+			String collectionName =CommonUtils.getProductCollectionName(productType);
+			
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			Document searchCriteria = new Document();
+			searchCriteria.append(DatabaseConstants._ID, new ObjectId(productId));
+			Document productModel = new Document();
+			productModel.append("ResponseCode", responseCode);
+			Document updateDocument = new Document().append("$set", productModel);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).updateOne(searchCriteria, updateDocument);
+			return true;
+			
+			
 		}
 		catch(Exception e){
 			e.printStackTrace();

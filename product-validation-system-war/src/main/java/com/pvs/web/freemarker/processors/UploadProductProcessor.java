@@ -40,11 +40,12 @@ public class UploadProductProcessor {
 				else {
 					String productTemplateId = request.queryParams("productTemplateId");
 					String productType = request.queryParams("productType");
-					String companyName = session.attribute("companyName");					
+					String companyName = session.attribute("companyName");	
+					String category = session.attribute("category");
 					dynamicValues.put("companyName", companyName);
 					dynamicValues.put("productTemplateId", productTemplateId);
 					dynamicValues.put("productType", productType);
-					
+					dynamicValues.put("category", category);
 					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.UPLOAD_PRDUCT_FROM_EXCEL_GET, dynamicValues, UploadProductProcessor.class, locale);
 					return htmlOutput;
 				}		

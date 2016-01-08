@@ -39,7 +39,23 @@ public class ProductValidationSystemWriteService {
 		}
 		return false;
 	}
-	
+	public static boolean saveUserDetails(Document userDetails){
+		MongoClient mongoClient = null;
+		
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.USERDETAILS_COLLECTION_NAME).insertOne(userDetails);
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
+	}
 	public static boolean updateCompanyAuditTable(Document auditModel) {
 		MongoClient mongoClient = null;
 		

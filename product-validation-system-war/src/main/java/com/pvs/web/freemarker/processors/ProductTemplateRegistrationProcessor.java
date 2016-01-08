@@ -43,16 +43,25 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
-		String userName = request.session().attribute("companyName");
+		String companyName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
-		
+		String category = request.session().attribute("category");
+		String companyEmail=null;
+		Document companyResult= ProductValidationSystemReadService.getCompanyEmail(companyName,companyId);
+		if(companyResult != null) {
+			companyEmail=companyResult.getString("companyEmail");
+		}
 		String locale = ProcessorUtil.getLanguage(request);
 		Map<String, Object> dynamicValues = new HashMap<String, Object>();
+		boolean userStatus= ProductValidationSystemReadService.userStatus(companyEmail);
+		if(userStatus == true){
+			
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
 		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
+					dynamicValues.put("category", category);
 				try {
 					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
@@ -80,7 +89,8 @@ public class ProductTemplateRegistrationProcessor {
 		dynamicValues.put("productTemplateList", productTemplateVOList);
 			
 			ProcessorUtil.populateDynamicValues(dynamicValues);
-			dynamicValues.put("companyName", userName);
+				dynamicValues.put("companyName", companyName);
+				dynamicValues.put("category", category);
 			try {
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_GET,
 						dynamicValues, ProductRegistrationProcessor.class, locale);
@@ -90,7 +100,22 @@ public class ProductTemplateRegistrationProcessor {
 				e.printStackTrace();
 			}
 			
+		}
+		//if user_status is disable i.e. blocked by admin
+		else{
 			
+			dynamicValues.put("user_status", "disable");
+			try {
+				htmlOutput=ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_TEMPLATE_REGISTRATION_POST,dynamicValues, ProductRegistrationProcessor.class, locale);
+			} catch (TemplateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+			htmlOutput="You are blocked by Admin.please contact with admin";
+		}
 		return htmlOutput;
 	}
 	
@@ -103,14 +128,22 @@ public class ProductTemplateRegistrationProcessor {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
 			return null;
 		}
+		
 		String locale = ProcessorUtil.getLanguage(request);
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
-		String userName = request.session().attribute("companyName");
+		String companyName = request.session().attribute("companyName");
+		String category = request.session().attribute("category");
+		String companyEmail=null;
+		Document companyResult= ProductValidationSystemReadService.getCompanyEmail(companyName,companyId);
+		if(companyResult != null) {
+			companyEmail=companyResult.getString("companyEmail");
+		}
 		if(remainingRecordCount!=null && (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", userName);
+				dynamicValues.put("category", category);
 				try {
 					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
@@ -159,6 +192,7 @@ public class ProductTemplateRegistrationProcessor {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
+			dynamicValues.put("category", category);
 			String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
 			Document auditDocument = new Document();
 			auditDocument.append("companyName", userName);

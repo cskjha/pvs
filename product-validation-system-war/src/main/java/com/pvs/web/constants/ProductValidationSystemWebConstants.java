@@ -13,5 +13,7 @@ public class ProductValidationSystemWebConstants {
 	public static final String QR_CODE_FILE_EXTENSION = "png";
 	public static final String EXCEL_EXTENSION = "xlsx";
 	public static final String JSON="json";
-
+	public static final String LOGIN_ADMIN_FAILURE_MESSAGE="admin is not allowed to signIn here";
+	public static final String INITIAL_PRODUCT_RESPONSE_CODE = "200";
+	public static final String STOLEN_PRODUCT_RESPONSE_CODE = "205";
 }

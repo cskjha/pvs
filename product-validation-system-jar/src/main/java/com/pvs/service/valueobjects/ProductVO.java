@@ -8,6 +8,28 @@ public class ProductVO {
 	String productName;
 	String productTemplateId;
 	String companyId;
+	String responseCode;
+	String fullproductId;
+	String productType;
+	
+	public String getProductType() {
+		return productType;
+	}
+	public void setProductType(String productType) {
+		this.productType = productType;
+	}
+	public String getFullproductId() {
+		return fullproductId;
+	}
+	public void setFullproductId(String fullproductId) {
+		this.fullproductId = fullproductId;
+	}
+	public String getResponseCode() {
+		return responseCode;
+	}
+	public void setResponseCode(String responseCode) {
+		this.responseCode = responseCode;
+	}
 	List<String> fieldName;
 	List<String> fieldValue;
 	

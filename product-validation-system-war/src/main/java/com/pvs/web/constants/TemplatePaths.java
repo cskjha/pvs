@@ -11,16 +11,17 @@ public class TemplatePaths {
 		public static final String PLAN_REGISTRATION_POST = "com/pvs/freemarker/templates/planregistration/planRegistrationPOST.ftl";
 		public static final String PRODUCT_REGISTRATION_GET = "com/pvs/freemarker/templates/productregistration/productRegistrationGET.ftl";
 		public static final String PRODUCT_REGISTRATION_POST = "com/pvs/freemarker/templates/productregistration/productRegistrationPOST.ftl";
-		public static final String PRODUCT_TEMPLATE_REGISTRATION_GET = "com/pvs/freemarker/templates/productregistration/productTemplateRegistrationGET.ftl";
-		public static final String PRODUCT_TEMPLATE_REGISTRATION_POST = "com/pvs/freemarker/templates/productregistration/productTemplateRegistrationPOST.ftl";
+		public static final String PRODUCT_TEMPLATE_REGISTRATION_GET = "com/pvs/freemarker/templates/producttemplate/productTemplateRegistrationGET.ftl";
+		public static final String PRODUCT_TEMPLATE_REGISTRATION_POST = "com/pvs/freemarker/templates/producttemplate/productTemplateRegistrationPOST.ftl";
 		public static final String VIEW_PRODUCT_TEMPLATE = "com/pvs/freemarker/templates/producttemplate/viewProductTemplate.ftl";
-		public static final String RECORD_BALANCE_UNAVAILABLE= "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
-		public static final String GENERATE_QR_CODE_GET= "com/pvs/freemarker/templates/generateqrcode/generateQRCodeGET.ftl";
-		public static final String GENERATE_QR_CODE_POST= "com/pvs/freemarker/templates/generateqrcode/generateQRCodePOST.ftl";
-		public static final String LOCALE_TEST= "com/pvs/freemarker/templates/base/sample.ftl";
-		public static final String UPLOAD_PRDUCT_FROM_EXCEL_GET= "com/pvs/freemarker/templates/excel/UploadProductFromExcelGET.ftl";
-		public static final String UPLOAD_PRDUCT_FROM_EXCEL_POST= "com/pvs/freemarker/templates/excel/UploadProductFromExcelPOST.ftl";
-		public static final String LIST_PRODUCTS="com/pvs/freemarker/templates/productregistration/listProductTemplate.ftl";
-		public static final String PRODUCT_WEBVIEW="com/pvs/freemarker/templates/HTML/productwebview/productwebviewHTML.ftl";
-		
+		public static final String RECORD_BALANCE_UNAVAILABLE = "com/pvs/freemarker/templates/base/exceptions/recordBalanceUnavailable.ftl";
+		public static final String GENERATE_QR_CODE_GET = "com/pvs/freemarker/templates/generateqrcode/generateQRCodeGET.ftl";
+		public static final String GENERATE_QR_CODE_POST = "com/pvs/freemarker/templates/generateqrcode/generateQRCodePOST.ftl";
+		public static final String LOCALE_TEST = "com/pvs/freemarker/templates/base/sample.ftl";
+		public static final String UPLOAD_PRDUCT_FROM_EXCEL_GET = "com/pvs/freemarker/templates/excel/UploadProductFromExcelGET.ftl";
+		public static final String UPLOAD_PRDUCT_FROM_EXCEL_POST = "com/pvs/freemarker/templates/excel/UploadProductFromExcelPOST.ftl";
+		public static final String LIST_PRODUCTS ="com/pvs/freemarker/templates/productregistration/listProductsForTemplate.ftl";
+		public static final String PRODUCT_WEBVIEW ="com/pvs/freemarker/templates/HTML/productwebview/productwebviewHTML.ftl";
+		public static final String DISPLAY_USERLIST ="com/pvs/freemarker/templates/admin/displayuserlist.ftl";
+		public static final String USER_PRODUCT_TEMPLATE ="com/pvs/freemarker/templates/admin/displayuserproducttemplate.ftl";
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.bson.Document;
@@ -21,8 +20,8 @@ import spark.Request;
 import spark.Response;
 import spark.Session;
 
-public class ViewProductTemplateProcessor {
-	
+public class UserProductTemplateProcessor {
+
 	public static String getHTML(Request request, Response response) {
 		String htmlOutput = null;
 		try {			
@@ -34,10 +33,11 @@ public class ViewProductTemplateProcessor {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;
 				}
-				else {
-					String companyId = session.attribute("companyId");
-					String companyName = session.attribute("companyName");
+				else{
+					String companyName = session.attribute("companyName");	//admin name
 					String category = session.attribute("category");
+					String username=request.queryParams("username");
+					String companyId=ProductValidationSystemReadService.getCompanyId(username);
 					List<ProductTemplateVO> productTemplateVOList = new ArrayList<ProductTemplateVO>();
 					List<Document> productTemplates = ProductValidationSystemReadService.getCompanyTemplateRecords(companyId);
 					Iterator<Document> productTemplateIterator = productTemplates.iterator();
@@ -52,18 +52,19 @@ public class ViewProductTemplateProcessor {
 						productTemplateVO.setProductType(productType);
 						productTemplateVOList.add(productTemplateVO);
 					}					
+					dynamicValues.put("productTemplateList", productTemplateVOList);
 					dynamicValues.put("companyName", companyName);
 					dynamicValues.put("category", category);
-					dynamicValues.put("productTemplateList", productTemplateVOList);
-					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.VIEW_PRODUCT_TEMPLATE, dynamicValues, ViewProductTemplateProcessor.class, locale);
+					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.VIEW_PRODUCT_TEMPLATE, dynamicValues, UserProductTemplateProcessor.class, locale);
 					return htmlOutput;
-				}		
-			
-		} catch (IOException e) {
+				}
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}		
 		return htmlOutput;
 	}
+
 }

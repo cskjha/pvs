@@ -1,6 +1,8 @@
 package com.pvs.web.freemarker.processors;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -12,6 +14,7 @@ import org.bson.Document;
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.utils.CommonUtils;
 import com.pvs.service.write.ProductValidationSystemWriteService;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
@@ -33,26 +36,36 @@ public class ProductRegistrationProcessor {
 		String productTemplateId = request.queryParams("productTemplateId");
 		String productType = request.queryParams("productType");
 		log.debug("productTemplateId : "+productTemplateId);
-		String userName = request.session().attribute("companyName");
+		String companyName = request.session().attribute("companyName");
 		String companyId = request.session().attribute("companyId");
+		String category = request.session().attribute("category");
+		String companyEmail=null;
+		Document companyResult= ProductValidationSystemReadService.getCompanyEmail(companyName,companyId);
+		if(companyResult != null) {
+			companyEmail=companyResult.getString("companyEmail");
+		}
 		String locale = ProcessorUtil.getLanguage(request);
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
-		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
+		boolean userStatus= ProductValidationSystemReadService.userStatus(companyEmail);
+		if(userStatus == true){
+			if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
+					Map<String, Object> dynamicValues = new HashMap<String, Object>();
+					ProcessorUtil.populateDynamicValues(dynamicValues);
+					dynamicValues.put("companyName", companyName);
+					dynamicValues.put("category", category);
+					try {
+						return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
+					} catch (TemplateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+			}
+			else {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
-				dynamicValues.put("companyName", userName);
-				try {
-					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
-				} catch (TemplateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-		}
-		else {
-			Map<String, Object> dynamicValues = new HashMap<String, Object>();
-			ProcessorUtil.populateDynamicValues(dynamicValues);
-			dynamicValues.put("companyName", userName);
+				dynamicValues.put("companyName", companyName);
+				dynamicValues.put("category", category);
 			Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
 			log.debug("productTemplateDocument : "+productTemplateDocument);
 			if(productTemplateDocument != null) {
@@ -87,9 +100,14 @@ public class ProductRegistrationProcessor {
 				}
 			}
 			else {
-				response.redirect(RedirectPaths.GENERIC_ERROR_PAGE);
-				return null;
+					response.redirect(RedirectPaths.GENERIC_ERROR_PAGE);
+					return null;
 			}
+			}
+			
+		}
+		else{
+			htmlOutput="You are blocked by Admin.please contact with admin";
 		}			
 		return htmlOutput;
 	}
@@ -107,11 +125,18 @@ public class ProductRegistrationProcessor {
 		log.debug("request.servletPath() : "+request.servletPath());
 		String companyId = request.session().attribute("companyId");
 		Long remainingRecordCount = ProductValidationSystemReadService.getRemainingRecordCount(companyId);
-		String userName = request.session().attribute("companyName");
+		String companyName = request.session().attribute("companyName");
+		String category = request.session().attribute("category");
+		String companyEmail=null;
+		Document companyResult= ProductValidationSystemReadService.getCompanyEmail(companyName,companyId);
+		if(companyResult != null) {
+			companyEmail=companyResult.getString("companyEmail");
+		}
 		if(remainingRecordCount==null || (long)remainingRecordCount <= 0L ) {
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
-				dynamicValues.put("companyName", userName);
+				dynamicValues.put("companyName", companyName);
+				dynamicValues.put("category", category );
 				try {
 					return ProcessorUtil.populateTemplate(TemplatePaths.RECORD_BALANCE_UNAVAILABLE, dynamicValues, ProductRegistrationProcessor.class, locale);
 				} catch (TemplateException e) {
@@ -148,6 +173,7 @@ public class ProductRegistrationProcessor {
 			companyId = request.queryParams("companyId");
 			productDocument.append("productTemplateId", productTemplateId);
 			productDocument.append("companyId", companyId);
+			productDocument.append("ResponseCode", ProductValidationSystemWebConstants.INITIAL_PRODUCT_RESPONSE_CODE);
 			new CommonUtils().addHistoryFields(productDocument);
 			String productId = ProductValidationSystemWriteService.registerProduct(productDocument, productType, companyId);
 //			String hostName = request.host();
@@ -156,8 +182,17 @@ public class ProductRegistrationProcessor {
 			try {		
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
-				dynamicValues.put("companyName", userName);
+				//dynamicValues.put("companyName", companyName);
 				//dynamicValues.put("qrCodeImagefilePath",qrCodeImagefilePath+".png");
+				dynamicValues.put("companyName", companyName);
+				dynamicValues.put("category", category);
+				String timeStamp = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+				Document auditDocument = new Document();
+				auditDocument.append("companyName", companyName);
+				auditDocument.append("username", companyEmail);
+				auditDocument.append("status", "one new product with productId"+productId +" has been successfully registered");
+				auditDocument.append("time", timeStamp);
+				ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_POST,
 						dynamicValues, ProductRegistrationProcessor.class, locale);
 				

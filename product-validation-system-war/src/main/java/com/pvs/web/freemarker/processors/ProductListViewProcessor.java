@@ -36,12 +36,14 @@ public class ProductListViewProcessor {
 			String productTemplateId = request.queryParams("productTemplateId");
 			String productType= request.queryParams("productType");
 			String userName = request.session().attribute("companyName");
-			String companyId = request.session().attribute("companyId"); 
+			String companyId = request.session().attribute("companyId");
+			String category = request.session().attribute("category");
 			String locale = ProcessorUtil.getLanguage(request);
 			
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
 			ProcessorUtil.populateDynamicValues(dynamicValues);
 			dynamicValues.put("companyName", userName);
+			dynamicValues.put("category", category);
 			
 			List<ProductVO> productVOList = new ArrayList<ProductVO>();
 			List<Document> productListViewDocument = ProductValidationSystemReadService.getProductListViewRecord(productTemplateId,productType);
@@ -50,8 +52,11 @@ public class ProductListViewProcessor {
 				Document product = productListIterator.next();
 				String productId = product.getObjectId("_id").toHexString();
 				ProductVO productVO = new ProductVO();
-				productVO.setProductId(productType + productId);
-				
+				productVO.setProductTemplateId(productTemplateId);
+				productVO.setFullproductId(productType+productId);
+				productVO.setProductId(productId);
+				productVO.setProductType(productType);
+				productVO.setResponseCode(product.getString("ResponseCode").toString());
 				//TODO: we need to do a for loop
 				/*String productFieldName1 = product.getString("field1Name");
 				String productFieldValue1 = product.getString("field1Value");

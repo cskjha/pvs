@@ -9,11 +9,13 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.bson.Document;
 
+import com.pvs.db.connection.utils.DatabaseConstants;
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.update.ProductValidationSystemUpdateService;
 import com.pvs.service.valueobjects.ProductVO;
 import com.pvs.service.valueobjects.ProductValueVO;
 import com.pvs.service.valueobjects.ProductWebViewVO;
+import com.pvs.service.write.ProductValidationSystemWriteService;
 import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
@@ -59,13 +61,27 @@ public class ValidateProductProcesssor {
 //					}
 //				}
 				//Remove Id, company id and product template id from the response
+				
+				Document fullproductDetails = new Document();
 				Document productDetails = new Document();
-				productDetails.append("productRating", "4");
+				
+				
 				for(String resultPropery : result.keySet()) {
-					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery) || "creationDate".equals(resultPropery))) {
+					if(!("companyId".equals(resultPropery) || "productTemplateId".equals(resultPropery) || "_id".equals(resultPropery) || "ResponseCode".equals(resultPropery) || "creationDate".equals(resultPropery))) {
 						productDetails.append(resultPropery, result.get(resultPropery));
 					}
+					if("ResponseCode".equals(resultPropery)){
+						fullproductDetails.append("ResponseCode", result.get(resultPropery));
+						if(result.get(resultPropery).equals(ProductValidationSystemWebConstants.INITIAL_PRODUCT_RESPONSE_CODE)){
+							fullproductDetails.append("ResponseDetails", "success");
+						}
+						else if(result.get(resultPropery).equals(ProductValidationSystemWebConstants.STOLEN_PRODUCT_RESPONSE_CODE)){
+							fullproductDetails.append("ResponseDetails", "product is stolen");
+						}
+					}
 				}
+				productDetails.append("productRating", "4");
+				
 				String productTemplateId = result.getString("productTemplateId");
 				log.debug("productTemplateId :"+productTemplateId +" Product Type" +productType);
 				Document productTemplateRecord = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
@@ -74,7 +90,8 @@ public class ValidateProductProcesssor {
 				String imageURL = (String)productTemplateRecord.get("image");
 				productDetails.append("manufacturerName", manufacturerName);
 				productDetails.append("image", imageURL);
-				JSONResponse = productDetails.toJson();
+				fullproductDetails.append("ProductDetails",productDetails);
+				JSONResponse = fullproductDetails.toJson();
 			}
 		}
 		return JSONResponse;
@@ -151,7 +168,19 @@ public class ValidateProductProcesssor {
 	}
 	
 	public static String postJSON(Request request, Response response) {
-		return postJSON(request, response);
+		
+		String physical_address = request.queryParams("mac");
+		String longitude = request.queryParams("longitude");
+		String latitude = request.queryParams("latitude");
+		
+		Document userDetails = new Document();
+		userDetails.append("physical_address", physical_address);
+		userDetails.append("longitude", longitude);
+		userDetails.append("latitude", latitude);
+		
+		ProductValidationSystemWriteService.saveUserDetails(userDetails);
+		
+		return getJSONORHTML(request,response);
 	}
 	public static String getJSONORHTML(Request request, Response response) {
 
@@ -163,4 +192,6 @@ public class ValidateProductProcesssor {
 			return getHTML(request, response);
 		
 	}
+	
+	
 }
