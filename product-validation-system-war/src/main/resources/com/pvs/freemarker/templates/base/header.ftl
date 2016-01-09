@@ -26,8 +26,10 @@
 	   <a href="viewproducttemplates">${VIEW_PRODUCT_TEMPLATES}</a>&nbsp;|&nbsp;
 	  </#if>
 	<#if LOGOUT??>
-	  <a href="logout">${LOGOUT}</a>
-	  </#if>	 
+	  <a href="logout">${LOGOUT}</a>&nbsp;|&nbsp;
+	  </#if>
+	
+    <a href="" onclick="printWebPageFunction()">Print this page</a>	 
 	<#else>
 		${WELCOME} ${GUEST} &nbsp;|&nbsp;
 	  	<a href="companyregister">${REGISTER}</a>&nbsp;|&nbsp;

@@ -8,7 +8,10 @@
     
     <body>
     	<center>
-        <#include "../base/admin_header.ftl">
+        <#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	
+    	 	
         <br /><br />
         <section>
 				<ul>
@@ -28,6 +31,11 @@
 						<center><input class="button" type="submit" name="submit" value="${REGISTER}" /></center>
 					</form>					
 				</ul>
-        </section></center>
+        </section>
+        <#else>
+    	 		<#include "../base/header.ftl">
+    	 		<br /><br /><h3>Company users can't access this Page.</h3>
+    	 </#if>
+        </center>
     </body>
     </html>

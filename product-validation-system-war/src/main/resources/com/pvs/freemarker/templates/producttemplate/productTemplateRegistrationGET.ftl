@@ -21,7 +21,11 @@
     
     <body>
     	<center>
-    	 <#include "../base/header.ftl">
+    	 	<#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	<#else>
+    	 		<#include "../base/header.ftl">
+    	 	</#if>
     		<div id="main">
 			<br /><br />
         

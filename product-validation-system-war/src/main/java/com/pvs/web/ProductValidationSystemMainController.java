@@ -212,6 +212,14 @@ public class ProductValidationSystemMainController implements SparkApplication {
    			}
           });
         
+        spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.REMOVE_USER, new Route() {
+			
+   			
+   			public String handle(Request request, Response response) throws Exception {
+   				return RemoveUserProcessor.getHTML(request, response);
+   			}
+          });
+        
 		spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.VALIDATE_PRODUCT, new Route() {
 					
 		   			

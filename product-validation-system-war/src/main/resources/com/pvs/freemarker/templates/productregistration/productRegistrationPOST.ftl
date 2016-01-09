@@ -10,7 +10,11 @@
     
     <body>
     	<center>
-    	 <#include "../base/header.ftl"><br>
+    	 <#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	<#else>
+    	 		<#include "../base/header.ftl">
+    	 	</#if><br>
     		<h4>${PRODUCT_REG_MESSAGE2}</h4><br>
     	<#--	<h4>Quick Response Code Image</h4><br><br>
     		<img src="${qrCodeImagefilePath}" alt="Quick Response Code Image" style="width:200px;height:200px;">    	

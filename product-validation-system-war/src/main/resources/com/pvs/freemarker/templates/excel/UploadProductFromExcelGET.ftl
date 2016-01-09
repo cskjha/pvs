@@ -8,7 +8,11 @@
     
     <body>
     	<center>
-        <#include "../base/header.ftl">
+        <#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	<#else>
+    	 		<#include "../base/header.ftl">
+    	 	</#if>
         <br /><br />
         <section>
 				<ul>

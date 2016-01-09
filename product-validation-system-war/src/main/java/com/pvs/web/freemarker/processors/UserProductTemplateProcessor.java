@@ -11,6 +11,7 @@ import org.bson.Document;
 
 import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.valueobjects.ProductTemplateVO;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
@@ -36,8 +37,14 @@ public class UserProductTemplateProcessor {
 				else{
 					String companyName = session.attribute("companyName");	//admin name
 					String category = session.attribute("category");
-					String username=request.queryParams("username");
-					String companyId=ProductValidationSystemReadService.getCompanyId(username);
+					String companyId="";
+					if (category.equals(ProductValidationSystemWebConstants.CATEGORYADMIN)) {
+						String username=request.queryParams("username");
+						companyId=ProductValidationSystemReadService.getCompanyId(username);
+					}
+					else {
+						companyId = session.attribute("companyId");
+					}
 					List<ProductTemplateVO> productTemplateVOList = new ArrayList<ProductTemplateVO>();
 					List<Document> productTemplates = ProductValidationSystemReadService.getCompanyTemplateRecords(companyId);
 					Iterator<Document> productTemplateIterator = productTemplates.iterator();

@@ -14,20 +14,17 @@ public class RemoveProductTemplateProcessor {
 
 	final static Logger log = Logger.getLogger(RemoveProductTemplateProcessor.class);
 	public static String getHTML(Request request, Response response) {
-		String htmlOutput = null;
 		Session session = request.session(false);
 		if(session == null) {
 			response.redirect(RedirectPaths.COMPANY_LOGIN);
-			return null;
 		}
-		String productName = request.queryParams("productTemplateName");
+		String productTemplateId = request.queryParams("productTemplateId");
 		String productType = request.queryParams("productType");
-		String companyName = request.queryParams("companyName");
-		log.debug("productTemplateName : "+productName);
-		//String companyId = request.session().attribute("companyId");
-		ProductValidationSystemDeleteService.removeProductTemplate(productType,productName,companyName);
+		log.debug("productTemplateId : "+productTemplateId);
+		ProductValidationSystemDeleteService.removeProductTemplate(productTemplateId,productType);
 		response.redirect(RedirectPaths.VIEW_PRODUCT_TEMPLATES);
-		return htmlOutput;
+		
+		return null;
 	}
 	
 }

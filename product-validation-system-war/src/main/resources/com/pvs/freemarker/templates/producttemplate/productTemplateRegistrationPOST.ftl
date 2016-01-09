@@ -9,10 +9,16 @@
     
     <body>
     	<center>
-    	 <#include "../base/header.ftl"><br>
-    		<h4> ${PRODUCT_TEMPLATE_REG_MSG3}</h4>
-    		<h5> ${PRODUCT_TEMPLATE_REG_MSG4} <a href="registerproducttemplate"> ${HERE} </a></h5>
-    		<h5> ${PRODUCT_TEMPLATE_REG_MSG5}  <a href="viewproducttemplates"> ${HERE} </a></h5>
+	    	 <#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	<#else>
+    	 		<#include "../base/header.ftl">
+    	 	</#if>
+    	 	
+	    		<h4> ${PRODUCT_TEMPLATE_REG_MSG3}</h4>
+	    		<h5> ${PRODUCT_TEMPLATE_REG_MSG4} <a href="registerproducttemplate"> ${HERE} </a></h5>
+	    		<h5> ${PRODUCT_TEMPLATE_REG_MSG5}  <a href="viewproducttemplates"> ${HERE} </a></h5>
+    		
     	</center>
     </body>
     </html>

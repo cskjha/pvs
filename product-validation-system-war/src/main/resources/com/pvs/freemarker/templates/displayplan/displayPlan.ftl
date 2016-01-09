@@ -3,6 +3,7 @@
     <head>
 		<title>${DISPLAY_PLAN_MESSAGE1}</title>
  		<link type="text/css" rel="stylesheet" href="styles/displayPlan.css">
+		<script src="scripts/common.js" type="text/javascript"></script>
     </head>
     
     <body>
@@ -27,7 +28,6 @@
         </#list>
         <#else>
         	${MY_PLAN_MESSAGE3}.<br>
-            ${MY_PLAN_MESSAGE4} <a href="planregister">${HERE}</a>
         </#if>
        </center>
     </body>

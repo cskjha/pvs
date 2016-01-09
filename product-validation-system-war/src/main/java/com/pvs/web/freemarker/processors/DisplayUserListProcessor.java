@@ -14,6 +14,7 @@ import com.pvs.service.read.ProductValidationSystemReadService;
 import com.pvs.service.update.ProductValidationSystemUpdateService;
 import com.pvs.service.valueobjects.CompanyVO;
 import com.pvs.service.valueobjects.ProductVO;
+import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.constants.TemplatePaths;
 import com.pvs.web.utilities.ProcessorUtil;
@@ -29,7 +30,7 @@ public class DisplayUserListProcessor {
 		String htmlOutput = null;
 		try {
 				Session session = request.session(false);
-				if(session != null) {
+				if(session != null && session.attribute("category").toString().equals(ProductValidationSystemWebConstants.CATEGORYADMIN)) {
 					String companyName = session.attribute("companyName");
 					String category = session.attribute("category");
 					String locale = ProcessorUtil.getLanguage(request);

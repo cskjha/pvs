@@ -40,7 +40,7 @@ public class DisplayPlanProcessor {
 					}
 					dynamicValues.put("companyName", companyName);
 					request.session().attribute("companyPlanName",companyPlanName);
-					if(companyPlanName != null && remainingRecordCount > 0) {
+					if((null!=request.queryParams("action") && !request.queryParams("action").equals("change")) && companyPlanName != null && remainingRecordCount > 0) {
 						response.redirect(RedirectPaths.MY_PLAN);
 						return null;
 					}

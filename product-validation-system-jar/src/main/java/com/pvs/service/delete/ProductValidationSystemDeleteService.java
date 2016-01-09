@@ -8,6 +8,8 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.pvs.db.connection.ConnectionManagerFactory;
 import com.pvs.db.connection.DBCollectionManagerFactory;
@@ -21,62 +23,63 @@ public class ProductValidationSystemDeleteService {
 
 	static final Logger log = Logger.getLogger(ProductValidationSystemDeleteService.class);
 
-	@SuppressWarnings("deprecation")
-	public static boolean removeProductTemplate(String productType, String productName, String companyName) {
+
+	public static boolean removeProductTemplate(String productTemplateId,String productType) {
 		
-		if(productName ==null || productType == null || companyName == null) {
+		if(productTemplateId ==null || productType == null) {
 			//log.debug("Any parameter is null : productType : "+productType+" : productModel :"+companyName+" : productName :"+productName);
 			return false;
 		}
-		MongoClient mongoClient = null;		
+		MongoClient mongoClient = null;
 		try {
-			String collectionName = CommonUtils.getProductTemplateCollectionName(productType);
 			mongoClient = ConnectionManagerFactory.getMongoClient();
-			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
-			DBCollection collection = db.getCollection(collectionName);
-			BasicDBObject query = new BasicDBObject();
-			query.append("productName", productName).append("companyName", companyName);
-			collection.remove(query);
+			String collectionName = CommonUtils.getProductTemplateCollectionName(productType);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
+			Document searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productTemplateId));
+			mongoCollection.deleteOne(searchCriteria);
 			
-			log.debug("Product Template is removed successfully");
 			return true;
-		} catch (Exception e) {
 			
+		} catch (Exception e) {
 			log.error("PVS Exception occured : Message :  "+e.getMessage());
 			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
-			return false;
+			
 		}
 		finally {
 			mongoClient.close();
 		}
 		
+		
+		return false;
 	}
-	@SuppressWarnings("deprecation")
+
 	public static boolean removeUser(String companyName, String userName) {
 		
 		if(companyName ==null || userName == null ) {
 			return false;
 		}
-		MongoClient mongoClient = null;		
+		
+		MongoClient mongoClient = null;
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
-			DB db = mongoClient.getDB(DatabaseConstants.DATABASE_NAME);
-			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);
-			BasicDBObject query = new BasicDBObject();
-			query.append("companyEmail", userName).append("companyName", companyName);
-			collection.remove(query);
-			
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_COLLECTION_NAME);		
+			Document searchCriteria = new Document().append("companyEmail", userName).append("companyName", companyName);
+			mongoCollection.deleteOne(searchCriteria);
 			log.debug("User is removed successfully");
 			return true;
-		} catch (Exception e) {
 			
+		} catch (Exception e) {
 			log.error("PVS Exception occured : Message :  "+e.getMessage());
 			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
-			return false;
+			
 		}
 		finally {
 			mongoClient.close();
 		}
 		
+		
+		return false;
 	}
 }

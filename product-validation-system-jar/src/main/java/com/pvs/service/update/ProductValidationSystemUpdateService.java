@@ -174,11 +174,7 @@ public class ProductValidationSystemUpdateService {
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			Document searchCriteria = new Document();
-			DBCollection collection = db.getCollection(DatabaseConstants.COMPANY_COLLECTION_NAME);			BasicDBObject newDocument = new BasicDBObject();
-			newDocument.put("status", status);
-		
 			searchCriteria.append("companyName", companyName).append("companyEmail", companyEmail);
-		
 			Document companyModel = new Document();
 			companyModel.append("status", status);
 			Document updateDocument = new Document().append("$set", companyModel);

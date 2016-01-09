@@ -66,40 +66,40 @@ public class ProductRegistrationProcessor {
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", companyName);
 				dynamicValues.put("category", category);
-			Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
-			log.debug("productTemplateDocument : "+productTemplateDocument);
-			if(productTemplateDocument != null) {
-				String productName = productTemplateDocument.getString("productName");
-				int fieldCount = 1;
-				Map<String, String> fieldMap = new HashMap<String, String>();
-				for(String key : productTemplateDocument.keySet()) {
-					if(key.startsWith("field")) {
-						fieldMap.put(key, productTemplateDocument.getString(key));
+				Document productTemplateDocument = ProductValidationSystemReadService.getProductTemplateRecord(productTemplateId, productType);
+				log.debug("productTemplateDocument : "+productTemplateDocument);
+				if(productTemplateDocument != null) {
+					String productName = productTemplateDocument.getString("productName");
+					int fieldCount = 1;
+					Map<String, String> fieldMap = new HashMap<String, String>();
+					for(String key : productTemplateDocument.keySet()) {
+						if(key.startsWith("field")) {
+							fieldMap.put(key, productTemplateDocument.getString(key));
+						}
+					}
+					String expirationDate = productTemplateDocument.getString("expirationDate");
+					if(expirationDate != null) {
+						fieldMap.put("expirationDate", expirationDate);
+					}
+					dynamicValues.put("productName", productName);
+					dynamicValues.put("productType", productType);
+					dynamicValues.put("productTemplateId", productTemplateId);
+					dynamicValues.put("companyId", companyId);
+					dynamicValues.put("fieldMap", fieldMap);	
+	//				log.debug("Product Type : "+productType);
+	//				if("FP".equals(productType)) {
+	//					dynamicValues.put("foodProduct", "TRUE");
+	//				}
+					try {
+						htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
+								dynamicValues, ProductRegistrationProcessor.class, locale);
+					} catch (TemplateException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
 				}
-				String expirationDate = productTemplateDocument.getString("expirationDate");
-				if(expirationDate != null) {
-					fieldMap.put("expirationDate", expirationDate);
-				}
-				dynamicValues.put("productName", productName);
-				dynamicValues.put("productType", productType);
-				dynamicValues.put("productTemplateId", productTemplateId);
-				dynamicValues.put("companyId", companyId);
-				dynamicValues.put("fieldMap", fieldMap);	
-//				log.debug("Product Type : "+productType);
-//				if("FP".equals(productType)) {
-//					dynamicValues.put("foodProduct", "TRUE");
-//				}
-				try {
-					htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PRODUCT_REGISTRATION_GET,
-							dynamicValues, ProductRegistrationProcessor.class, locale);
-				} catch (TemplateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			else {
+				else {
 					response.redirect(RedirectPaths.GENERIC_ERROR_PAGE);
 					return null;
 			}

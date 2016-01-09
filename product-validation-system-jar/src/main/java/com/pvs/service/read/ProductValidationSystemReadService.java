@@ -155,7 +155,7 @@ public class ProductValidationSystemReadService {
 		finally {
 			mongoClient.close();
 		}
-		return null;
+		
 	}
 	
 	public static Document getPlanRecord(String planId) {

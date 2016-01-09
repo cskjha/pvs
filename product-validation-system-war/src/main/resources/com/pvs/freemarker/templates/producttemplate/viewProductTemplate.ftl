@@ -8,7 +8,11 @@
     
     <body>
     	<center>
-    	 <#include "../base/header.ftl">
+    		<#if category == 'company'>
+    	 		<#include "../base/header.ftl">
+    	 	<#else>
+    	 		<#include "../base/admin_header.ftl">
+    	 	</#if>
          <#include "productList.ftl">
        </center>
     </body>

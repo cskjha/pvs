@@ -8,7 +8,11 @@
     
     <body>
     	<center>
-    	 <#include "../base/header.ftl"><br>
+    	 	<#if category == 'admin'>
+    	 		<#include "../base/admin_header.ftl">
+    	 	<#else>
+    	 		<#include "../base/header.ftl">
+    	 	</#if>
     		<h4>${PRODUCT_UPLOAD_EXCEL_MSG1}</h4><br>
     		<br><br>
     		<h5> ${PRODUCT_UPLOAD_EXCEL_MSG2} <a href="viewproducttemplates"> ${HERE} </a></h5>

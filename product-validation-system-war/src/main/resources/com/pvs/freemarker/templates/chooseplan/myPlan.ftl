@@ -3,6 +3,7 @@
     <head>
 		<title>${PRODUCT} ${VALIDATION} ${SYSTEM} </title>
 		<link type="text/css" rel="stylesheet" href="styles/common.css">
+		<script src="scripts/common.js" type="text/javascript"></script>
     </head>
     
     <body>
@@ -12,7 +13,7 @@
 	 			${MY_PLAN_MESSAGE1} ${companyPlanName} ${PLAN}.<br>
     			${MY_PLAN_MESSAGE2} <a href="registerproducttemplate">${HERE} </a>  
 			<#else>
-		 		${MY_PLAN_MESSAGE3}.
+		 		${MY_PLAN_MESSAGE3}. [<a href="displayplan?action=change">Change</a>]
 		 		<br>${MY_PLAN_MESSAGE4} <a href="displayplan">${HERE}</a>&nbsp;|&nbsp;
 	  		</#if>  	
     	</center>
