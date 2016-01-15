@@ -33,8 +33,9 @@ public class DisplayPlanProcessor {
 					Long remainingRecordCount = null;
 					Document companyPlanRecord = ProductValidationSystemReadService.getCompanyPlanRecord(companyId);
 					String companyPlanName = null;
+					String companyPlanId =null;
 					if(companyPlanRecord != null) {
-						String companyPlanId = companyPlanRecord.getString("companyPlanId");
+						companyPlanId = companyPlanRecord.getString("companyPlanId");
 						companyPlanName = ProductValidationSystemReadService.getCompanyPlanName(companyPlanId);
 						remainingRecordCount = Long.parseLong(companyPlanRecord.getString("remainingRecordCount"));						
 					}
@@ -49,6 +50,7 @@ public class DisplayPlanProcessor {
 						List<PlanVO> planList = ProductValidationSystemReadService.getAllPlans();
 						if(planList != null && planList.size() != 0) {
 							dynamicValues.put("planList", planList);
+							dynamicValues.put("companyPlanId", companyPlanId);
 							htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.DISPLAY_PLAN, dynamicValues, DisplayPlanProcessor.class, locale);
 						}
 						else {

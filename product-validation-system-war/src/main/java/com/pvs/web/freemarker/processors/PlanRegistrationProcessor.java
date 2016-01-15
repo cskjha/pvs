@@ -78,9 +78,11 @@ public class PlanRegistrationProcessor {
 		if(ProductValidationSystemWriteService.registerPlan(planDocument)) {
 			try {
 				String companyName = session.attribute("companyName");
+				String category = session.attribute("category");
 				Map<String, Object> dynamicValues = new HashMap<String, Object>();
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				dynamicValues.put("companyName", companyName);
+				dynamicValues.put("category", category);
 				String locale = ProcessorUtil.getLanguage(request);
 				htmlOutput = ProcessorUtil.populateTemplate(TemplatePaths.PLAN_REGISTRATION_POST, dynamicValues, PlanRegistrationProcessor.class, locale);
 			} catch (IOException e) {

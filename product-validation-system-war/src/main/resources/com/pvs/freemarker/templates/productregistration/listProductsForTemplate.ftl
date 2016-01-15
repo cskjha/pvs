@@ -18,7 +18,7 @@
     	 	<#if category == 'admin'>
     	 		<#include "../base/admin_header.ftl">
     	 	<#else>
-    	 <#include "../base/header.ftl">
+    	 		<#include "../base/header.ftl">
     	 	</#if>
         <div class="clear"></div>
         <br><br>

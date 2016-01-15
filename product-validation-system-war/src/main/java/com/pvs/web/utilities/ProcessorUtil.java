@@ -41,7 +41,6 @@ public class ProcessorUtil {
 		template.process(dynamicValues, stringWriter);
 		htmlOutput = stringWriter.toString();
 		return htmlOutput;
-		
 	}
 	public static void performSecurityCheck(Session session, Response response) {
 		if(session == null) {

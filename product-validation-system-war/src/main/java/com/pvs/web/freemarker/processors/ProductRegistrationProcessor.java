@@ -102,13 +102,13 @@ public class ProductRegistrationProcessor {
 				else {
 					response.redirect(RedirectPaths.GENERIC_ERROR_PAGE);
 					return null;
-			}
+				}
 			}
 			
 		}
 		else{
 			htmlOutput="You are blocked by Admin.please contact with admin";
-		}			
+		}
 		return htmlOutput;
 	}
 	

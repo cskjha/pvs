@@ -69,7 +69,7 @@ public class CompanyLoginProcessor {
 							auditDocument.append("status", "one user has been successfully LoggedIn");
 							auditDocument.append("time", timeStamp);
 							ProductValidationSystemWriteService.updateCompanyAuditTable(auditDocument);
-							response.redirect(RedirectPaths.DISPLAY_PLAN);
+							response.redirect(RedirectPaths.MY_PLAN);
 							return null;
 						//}
 					}

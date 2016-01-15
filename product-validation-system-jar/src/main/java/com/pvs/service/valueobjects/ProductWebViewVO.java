@@ -3,7 +3,23 @@ package com.pvs.service.valueobjects;
 import java.util.ArrayList;
 
 public class ProductWebViewVO {
-	String productName,manufacturerName,manufacturedOn,image,productRating;
+	String productName,manufacturerName,manufacturedOn,image,productRating,responseCode,stolen_image;
+	public String getStolen_image() {
+		return stolen_image;
+	}
+
+	public void setStolen_image(String stolen_image) {
+		this.stolen_image = stolen_image;
+	}
+
+	public String getResponseCode() {
+		return responseCode;
+	}
+
+	public void setResponseCode(String responseCode) {
+		this.responseCode = responseCode;
+	}
+
 	public String getProductRating() {
 		return productRating;
 	}

@@ -16,6 +16,7 @@ public class ProductValidationSystemWebConstants {
 	public static final String LOGIN_ADMIN_FAILURE_MESSAGE="admin is not allowed to signIn here";
 	public static final String INITIAL_PRODUCT_RESPONSE_CODE = "200";
 	public static final String STOLEN_PRODUCT_RESPONSE_CODE = "205";
+	public static final String STOLEN_PRODUCT_IMAGE_URL = "https://s-media-cache-ak0.pinimg.com/736x/8c/ef/cd/8cefcdb1e0a8317c14d5ba3dddfc330d.jpg";
 	
 	public static final String CATEGORYADMIN = "admin";
 	public static final String CATEGORYCOMPANY = "company";

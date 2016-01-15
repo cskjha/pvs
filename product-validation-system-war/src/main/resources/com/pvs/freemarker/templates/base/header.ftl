@@ -12,10 +12,7 @@
 
 <nav class="header-style">
 	<#if companyName??>
-	  ${WELCOME} ${companyName!GUEST} &nbsp;|&nbsp;
-	  <#if REGISTER_PLAN??>
-	  <a href="planregister">${REGISTER_PLAN}</a>&nbsp;|&nbsp;
-	  </#if>
+	  ${WELCOME} ${companyName!GUEST} &nbsp;|&nbsp;	 
 	 <#if MY_PLAN??>
 	 <a href="myplan">${MY_PLAN}</a>&nbsp;|&nbsp;
 	  </#if>

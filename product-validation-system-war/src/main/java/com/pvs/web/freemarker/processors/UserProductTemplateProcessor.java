@@ -30,7 +30,7 @@ public class UserProductTemplateProcessor {
 				ProcessorUtil.populateDynamicValues(dynamicValues);
 				Session session = request.session(false);
 				String locale = ProcessorUtil.getLanguage(request);
-				if(session == null) {
+				if(session == null ) {
 					response.redirect(RedirectPaths.COMPANY_LOGIN);
 					return null;
 				}

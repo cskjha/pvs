@@ -4,9 +4,11 @@ import com.pvs.web.constants.ProductValidationSystemWebConstants;
 import com.pvs.web.constants.RedirectPaths;
 import com.pvs.web.freemarker.processors.CompanyLoginProcessor;
 import com.pvs.web.freemarker.processors.CompanyRegistrationProcessor;
+import com.pvs.web.freemarker.processors.DashboardProcessor;
 import com.pvs.web.freemarker.processors.DisplayPlanProcessor;
 import com.pvs.web.freemarker.processors.DisplayUserListProcessor;
 import com.pvs.web.freemarker.processors.DownloadProductFormatProcessor;
+import com.pvs.web.freemarker.processors.EditProductTemplateProcessor;
 import com.pvs.web.freemarker.processors.GenerateQRCodeProcessor;
 import com.pvs.web.freemarker.processors.GenericErrorProcessor;
 import com.pvs.web.freemarker.processors.LanguageChangeProcessor;
@@ -313,7 +315,24 @@ public class ProductValidationSystemMainController implements SparkApplication {
 	   				return SaveProductAsStolen.postHTML(request, response);
 	   			}
 	        });
-        
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.EDIT_PRODUCT_TEMPLATE, new Route() {
+				
+	   			public Object handle(Request request, Response response) throws Exception {
+	   				return EditProductTemplateProcessor.getHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.post(RedirectPaths.HOME_PAGE+RedirectPaths.EDIT_PRODUCT_TEMPLATE, new Route() {
+				
+	   			public Object handle(Request request, Response response) throws Exception {
+	   				return EditProductTemplateProcessor.postHTML(request, response);
+	   			}
+	        });
+		    spark.Spark.get(RedirectPaths.HOME_PAGE+RedirectPaths.DASHBOARD, new Route() {
+				
+	   			public String handle(Request request, Response response) throws Exception {
+	   				return DashboardProcessor.getHTML(request, response);
+	   			}
+	        });
     }
 
 }

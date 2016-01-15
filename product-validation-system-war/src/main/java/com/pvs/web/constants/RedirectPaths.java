@@ -25,4 +25,6 @@ public class RedirectPaths {
 	public static final String REMOVE_USER = "removeuser";
 	public static final String USER_PRODUCT_TEMPLATE = "userproducttemplate";
 	public static final String UPDATE_STOLEN_PRODUCT_RESPONSECODE="updatestolenresponsecode";
+	public static final String EDIT_PRODUCT_TEMPLATE = "editproducttemplate";
+	public static final String DASHBOARD = "dashboard";
 }

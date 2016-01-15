@@ -124,6 +124,7 @@ public class ValidateProductProcesssor {
 				productWebViewVO.setManufacturerName(manufacturerName);
 				productWebViewVO.setProductRating("4");
 				productWebViewVO.setImage(imageURL);
+				productWebViewVO.setStolen_image(ProductValidationSystemWebConstants.STOLEN_PRODUCT_IMAGE_URL);
 				//productwebviewVOList.add(productwebviewVO);
 				ArrayList<ProductValueVO> productValueArrayList = new ArrayList<ProductValueVO>();
 				
@@ -137,6 +138,9 @@ public class ValidateProductProcesssor {
 						}
 						else if(resultPropery.equals("productName")){
 							productWebViewVO.setProductName(result.get(resultPropery).toString());
+						}
+						else if(resultPropery.equals("ResponseCode")){
+							productWebViewVO.setResponseCode(result.get(resultPropery).toString());
 						}
 						else{
 							ProductValueVO productValueVO = new ProductValueVO();
@@ -172,11 +176,44 @@ public class ValidateProductProcesssor {
 		String physical_address = request.queryParams("mac");
 		String longitude = request.queryParams("longitude");
 		String latitude = request.queryParams("latitude");
+		String ip_address = request.queryParams("ip");
+		String email = request.queryParams("email");
+		String phoneNumber = request.queryParams("phoneNumber");
+		String time = request.queryParams("time");
+		String phoneLanguage = request.queryParams("phoneLanguage");
+		String phoneCountry = request.queryParams("phoneCountry");
+		String fullName = request.queryParams("fullName");
+		String validactorUserName = request.queryParams("validactorUserName");
+		String field1 = request.queryParams("field1");
+		String field2 = request.queryParams("field2");
+		String field3 = request.queryParams("field3");
+		String productScanId = request.queryParams("productScanId");
+		System.out.print(productScanId);
+		String productId = ProductRegistrationUtil.getProductIdFromProductScanCode(productScanId);
+		System.out.print(productId);
+		String productType = ProductRegistrationUtil.getProductTypeFromProductScanCode(productScanId);
+		System.out.print("productId->"+productId +" productType->"+productType);
+		Document result = ProductValidationSystemReadService.getProductDetails(productId, productType);
+		String productTemplateId = result.getString("productTemplateId");
 		
 		Document userDetails = new Document();
+		userDetails.append("productId", productId);
+		userDetails.append("productTemplateId", productTemplateId);
 		userDetails.append("physical_address", physical_address);
 		userDetails.append("longitude", longitude);
 		userDetails.append("latitude", latitude);
+		userDetails.append("ip_address", ip_address);
+		userDetails.append("email", email);
+		userDetails.append("physical_address", physical_address);
+		userDetails.append("phoneNumber", phoneNumber);
+		userDetails.append("time", time);
+		userDetails.append("phoneLanguage", phoneLanguage);
+		userDetails.append("phoneCountry", phoneCountry);
+		userDetails.append("fullName", fullName);
+		userDetails.append("validactorUserName", validactorUserName);
+		userDetails.append("field1", field1);
+		userDetails.append("field2", field2);
+		userDetails.append("field3", field3);
 		
 		ProductValidationSystemWriteService.saveUserDetails(userDetails);
 		

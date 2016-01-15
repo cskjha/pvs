@@ -9,6 +9,7 @@
     	
     		
     		<#if productwebview??>
+    			<#if productwebview.responseCode=='200'>
     			<div align="left">
     				<h1 align="center">${productwebview.productName}</h1>
     				<h2 align="left">Manufactured By:  ${productwebview.manufacturerName}</h2><br>
@@ -19,9 +20,14 @@
 	    				   <h2 align="left">${dynamicvalue.fieldName}:  ${dynamicvalue.fieldValue}</h2><br>
 	    			    </#list>
                         <h3>Thanks for Checking</h3>
-                 </div> 
-                 
-               
+                 </div>
+                 </#if> 
+             	<#if productwebview.responseCode=='205'>
+             		<div align="center">
+             			<h2>This product is stolen</h2>
+             			<br><br><img src="${productwebview.stolen_image}"> 	
+             		</div>
+             	</#if>
     		</#if>
     	</center>
     </body>

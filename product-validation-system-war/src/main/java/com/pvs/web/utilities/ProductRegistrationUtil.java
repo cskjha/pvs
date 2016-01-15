@@ -62,7 +62,15 @@ public class ProductRegistrationUtil {
 		return productId;
 	}
 	public static String getProductTypeFromProductScanCode(String productScanId) {
-		String productType = null;
+		/*String productType = null;
+		System.out.println("productScanId:" + productScanId);
+		
+		System.out.println("ProductTypes.FOOD_PRODUCTS.getProductType() - " + ProductTypes.FOOD_PRODUCTS.getProductType());
+		System.out.println("ProductTypes.NON_FOOD_PRODUCTS.getProductType() - " + ProductTypes.NON_FOOD_PRODUCTS.getProductType());
+		
+		System.out.println("productScanId.startsWith(ProductTypes.FOOD_PRODUCTS.getProductType())-" + productScanId.startsWith(ProductTypes.FOOD_PRODUCTS.getProductType()));
+		System.out.println("productScanId.startsWith(ProductTypes.NON_FOOD_PRODUCTS.getProductType())-" + productScanId.startsWith(ProductTypes.NON_FOOD_PRODUCTS.getProductType()));
+		
 		if(productScanId.startsWith(ProductTypes.FOOD_PRODUCTS.getProductType())) {
 				return ProductTypes.FOOD_PRODUCTS.getProductType();
 		}
@@ -70,6 +78,17 @@ public class ProductRegistrationUtil {
 			return ProductTypes.NON_FOOD_PRODUCTS.getProductType();
 		}
 		
+		return productType;*/
+		
+		String productType = null;		
+		if(productScanId != null) {
+			int index = productScanId.indexOf("P");
+			productType = productScanId.substring(0,index+1);
+			System.out.println(productType);
+		}
+		else {
+			log.debug("One or More parameters are null : productScanId : "+productScanId);
+		}
 		return productType;
 	}
 	
@@ -89,6 +108,9 @@ public class ProductRegistrationUtil {
 			filePath = imageDirectory+"/"+productScanCode+".png";
 			String charset = "UTF-8"; // or "ISO-8859-1"
 			Map hintMap = new HashMap();
+			
+			System.out.println("qrCodeData : " + qrCodeData);
+			
 			hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);			
 			return createQRCode(qrCodeData, filePath, charset, hintMap, ProductValidationSystemWebConstants.QR_CODE_HEIGHT,
 						ProductValidationSystemWebConstants.QR_CODE_WIDTH);

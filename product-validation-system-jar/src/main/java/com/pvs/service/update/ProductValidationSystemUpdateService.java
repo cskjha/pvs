@@ -148,10 +148,11 @@ public class ProductValidationSystemUpdateService {
 			String remainingScanCount = planDocument.getString("allowedScanCount");
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			Document searchCriteria = new Document();
-			searchCriteria.append(DatabaseConstants.COMPANY_ID, companyId).append("companyPlanId", companyPlanId);
+			searchCriteria.append(DatabaseConstants.COMPANY_ID, companyId);
 			Document planModel = new Document();
 			planModel.append("remainingRecordCount", remainingRecordCount);
 			planModel.append("remainingScanCount", remainingScanCount);
+			planModel.append("companyPlanId", companyPlanId);
 			Document updateDocument = new Document().append("$set", planModel);
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName).updateOne(searchCriteria, updateDocument);
@@ -222,6 +223,37 @@ public class ProductValidationSystemUpdateService {
 			mongoClient.close();
 		}
 		
+	}
+	public static boolean updateProductTemplate(Document productTemplateModel,String productTemplateId, String productType, String companyId) {
+		if(productTemplateModel ==null || productTemplateId == null || productType == null || companyId == null) {
+			log.debug("Any of the parameters is null : productTemplateModel : "+productTemplateModel+" productType :"+productType+" companyId"+companyId);
+			return false;
+		}
+		MongoClient mongoClient = null;		
+		try {
+			String templateCollectionName = CommonUtils.getProductTemplateCollectionName(productType);
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			Document searchCriteria = new Document();
+			searchCriteria.append(DatabaseConstants._ID, new ObjectId(productTemplateId));
+			Document productModel = new Document();
+			
+			
+			productModel.append("productName", productTemplateModel.getString("productName"));
+			productModel.append("manufacturerName", productTemplateModel.getString("manufacturerName")).append("manufacturedOn", productTemplateModel.getString("manufacturedOn")).append("image", productTemplateModel.getString("image"));
+			Document updateDocument = new Document().append("$set", productModel);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			DBCollectionManagerFactory.getOrCreateCollection(mongoDb, templateCollectionName).updateOne(searchCriteria, updateDocument);
+			
+			log.debug("Product Template Updated Successfully.");
+			return true;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally {
+			mongoClient.close();
+		}
+		return false;
 	}
 
 }

@@ -113,12 +113,14 @@ public class ProductValidationSystemReadService {
 	}
 	
 	public static Document getProductDetails(String productId, String productType) {
-		
+		System.out.println("Pratyay print: productId-" + productId + "__productType-" + productType);
+		log.debug("Pratyay print: productId-" + productId + "__productType-" + productType);
 		MongoClient mongoClient = null;
 		try {
 			mongoClient = ConnectionManagerFactory.getMongoClient();
 			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
 			String collectionName = CommonUtils.getProductCollectionName(productType);
+			System.out.println("Pratyay print: collectionName-" + collectionName);
 			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
 			Document searchCriteria = new Document().append(DatabaseConstants._ID, new ObjectId(productId));
 			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
@@ -409,7 +411,78 @@ public class ProductValidationSystemReadService {
 		return userList;
 	}
 
+	public static String getProductType(String productTemplateId) {
+		
+		MongoClient mongoClient = null;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.COMPANY_TEMPLATE_COLLECTION);		
+			Document searchCriteria = new Document().append("productTemplateId", productTemplateId);
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			if(documents != null) {
+				return documents.first().getString("productType");
+			}
+			
+		}
+		catch(Exception e){
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally{
+			mongoClient.close();
+		}
+		return null;
+	}
 	
+	public static int getNumberofRegisteredProduct(String productTemplateId, String productType){
+		MongoClient mongoClient = null;
+		int c=0;
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			String collectionName = CommonUtils.getProductCollectionName(productType);
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, collectionName);		
+			Document searchCriteria = new Document().append("productTemplateId", productTemplateId);
+			c= (int) mongoCollection.count(searchCriteria);
+			
+			return c;
+			
+		}
+		catch(Exception e){
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+		}
+		finally{
+			mongoClient.close();
+		}
+		return c;
+	}
+	public static List<Document> getAppUserDetails(String productTemplateId) {
+		MongoClient mongoClient = null;
+		List<Document> userDetails = new ArrayList<Document>();
+		try {
+			mongoClient = ConnectionManagerFactory.getMongoClient();
+			MongoDatabase mongoDb = DatabaseManagerFactory.getDatabase(mongoClient, DatabaseConstants.DATABASE_NAME);
+			MongoCollection<Document> mongoCollection = DBCollectionManagerFactory.getOrCreateCollection(mongoDb, DatabaseConstants.USERDETAILS_COLLECTION_NAME);		
+			Document searchCriteria = new Document().append("productTemplateId", productTemplateId);
+			FindIterable<Document> documents = mongoCollection.find(searchCriteria);
+			MongoCursor<Document> userDetailDocumentIterator = documents.iterator();
+			while(userDetailDocumentIterator != null && userDetailDocumentIterator.hasNext()) {
+				Document companyTemplateDocument = userDetailDocumentIterator.next();
+				userDetails.add(companyTemplateDocument);
+			}	
+			return userDetails;
+		} catch (Exception e) {
+			log.error("PVS Exception occured : Message :  "+e.getMessage());
+			log.error("PVS Exception occured : Stack Trace : "+e.getStackTrace());
+			
+		}
+		finally {
+			mongoClient.close();
+		}
+		return null;
+	}
 	
  
 }

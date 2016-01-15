@@ -1,4 +1,15 @@
-		<div class="clear"></div>
+<!DOCTYPE html>
+	<html>
+    <head>
+		<title>${REGISTER} ${PRODUCT}</title>
+ 		<link type="text/css" rel="stylesheet" href="styles/displayPlan.css">
+ 		<script src="scripts/common.js" type="text/javascript"></script>
+    </head>
+    
+    <body>
+    	<center>
+    	 <#include "../base/admin_header.ftl">
+         <div class="clear"></div>
         <br><br>
         <h2>${VIEW_PROD_TEMPLATE_MSG1}</h2>
         <#if productTemplateList??>
@@ -13,7 +24,7 @@
         </tr>
         <#list productTemplateList as productTemplate>
         	<tr>
-        		<td>${productTemplate.productTemplateName} <a href="editproducttemplate?productTemplateId=${productTemplate.productTemplateId}"> [${EDIT}] </a>  <a href="removeproducttemplate?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">[${REMOVE}]</a></td>
+        		<td>${productTemplate.productTemplateName} <a href=""> [${EDIT}] </a>  <a href="removeproducttemplate?productType=${productTemplate.productType}&productTemplateName=${productTemplate.productTemplateName}&companyName=${companyName}">[${REMOVE}]</a></td>
         		<td><a href="registerproduct?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${REGISTER} ${PRODUCT}</a></td>
         		<td><a href="downloadproductformat?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}&templateName=${productTemplate.productTemplateName}">${DOWNLOAD} ${PRODUCT} ${FORMAT}</a></td>
         		<td><a href="uploadproduct?productTemplateId=${productTemplate.productTemplateId}&productType=${productTemplate.productType}">${UPLOAD} ${PRODUCT}</a></td>
@@ -26,3 +37,6 @@
             ${REGISTER} ${PRODUCT} ${TEMPLATE} <a href="registerproducttemplate">${HERE}</a>
         </#if>
         </table>
+       </center>
+    </body>
+    </html>

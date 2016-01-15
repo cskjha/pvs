@@ -24,4 +24,5 @@ public class TemplatePaths {
 		public static final String PRODUCT_WEBVIEW ="com/pvs/freemarker/templates/HTML/productwebview/productwebviewHTML.ftl";
 		public static final String DISPLAY_USERLIST ="com/pvs/freemarker/templates/admin/displayuserlist.ftl";
 		public static final String USER_PRODUCT_TEMPLATE ="com/pvs/freemarker/templates/admin/displayuserproducttemplate.ftl";
+		public static final String DASHBOARD = "com/pvs/freemarker/templates/dashboard/dashboard.ftl";
 }

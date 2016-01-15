@@ -21,10 +21,6 @@ import spark.Session;
 
 public class MyPlanProcessor {
 	public static String getHTML(Request request, Response response) {
-		return postHTML(request, response);
-	}
-	
-	public static String postHTML(Request request, Response response) {
 		String htmlOutput = null;
 		try {
 			Map<String, Object> dynamicValues = new HashMap<String, Object>();
@@ -91,6 +87,34 @@ public class MyPlanProcessor {
 		} catch (TemplateException e) {
 			e.printStackTrace();
 		}		
+		return htmlOutput;
+	}
+	
+	public static String postHTML(Request request, Response response) {
+		String htmlOutput = null;
+		try {
+			Map<String, Object> dynamicValues = new HashMap<String, Object>();
+			ProcessorUtil.populateDynamicValues(dynamicValues);
+			Session session = request.session(false);
+			if(session == null) {
+				response.redirect(RedirectPaths.COMPANY_LOGIN);
+				return null;
+			}
+			else {
+				String companyName = request.session().attribute("companyName");
+				String companyId = request.session().attribute("companyId");
+				
+				String companyPlanId=request.queryParams("companyPlanId");
+				
+				Boolean recharge_status=ProductValidationSystemUpdateService.rechargeCompanyPlan(companyId, companyPlanId );
+				if(recharge_status){
+					response.redirect(RedirectPaths.MY_PLAN);
+				}
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
 		return htmlOutput;
 	}
 }

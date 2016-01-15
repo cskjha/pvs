@@ -22,7 +22,7 @@ public class LoginValidator {
 			String password=null;
 			String language = request.queryParams("language");
 			String userEmail = request.queryParams("email");
-			String password = request.queryParams("password");
+			String originalcompanyPassword = request.queryParams("password");
 			try {
 				MessageDigest m = MessageDigest.getInstance("MD5");
 				m.reset();

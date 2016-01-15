@@ -8993,6 +8993,7 @@ function Animation( elem, properties, options ) {
         .always( animation.opts.always );
 }
 
+
 function propFilter( props, specialEasing ) {
     var index, name, easing, value, hooks;
 
